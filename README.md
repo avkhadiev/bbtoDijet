@@ -7,6 +7,7 @@ Use the [SWGuideGlobalHLT Twiki](https://twiki.cern.ch/twiki/bin/view/CMSPublic/
     cmsrel CMSSW_8_0_11
     cd CMSSW_8_0_11/src/
     cmsenv
+    # the steps below take a significant amount of time
     git cms-addpkg HLTrigger/Configuration
     git cms-merge-topic -u cms-tsg-storm:80XHLTJuly29thTrain
     git cms-checkdeps -A -a
