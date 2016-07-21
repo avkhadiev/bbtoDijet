@@ -1,0 +1,176 @@
+#! /usr/bin/env python
+import os
+import glob
+import math
+from array import array
+import sys
+import time
+import string
+import ROOT
+
+# import tdrstyle
+# tdrstyle.setTDRStyle()
+ROOT.gStyle.SetPadTopMargin(0.09);
+ROOT.gStyle.SetPadLeftMargin(0.12);
+ROOT.gStyle.SetPadRightMargin(0.25);
+ROOT.gStyle.SetPaintTextFormat("1.1f");
+ROOT.gROOT.SetBatch()
+
+# to create an output file later
+# outFile=ROOT.TFile("output_TriggerHistos.root","RECREATE")
+# outFile.cd()
+#
+# c.SaveAs(.....) (already written there)
+# c.Write()
+
+
+tags = ["HLT_DoubleJetsC100_DoubleBTagCSV_p014_DoublePFJetsC100MaxDeta1p6_v2"]#,
+    #"HLT_DoubleJetsC100_DoubleBTagCSV_p026_DoublePFJetsC160_v2"
+    #]
+probes = ["HLT_AK8PFJet140_v1",
+    "HLT_DoubleJetsC100_p014_DoublePFJetsC100MaxDeta1p6_v2"]#,
+    #"HLT_DiPFJetAve80_v3",
+    #"HLT_PFJet80_v5"
+    #]
+
+tagprobes = []
+for probe in probes:
+    for tag in tags:
+        tagprobes.append((tag, probe))
+
+        # PARAMETER NAME |     AXIS TITLE    | BINS,   MIN,   MAX
+parameters = { 'pfjetpt':('PFJet p_{T} (GeV)', 100,   0, 100 ),
+        'pfjeteta':      ('PFJet eta',         20,  -10, 10  ),
+        'bTagCISV':      ('bTagCISV',          20,  -10, 10  ),
+        'bTagCSV':       ('bTagCSV',           20,  -10, 10  )
+        }
+# debugging
+print parameters.values()
+
+# need up to 4 leading jets
+jets = [0, 1, 2, 3]
+
+# open file
+input_file = ROOT.TFile('hlt_bTagDijetV9.root')
+tree = input_file.Get('hltana/HLTAnalysis')
+
+
+# declareHistograms
+# input:  tuple(string) (tag, probe) -- names of tag & probe trigger
+#         dictionary -- list of parameter-branch names as keys and list of tuples with axis title and bin info as values
+# output: dictionary -- parameters as keys, list of tuples -- numerator - denominator pairs -- of TH1F histograms for 4 leading jets as values
+def declareHistograms((tag, probe), parameters):
+    print 'Declaring histograms for a tag-probe pair %s-%s' % (tag, probe)
+    histograms = dict.fromkeys(parameters.keys(), [])
+    for parameter, settings in parameters.items():
+        axisTitle, nbins, minbin, maxbin = settings
+        # need 4 leading jets
+        for jet in jets:
+            jetNum = ' ' + str(jet + 1) + ' jet'
+                                   #  HISTOGRAM NAME:  TAG  + PROBE + PARAMETER + JET | AXIS TITLE + JET | BINS,  MIN,   MAX
+            numerator   = ROOT.TH1F("%s_%s_%s_pass_%d" % (tag, probe, parameter, jet), axisTitle + jetNum, nbins, minbin, maxbin)
+            denominator = ROOT.TH1F("%s_%s_%s_all_%d"  % (tag, probe, parameter, jet), axisTitle + jetNum, nbins, minbin, maxbin)
+            histograms[parameter].append( (numerator, denominator) )
+    return histograms
+
+# fillHistograms
+# input:  tuple(string) (tag, probe) -- names of tag & probe triggers
+#         TTree tree -- contains branches with parameters
+# output: the dictionary histograms with filled histograms
+def fillHistograms((tag, probe), tree):
+    print 'Filling histograms for a tag-probe pair %s-%s' % (tag, probe)
+    global histograms
+    branches = tree.GetListOfBranches()
+    for parameter, histoPairs in histograms.items():
+        for branch in branches:
+            if branch.GetName() == parameter:
+                for jet in jets:
+                    numerator, denominator = histoPairs[jet]
+                    tree.Draw("(%s[%d])>>%s" % (parameter, jet,   numerator.GetName()), "(%s == 1) * (%s == 1)" % (tag, probe))
+                    tree.Draw("(%s[%d])>>%s" % (parameter, jet, denominator.GetName()), "(%s == 1)"             % (tag       ))
+    return histograms
+
+# TGraphAsymmErrors makeEffGraph
+# input:  TH1F numerator, denominator histograms
+# output: TGraphAsymmErrors corresponding turn-on curve
+def makeEffGraph(numerator, denominator):
+    # binning of numerator and denominator has to match!
+    # x[ibin] of numerator and denominator is equal for each ibin!
+    nbins = denominator.GetNbinsX()
+    npass = ntotal = x = y = errxLow = errxHigh = erryLow = erryHigh = ROOT.TVector(nbins)
+    for ibin in range(0, nbins):
+        # https://root.cern.ch/doc/master/classTH1.html#a3e2be0555e806ae3276f9fcec91865c6
+        # bin = 0 is the underflow bin, bin = nbins+1 is the overflow bin
+        # set x & y coordinates
+        x[ibin]      = float( denominator.GetBinCenter( ibin + 1)  )
+        npass[ibin]  = float(  numerator.GetBinContent(  ibin + 1) )
+        ntotal[ibin] = float( denominator.GetBinContent( ibin + 1) )
+        if ntotal[ibin] == 0.0:
+            y[ibin] = 0.0
+        else: y[ibin] = npass[ibin] / ntotal[ibin]
+        errxLow[ibin] = 0.0
+        # set x & y coordinate errors
+        errxLow[ibin]  =  0.0
+        errxHigh[ibin] = 0.0
+        if y[ibin] == 0.0:
+            erryLow[ibin]  = 0.0
+            erryHigh[ibin] = 0.0
+        else:
+            erryLow[ibin]  = y[ibin] - ROOT.TEfficiency.ClopperPearson( ntotal[ibin], npass[ibin], 0.683, False)
+            erryHigh[ibin] =           ROOT.TEfficiency.ClopperPearson( ntotal[ibin], npass[ibin], 0.683, True) - y[ibin]
+
+    curve = ROOT.TGraphAsymmErrors(x, y, errxLow, errxHigh, erryLow, erryHigh)
+    return curve
+
+# makeCurves
+# input:  dictionary histograms -- parameters as keys, list of tuples -- numerator - denominator pairs -- of filled TH1F histograms for 4 leading jets as values
+# output  dictionary -- parameters as keys, list of TGraphAssymetricError turn-on curves for 4 leading jets as values
+def makeCurves(histograms):
+    print 'Creating turn-on curves'
+    curves = dict.fromkeys(histograms.keys(),[])
+    for parameter, histoPairs in histograms.items():
+        for jet in jets:
+            numerator, denominator = histoPairs[jet]
+            curve = makeEffGraph(numerator, denominator)
+            curves[parameter].append( curve )
+    return curves
+
+
+# input:  tuple(string) (tag, probe) -- names of tag & probe triggers
+#         dictionary histograms -- parameters as keys, list of tuples -- numerator - denominator pairs -- of TH1F histograms for 4 leading jets as values
+#         dictionary curves -- parameters as keys, list of TGraphAssymetricError turn-on curves for 4 leading jets as values
+# output: creates images of histograms and turn-on curves and puts them in a subdir "images"
+def makeCanvases((tag, probe), histograms, curves):
+    print 'Creating canvases with turn-on curves for tag-probe pairs %s-%s' % (tag, probe)
+    for parameter, curve in curves.items():
+        first=True
+        for jet in jets:
+            print type(jet)
+            print jets
+            canvas = ROOT.TCanvas("%s_%s_vs_%s_jet_%d" % (probe, tag, parameter, jet), "%s / %s efficiency vs. %s, %d jet" % (probe, tag, parameter, jet), 600, 800)
+            canvas.SetFillColor( 19 )
+            canvas.SetGrid()
+            curves[parameter][jet].SetTitle( "turn-on curve: %s / %s" % ( tag, probe )  )
+            curves[parameter][jet].SetMarkerColor( 4  )
+            curves[parameter][jet].SetMarkerStyle( 21 )
+            curves[parameter].append( curve )
+            if first :
+                curves[parameter][jet].Draw("ALP")
+                first=False
+            else :
+                curves[parameter][jet].Draw("SAME ALP")
+
+
+            canvas.SaveAs("plots/" + canvas.GetName() + ".png")
+    return
+
+# loop over T&P pairs
+for tag, probe in tagprobes:
+        histograms = declareHistograms((tag,probe), parameters)
+        fillHistograms((tag, probe), tree)
+        curves = makeCurves(histograms)
+        # input:  tuple(string) (tag, probe) -- names of tag & probe triggers
+        #         dictionary histograms -- parameters as keys, list of tuples -- numerator - denominator pairs -- of TH1F histograms for 4 leading jets as values
+        #         dictionary curves -- parameters as keys, list of tuples TGraphAssymetricError turn-on curves for 4 leading jets as values
+        # output: creates images of histograms and turn-on curves and puts them in a subdir "images"
+        makeCanvases((tag, probe), histograms, curves)

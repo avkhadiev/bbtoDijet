@@ -1,0 +1,13 @@
+<use name="FWCore/Framework"/>
+<use name="FWCore/PluginManager"/>
+<use name="FWCore/ParameterSet"/>
+<use name="DataFormats/Common"/>
+<use name="DataFormats/JetReco"/>
+<use name="HLTrigger/HLTcore"/>
+<use name="DataFormats/PatCandidates"/>
+<use name="DataFormats/BTauReco"/> 
+<use name="RecoBTag/Combined"/>
+<use name="RecoBTag/SecondaryVertex"/>
+<use name="CommonTools/UtilAlgos"/>
+<use name="rootcore"/>
+<flags EDM_PLUGIN="1"/>

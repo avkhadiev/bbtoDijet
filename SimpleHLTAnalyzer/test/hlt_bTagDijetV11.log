@@ -1,0 +1,155 @@
+%MSG-i ThreadSetup:  (NoModuleName) 21-Jul-2016 18:21:04 CEST pre-events
+setting # threads 4
+%MSG
+DQMStore: MultiThread option is enabled
+21-Jul-2016 18:21:14 CEST  Initiating request to open file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/22E3D39A-6633-E611-836C-02163E011821.root
+%MSG-w XrdAdaptor:  file_open 21-Jul-2016 18:21:17 CEST pre-events
+Data is served from jinr.ru instead of original site CERN-PROD
+%MSG
+21-Jul-2016 18:21:20 CEST  Successfully opened file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/22E3D39A-6633-E611-836C-02163E011821.root
+21-Jul-2016 18:21:34 CEST  Initiating request to open file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/0065CD2D-5832-E611-A907-02163E014649.root
+%MSG-w XrdAdaptor:  AfterFile 21-Jul-2016 18:21:38 CEST pre-events
+Data is served from fnal.gov instead of original site CERN-PROD
+%MSG
+21-Jul-2016 18:21:38 CEST  Successfully opened file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/0065CD2D-5832-E611-A907-02163E014649.root
+%MSG-e TkDetLayers:  EventSetupRecordDataGetter:hltGetConditions@streamBeginRun  21-Jul-2016 18:22:12 CEST Run: 274998
+ ForwardDiskSectorBuilderFromDet: Trying to build Petal Wedge from Dets at different z positions !! Delta_z = 0.800171
+%MSG
+21-Jul-2016 18:22:24 CEST  Closed file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/0065CD2D-5832-E611-A907-02163E014649.root
+21-Jul-2016 18:22:24 CEST  Initiating request to open file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/00E6EC9E-4632-E611-9BB4-02163E011DF3.root
+%MSG-w XrdAdaptor:  source 21-Jul-2016 18:22:27 CEST PostBeginLumi
+Data is served from fnal.gov instead of original site CERN-PROD
+%MSG
+21-Jul-2016 18:22:27 CEST  Successfully opened file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/00E6EC9E-4632-E611-9BB4-02163E011DF3.root
+21-Jul-2016 18:22:35 CEST  Closed file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/00E6EC9E-4632-E611-9BB4-02163E011DF3.root
+21-Jul-2016 18:22:35 CEST  Initiating request to open file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/0683CE3A-5832-E611-A381-02163E014336.root
+%MSG-w XrdAdaptor:  source 21-Jul-2016 18:22:37 CEST PostBeginLumi
+Data is served from fnal.gov instead of original site CERN-PROD
+%MSG
+21-Jul-2016 18:22:38 CEST  Successfully opened file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/0683CE3A-5832-E611-A381-02163E014336.root
+21-Jul-2016 18:22:46 CEST  Closed file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/0683CE3A-5832-E611-A381-02163E014336.root
+21-Jul-2016 18:22:46 CEST  Initiating request to open file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/16BA6F2F-5832-E611-9D33-02163E011CEF.root
+%MSG-w XrdAdaptor:  source 21-Jul-2016 18:22:48 CEST PostBeginLumi
+Data is served from fnal.gov instead of original site CERN-PROD
+%MSG
+21-Jul-2016 18:22:48 CEST  Successfully opened file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/16BA6F2F-5832-E611-9D33-02163E011CEF.root
+21-Jul-2016 18:22:57 CEST  Closed file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/16BA6F2F-5832-E611-9D33-02163E011CEF.root
+21-Jul-2016 18:22:57 CEST  Initiating request to open file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/32878206-5832-E611-ABCF-02163E011DC5.root
+%MSG-w XrdAdaptor:  source 21-Jul-2016 18:22:59 CEST PostBeginLumi
+Data is served from fnal.gov instead of original site CERN-PROD
+%MSG
+21-Jul-2016 18:22:59 CEST  Successfully opened file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/32878206-5832-E611-ABCF-02163E011DC5.root
+21-Jul-2016 18:23:07 CEST  Closed file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/32878206-5832-E611-ABCF-02163E011DC5.root
+21-Jul-2016 18:23:07 CEST  Initiating request to open file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/360E3A37-5832-E611-AA6C-02163E01341C.root
+%MSG-w XrdAdaptor:  source 21-Jul-2016 18:23:09 CEST PostBeginLumi
+Data is served from fnal.gov instead of original site CERN-PROD
+%MSG
+21-Jul-2016 18:23:09 CEST  Successfully opened file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/360E3A37-5832-E611-AA6C-02163E01341C.root
+21-Jul-2016 18:23:17 CEST  Closed file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/360E3A37-5832-E611-AA6C-02163E01341C.root
+21-Jul-2016 18:23:17 CEST  Initiating request to open file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/3C1A9254-5832-E611-9ED2-02163E0119F0.root
+%MSG-w XrdAdaptor:  source 21-Jul-2016 18:23:20 CEST PostBeginLumi
+Data is served from fnal.gov instead of original site CERN-PROD
+%MSG
+21-Jul-2016 18:23:20 CEST  Successfully opened file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/3C1A9254-5832-E611-9ED2-02163E0119F0.root
+21-Jul-2016 18:23:28 CEST  Closed file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/3C1A9254-5832-E611-9ED2-02163E0119F0.root
+21-Jul-2016 18:23:28 CEST  Initiating request to open file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/4000A786-4532-E611-87CB-02163E01367F.root
+%MSG-w XrdAdaptor:  source 21-Jul-2016 18:23:30 CEST PostBeginLumi
+Data is served from fnal.gov instead of original site CERN-PROD
+%MSG
+21-Jul-2016 18:23:31 CEST  Successfully opened file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/4000A786-4532-E611-87CB-02163E01367F.root
+21-Jul-2016 18:23:39 CEST  Closed file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/4000A786-4532-E611-87CB-02163E01367F.root
+21-Jul-2016 18:23:39 CEST  Initiating request to open file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/4AD21DD5-4432-E611-A009-02163E014298.root
+%MSG-w XrdAdaptor:  source 21-Jul-2016 18:23:41 CEST PostBeginLumi
+Data is served from fnal.gov instead of original site CERN-PROD
+%MSG
+21-Jul-2016 18:23:41 CEST  Successfully opened file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/4AD21DD5-4432-E611-A009-02163E014298.root
+21-Jul-2016 18:23:46 CEST  Closed file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/4AD21DD5-4432-E611-A009-02163E014298.root
+21-Jul-2016 18:23:46 CEST  Initiating request to open file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/4E10207C-4532-E611-80D8-02163E0135E6.root
+%MSG-w XrdAdaptor:  source 21-Jul-2016 18:23:48 CEST PostBeginLumi
+Data is served from fnal.gov instead of original site CERN-PROD
+%MSG
+21-Jul-2016 18:23:49 CEST  Successfully opened file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/4E10207C-4532-E611-80D8-02163E0135E6.root
+21-Jul-2016 18:23:57 CEST  Closed file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/4E10207C-4532-E611-80D8-02163E0135E6.root
+21-Jul-2016 18:23:57 CEST  Initiating request to open file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root
+%MSG-w XrdAdaptor:  source 21-Jul-2016 18:23:59 CEST PostBeginLumi
+Data is served from fnal.gov instead of original site CERN-PROD
+%MSG
+21-Jul-2016 18:24:00 CEST  Successfully opened file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root
+21-Jul-2016 18:24:07 CEST  Closed file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root
+21-Jul-2016 18:24:07 CEST  Initiating request to open file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/5CCF9139-5832-E611-979A-02163E01468C.root
+%MSG-w XrdAdaptor:  source 21-Jul-2016 18:24:09 CEST PostBeginLumi
+Data is served from fnal.gov instead of original site CERN-PROD
+%MSG
+21-Jul-2016 18:24:10 CEST  Successfully opened file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/5CCF9139-5832-E611-979A-02163E01468C.root
+21-Jul-2016 18:24:17 CEST  Closed file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/5CCF9139-5832-E611-979A-02163E01468C.root
+21-Jul-2016 18:24:17 CEST  Initiating request to open file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/5EC4E52A-5832-E611-BCD7-02163E0142B6.root
+%MSG-w XrdAdaptor:  source 21-Jul-2016 18:24:20 CEST PostBeginLumi
+Data is served from fnal.gov instead of original site CERN-PROD
+%MSG
+21-Jul-2016 18:24:20 CEST  Successfully opened file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/5EC4E52A-5832-E611-BCD7-02163E0142B6.root
+21-Jul-2016 18:24:26 CEST  Closed file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/5EC4E52A-5832-E611-BCD7-02163E0142B6.root
+21-Jul-2016 18:24:26 CEST  Initiating request to open file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/66C3A112-5832-E611-8F4A-02163E011990.root
+%MSG-w XrdAdaptor:  source 21-Jul-2016 18:24:28 CEST PostBeginLumi
+Data is served from fnal.gov instead of original site CERN-PROD
+%MSG
+21-Jul-2016 18:24:29 CEST  Successfully opened file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/66C3A112-5832-E611-8F4A-02163E011990.root
+21-Jul-2016 18:24:36 CEST  Closed file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/66C3A112-5832-E611-8F4A-02163E011990.root
+21-Jul-2016 18:24:36 CEST  Initiating request to open file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/84CBCD10-5832-E611-94B2-02163E011AB8.root
+%MSG-w XrdAdaptor:  source 21-Jul-2016 18:24:39 CEST PostBeginLumi
+Data is served from fnal.gov instead of original site CERN-PROD
+%MSG
+21-Jul-2016 18:24:39 CEST  Successfully opened file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/84CBCD10-5832-E611-94B2-02163E011AB8.root
+21-Jul-2016 18:24:47 CEST  Closed file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/84CBCD10-5832-E611-94B2-02163E011AB8.root
+21-Jul-2016 18:24:47 CEST  Initiating request to open file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/8C9EA67E-4532-E611-9FD9-02163E01338F.root
+%MSG-w XrdAdaptor:  source 21-Jul-2016 18:24:49 CEST PostBeginLumi
+Data is served from fnal.gov instead of original site CERN-PROD
+%MSG
+21-Jul-2016 18:24:50 CEST  Successfully opened file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/8C9EA67E-4532-E611-9FD9-02163E01338F.root
+21-Jul-2016 18:24:58 CEST  Closed file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/8C9EA67E-4532-E611-9FD9-02163E01338F.root
+21-Jul-2016 18:24:58 CEST  Initiating request to open file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/9EDA712A-5832-E611-B0D6-02163E01476A.root
+%MSG-w XrdAdaptor:  source 21-Jul-2016 18:25:00 CEST PostBeginLumi
+Data is served from fnal.gov instead of original site CERN-PROD
+%MSG
+21-Jul-2016 18:25:00 CEST  Successfully opened file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/9EDA712A-5832-E611-B0D6-02163E01476A.root
+21-Jul-2016 18:25:08 CEST  Closed file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/9EDA712A-5832-E611-B0D6-02163E01476A.root
+21-Jul-2016 18:25:08 CEST  Initiating request to open file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/A274536D-4532-E611-B738-02163E011FEA.root
+%MSG-w XrdAdaptor:  source 21-Jul-2016 18:25:10 CEST PostBeginLumi
+Data is served from fnal.gov instead of original site CERN-PROD
+%MSG
+21-Jul-2016 18:25:11 CEST  Successfully opened file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/A274536D-4532-E611-B738-02163E011FEA.root
+21-Jul-2016 18:25:19 CEST  Closed file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/A274536D-4532-E611-B738-02163E011FEA.root
+21-Jul-2016 18:25:19 CEST  Initiating request to open file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/C49C7B24-5832-E611-86AF-02163E01410E.root
+%MSG-w XrdAdaptor:  source 21-Jul-2016 18:25:21 CEST PostBeginLumi
+Data is served from fnal.gov instead of original site CERN-PROD
+%MSG
+21-Jul-2016 18:25:21 CEST  Successfully opened file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/C49C7B24-5832-E611-86AF-02163E01410E.root
+21-Jul-2016 18:25:29 CEST  Closed file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/C49C7B24-5832-E611-86AF-02163E01410E.root
+21-Jul-2016 18:25:29 CEST  Initiating request to open file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/C823FA24-5832-E611-BD90-02163E01197D.root
+%MSG-w XrdAdaptor:  source 21-Jul-2016 18:25:31 CEST PostBeginLumi
+Data is served from fnal.gov instead of original site CERN-PROD
+%MSG
+21-Jul-2016 18:25:32 CEST  Successfully opened file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/C823FA24-5832-E611-BD90-02163E01197D.root
+21-Jul-2016 18:25:40 CEST  Closed file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/C823FA24-5832-E611-BD90-02163E01197D.root
+21-Jul-2016 18:25:40 CEST  Initiating request to open file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/D654804B-5832-E611-98B5-02163E013527.root
+%MSG-w XrdAdaptor:  source 21-Jul-2016 18:25:42 CEST PostBeginLumi
+Data is served from fnal.gov instead of original site CERN-PROD
+%MSG
+21-Jul-2016 18:25:42 CEST  Successfully opened file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/D654804B-5832-E611-98B5-02163E013527.root
+21-Jul-2016 18:25:50 CEST  Closed file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/D654804B-5832-E611-98B5-02163E013527.root
+21-Jul-2016 18:25:50 CEST  Initiating request to open file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/D6DFE145-5832-E611-B0F2-02163E014298.root
+%MSG-w XrdAdaptor:  source 21-Jul-2016 18:25:52 CEST PostBeginLumi
+Data is served from fnal.gov instead of original site CERN-PROD
+%MSG
+21-Jul-2016 18:25:52 CEST  Successfully opened file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/D6DFE145-5832-E611-B0F2-02163E014298.root
+21-Jul-2016 18:26:00 CEST  Closed file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/D6DFE145-5832-E611-B0F2-02163E014298.root
+21-Jul-2016 18:26:00 CEST  Initiating request to open file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/D8A72C71-4532-E611-AC66-02163E013489.root
+%MSG-w XrdAdaptor:  source 21-Jul-2016 18:26:03 CEST PostBeginLumi
+Data is served from fnal.gov instead of original site CERN-PROD
+%MSG
+21-Jul-2016 18:26:03 CEST  Successfully opened file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/D8A72C71-4532-E611-AC66-02163E013489.root
+21-Jul-2016 18:26:11 CEST  Closed file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/D8A72C71-4532-E611-AC66-02163E013489.root
+21-Jul-2016 18:26:11 CEST  Initiating request to open file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/DA03FA7C-4532-E611-A1E5-02163E0123B0.root
+%MSG-w XrdAdaptor:  source 21-Jul-2016 18:26:13 CEST PostBeginLumi
+Data is served from fnal.gov instead of original site CERN-PROD
+%MSG
+21-Jul-2016 18:26:13 CEST  Successfully opened file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/DA03FA7C-4532-E611-A1E5-02163E0123B0.root
