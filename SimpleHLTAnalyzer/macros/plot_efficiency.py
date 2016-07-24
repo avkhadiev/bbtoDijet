@@ -19,9 +19,9 @@ ROOT.gROOT.SetBatch()
 probes = [ "HLT_DoubleJetsC100_DoubleBTagCSV_p014_DoublePFJetsC100MaxDeta1p6_v2",
      "HLT_DoubleJetsC100_DoubleBTagCSV_p026_DoublePFJetsC160_v2"
     ]
-tags = [# "HLT_DoubleJetsC100_p014_DoublePFJetsC100MaxDeta1p6_v2",
-     "HLT_Mu50_v3"#, # "HLT_TkMu50_v1",
-   #  "HLT_DoubleJetsC100_p026_DoublePFJetsC160_v2"#,
+tags = [ "HLT_DoubleJetsC100_p014_DoublePFJetsC100MaxDeta1p6_v2",
+    # "HLT_Mu50_v3"#, # "HLT_TkMu50_v1",
+     "HLT_DoubleJetsC100_p026_DoublePFJetsC160_v2"#,
    # "HLT_AK8PFJet140_v1",
    # "HLT_AK8PFJet200_v1",
    # "HLT_DiPFJetAve80_v3",
@@ -32,16 +32,16 @@ tags = [# "HLT_DoubleJetsC100_p014_DoublePFJetsC100MaxDeta1p6_v2",
 jets = [0]
 
         # PARAMETER NAME |     AXIS TITLE    | BINS,   MIN,   MAX
-parameters = {# 'bTagCSV':      ('bTagCSV',            10,  0, 1.1     )#,
-      #  'bTagCISV':          ('bTagCISV',          20,  0, 1.1     ),
+parameters = { 'bTagCSVOnline':      ('Online CSV',            10,  0, 1.1     ),
+        'bTagCSVOffline':          ('Offline CSV',             10,  0, 1.1     )#,
       #    'pfjetpt':         ('PFJet p_{T} (GeV)', 30,  0, 300    )#,
-          'pfjetmass':        ('PFJet mass (GeV)',  24    0, 1200
+      #    'pfjetmass':        ('PFJet mass (GeV)',  24    0, 1200
       #   'pfjeteta':         ('PFJet eta',         10,   0, 5      )
          }
 
 
 # open file
-input_file = ROOT.TFile('/eos/uscms/store/user/aavkhadi/SingleMuon/eff_bTagDijetV9/hlt_bTagDijetV9.root')
+input_file = ROOT.TFile('/eos/uscms/store/user/aavkhadi/JetHT/eff_bTagDijetV11/hlt_bTagDijetV11.root')
 tree = input_file.Get('hltana/HLTAnalysis')
 
 # speed things up by disabling branches
