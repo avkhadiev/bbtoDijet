@@ -6,6 +6,7 @@ hltana = cms.EDAnalyzer('SimpleHLTAnalyzer',
     trigSummary = cms.InputTag('hltTriggerSummaryAOD', '', 'TEST'),
     trigResults = cms.InputTag('TriggerResults::TEST'),
     # For accessing offline trigger objects
+    lumiProducer = cms.InputTag('lumiProducer'),
     pfJets = cms.InputTag('ak4PFJets::RECO'),
     bTagsCSVOffline = cms.InputTag('pfCombinedSecondaryVertexV2BJetTags'),
     bTagsCSVOnline  = cms.InputTag('hltCombinedSecondaryVertexBJetTagsCalo')

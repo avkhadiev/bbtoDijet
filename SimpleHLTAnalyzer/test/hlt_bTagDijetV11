@@ -1,0 +1,30 @@
+%MSG-i ThreadSetup:  (NoModuleName) 22-Jul-2016 15:10:39 CEST pre-events
+setting # threads 4
+%MSG
+DQMStore: MultiThread option is enabled
+22-Jul-2016 15:10:57 CEST  Initiating request to open file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/22E3D39A-6633-E611-836C-02163E011821.root
+[2016-07-22 15:11:58.087780 +0200][Error  ][XRootD            ] [cms-xrd-transit.cern.ch:1094] Handling error while processing kXR_open (file: /store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/22E3D39A-6633-E611-836C-02163E011821.root?tried=+1098xrdcmsglobal011098xrdcmsglobal02.cern.ch, mode: 0460, flags: kXR_open_read kXR_async kXR_retstat ): [ERROR] Error response.
+%MSG-w XrdAdaptorInternal:  file_open 22-Jul-2016 15:11:58 CEST pre-events
+Failed to open file at URL root://cms-xrd-transit.cern.ch:1094//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/22E3D39A-6633-E611-836C-02163E011821.root?tried=+1098xrdcmsglobal011098xrdcmsglobal02.cern.ch.
+%MSG
+[2016-07-22 15:11:58.094638 +0200][Error  ][XRootD            ] [cms-xrd-transit.cern.ch:1094] Handling error while processing kXR_open (file: /store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/22E3D39A-6633-E611-836C-02163E011821.root?tried=+1098xrdcmsglobal011098xrdcmsglobal02.cern.ch,, mode: 0660, flags: kXR_open_read kXR_async kXR_retstat ): [ERROR] Error response.
+%MSG-w XrdAdaptorInternal:  file_open 22-Jul-2016 15:11:58 CEST pre-events
+Failed to open file at URL root://cms-xrd-transit.cern.ch:1094//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/22E3D39A-6633-E611-836C-02163E011821.root?tried=+1098xrdcmsglobal011098xrdcmsglobal02.cern.ch,.
+%MSG
+----- Begin Fatal Exception 22-Jul-2016 15:11:58 CEST-----------------------
+An exception of category 'FileOpenError' occurred while
+   [0] Constructing the EventProcessor
+   [1] Constructing input source of type PoolSource
+   [2] Calling RootFileSequenceBase::initTheFile()
+   [3] Calling StorageFactory::open()
+   [4] Calling XrdFile::open()
+Exception Message:
+Failed to open the file 'root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/22E3D39A-6633-E611-836C-02163E011821.root'
+   Additional Info:
+      [a] Input file root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/22E3D39A-6633-E611-836C-02163E011821.root could not be opened.
+      [b] XrdCl::File::Open(name='root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/22E3D39A-6633-E611-836C-02163E011821.root', flags=0x10, permissions=0660) => error '[ERROR] Server responded with an error: [3011] No servers are available to read the file.
+' (errno=3011, code=400). No additional data servers were found.
+      [c] Last URL tried: root://cms-xrd-transit.cern.ch:1094//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/22E3D39A-6633-E611-836C-02163E011821.root?tried=+1098xrdcmsglobal011098xrdcmsglobal02.cern.ch,
+      [d] Problematic data server: cms-xrd-transit.cern.ch:1094
+      [e] Disabled source: cms-xrd-transit.cern.ch:1094
+----- End Fatal Exception -------------------------------------------------

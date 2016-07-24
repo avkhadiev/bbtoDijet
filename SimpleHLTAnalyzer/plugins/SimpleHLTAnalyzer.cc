@@ -25,22 +25,26 @@
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/EDAnalyzer.h"
 #include "FWCore/Framework/interface/Event.h"
+#include "FWCore/Framework/interface/LuminosityBlock.h"
+#include "FWCore/Framework/interface/ConsumesCollector.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "FWCore/Common/interface/TriggerNames.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
+
 #include "DataFormats/Common/interface/TriggerResults.h"
+#include "DataFormats/Luminosity/interface/LumiSummary.h" 
+#include "DataFormats/Luminosity/interface/LumiDetails.h" 
 #include "DataFormats/HLTReco/interface/TriggerObject.h"
 #include "DataFormats/HLTReco/interface/TriggerEvent.h"
 #include "DataFormats/HLTReco/interface/TriggerEventWithRefs.h"
 #include "DataFormats/HLTReco/interface/TriggerEventWithRefs.h"
-#include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
 #include "DataFormats/JetReco/interface/PFJet.h"
 #include "DataFormats/JetReco/interface/PFJetCollection.h"
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "DataFormats/BTauReco/interface/JetTag.h"
-
+#include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
 
 class SimpleHLTAnalyzer : public edm::EDAnalyzer {
   public:
@@ -66,13 +70,15 @@ class SimpleHLTAnalyzer : public edm::EDAnalyzer {
     // Tokens for trigger results, kinematics, and btags
     edm::EDGetTokenT<edm::TriggerResults>    trigresultsToken_;
     edm::EDGetTokenT<trigger::TriggerEvent>  trigsummaryToken_;
-    edm::EDGetTokenT<reco::PFJetCollection> pfjetsToken_; 
+    edm::EDGetTokenT<reco::PFJetCollection>  pfjetsToken_; 
     edm::EDGetTokenT<reco::JetTagCollection> btagsCSVOnlineToken_; 
     edm::EDGetTokenT<reco::JetTagCollection> btagsCSVOfflineToken_;
-
+    edm::EDGetTokenT<LumiSummary>            lumiToken_;
+    
     unsigned int run_;
     unsigned int lumi_;
     unsigned int evt_;
+    double AvgInstDelLumi_;
  
     bool firstEvent_;
 
@@ -94,20 +100,23 @@ class SimpleHLTAnalyzer : public edm::EDAnalyzer {
 
 SimpleHLTAnalyzer::SimpleHLTAnalyzer(const edm::ParameterSet& iConfig) :
   // the assigned strings have to match the names in the config file  
-  hltProcess_       (iConfig.getParameter<std::string>("hltProcess")),
-  trigresultsToken_ (consumes<edm::TriggerResults>(iConfig.getParameter<edm::InputTag>("trigResults"))),
-  trigsummaryToken_ (consumes<trigger::TriggerEvent>(iConfig.getParameter<edm::InputTag>("trigSummary"))),
-  pfjetsToken_     (consumes<reco::PFJetCollection>(iConfig.getParameter<edm::InputTag>("pfJets"))),
-  btagsCSVOnlineToken_(consumes<reco::JetTagCollection>(iConfig.getParameter<edm::InputTag>("bTagsCSVOnline"))),
+  hltProcess_          (iConfig.getParameter<std::string>("hltProcess")),
+  trigresultsToken_    (consumes<edm::TriggerResults>(iConfig.getParameter<edm::InputTag>("trigResults"))),
+  trigsummaryToken_    (consumes<trigger::TriggerEvent>(iConfig.getParameter<edm::InputTag>("trigSummary"))),
+  pfjetsToken_         (consumes<reco::PFJetCollection>(iConfig.getParameter<edm::InputTag>("pfJets"))),
+  btagsCSVOnlineToken_ (consumes<reco::JetTagCollection>(iConfig.getParameter<edm::InputTag>("bTagsCSVOnline"))),
   btagsCSVOfflineToken_(consumes<reco::JetTagCollection>(iConfig.getParameter<edm::InputTag>("bTagsCSVOffline"))), 
+  lumiToken_           (consumes<LumiSummary,edm::InLumi>(iConfig.getParameter<edm::InputTag>("lumiProducer"))),
   run_  (0),
   lumi_ (0),
   evt_  (0),
+  AvgInstDelLumi_ (-999.), 
   firstEvent_ (true),
   maxResults_ (1000)
 {
 
   passtrig_ = new unsigned int[maxResults_];
+  AvgInstDelLumi_ = -999.;
   bTagCSVOnline_ = new float[maxResults_];
   bTagCSVOffline_ = new float[maxResults_];
   nbtagCSVOnlinejets_ = 0;
@@ -127,6 +136,7 @@ SimpleHLTAnalyzer::SimpleHLTAnalyzer(const edm::ParameterSet& iConfig) :
 // D is double
   outTree_->Branch("run",  &run_,  "run/i");
   outTree_->Branch("lumi", &lumi_, "lumi/i");
+  outTree_->Branch("AvgInstDelLumi", &AvgInstDelLumi_, "AvgInstDelLumi/D");
   outTree_->Branch("evt",  &evt_,  "evt/i");
   outTree_->Branch("nbtagCSVOnlinejets", &nbtagCSVOnlinejets_, "nbtagCSVOnlinejets/I");
   outTree_->Branch("bTagCSVOnline",  bTagCSVOnline_, "bTagCSVOnline[nbtagCSVOnlinejets]/F"); 
@@ -151,6 +161,23 @@ SimpleHLTAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
   run_  = iEvent.id().run();
   lumi_ = iEvent.luminosityBlock();
   evt_  = iEvent.id().event();
+
+  // average ins delivered luminosity
+  // https://cmssdt.cern.ch/SDT/doxygen/CMSSW_7_1_4/doc/html/d9/d79/EventHeader_8cc_source.html
+  bool lumiException = false;
+  const edm::LuminosityBlock& iLumi = iEvent.getLuminosityBlock();
+  edm::Handle<LumiSummary> lumiSummary; 
+  try{
+    iLumi.getByToken(lumiToken_, lumiSummary);
+    lumiSummary->isValid();
+  }
+  catch(cms::Exception&){
+    lumiException = true;
+  }
+  if(!lumiException)
+      AvgInstDelLumi_ = lumiSummary->avgInsDelLumi();
+  else
+      AvgInstDelLumi_ = -999.;
 
   // trigger results
   edm::Handle<edm::TriggerResults> trigresults;

@@ -8,7 +8,7 @@ from CRABClient.UserUtilities import config, getUsernameFromSiteDB
 config = config()
 
 name = 'eff_bTagDijetV11_lowlumi' # will be part of the work area name and the storage subdir name
-runNom = '273158,273730,274161,274244'
+runNom = '273158,273503,273730,274161'
 #runs and corresponding approximate instantaneous luminosities
 #273158 -- ~ 1.5e33
 #273503 -- ~ 2.0e33
@@ -27,7 +27,7 @@ config.General.transferLogs = True
 
 # section JobType
 config.JobType.pluginName = 'Analysis'
-config.JobType.psetName = '/afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11/src/bbtoDijet/SimpleHLTAnalyzer/test/hlt_bTagDijetV11.py'
+config.JobType.psetName = 'hlt_bTagDijetV11.py'
 config.JobType.outputFiles = ['hlt_bTagDijetV11.root']
 config.JobType.numCores = 16
 # section Data
