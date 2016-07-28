@@ -8,5 +8,4 @@ hltana = cms.EDAnalyzer('SimpleHLTAnalyzer',
     # For accessing offline trigger objects
     pfJets = cms.InputTag('ak4PFJets::RECO'),
     bTagsCSVOffline = cms.InputTag('pfCombinedSecondaryVertexV2BJetTags'),
-    bTagsCSVOnline  = cms.InputTag('hltCombinedSecondaryVertexBJetTagsCalo')
-)
+    bTagsCSVOnline  = cms.InputTag('hltCombinedSecondaryVertexBJetTagsCalo'))

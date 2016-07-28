@@ -73,7 +73,9 @@ class SimpleHLTAnalyzer : public edm::EDAnalyzer {
     edm::EDGetTokenT<reco::JetTagCollection> btagsCSVOnlineToken_; 
     edm::EDGetTokenT<reco::JetTagCollection> btagsCSVOfflineToken_;
 
-    unsigned int run_;
+
+    
+// tree variablesunsigned int run_;
     unsigned int lumi_;
     unsigned int evt_;
  
@@ -84,7 +86,6 @@ class SimpleHLTAnalyzer : public edm::EDAnalyzer {
     // all variables for a given object 
     // (e.g., pt's of a jet)
     const int maxResults_;
-
     unsigned int *passtrig_;
     // b-tagging discriminants
     int nbtagCSVOnlinejets_;
