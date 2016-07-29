@@ -17,63 +17,38 @@
 //
 
 
-// system include files
-// uncluded by default
-#include <memory>
-// added in
-#include <TTree.h>
-
+// system include file
+#include <memory>                                                     // included by default
+#include <TTree.h>                                                    // added in
 // user include files
-// included by default
-#include "FWCore/Framework/interface/Frameworkfwd.h"
+#include "FWCore/Framework/interface/Frameworkfwd.h"                  // included by default
 #include "FWCore/Framework/interface/one/EDAnalyzer.h"
-
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
-
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
-// added in
-// from https://cmssdt.cern.ch/SDT/doxygen/CMSSW_8_0_13/doc/html/dd/d5c/HLTBitAnalyzer_8h_source.html
-#include "FWCore/Framework/interface/EventSetup.h"
-#include "FWCore/Framework/interface/ESHandle.h"
-// from https://cmssdt.cern.ch/SDT/doxygen/CMSSW_8_0_13/doc/html/d2/d04/HLTJets_8h_source.html
-#include "FWCore/Framework/interface/ConsumesCollector.h"
-// from https://cmssdt.cern.ch/SDT/doxygen/CMSSW_8_0_9/doc/html/df/d03/HLTEventAnalyzerRAW_8cc_source.html
-#include "FWCore/ParameterSet/interface/ConfigurationDescriptions.h"
-#include "FWCore/MessageLogger/interface/MessageLogger.h"
-// from https://cmssdt.cern.ch/SDT/doxygen/CMSSW_8_0_13/doc/html/d5/d74/HLTBitAnalyzer_8cc_source.html
+#include "FWCore/Framework/interface/EventSetup.h"                    // added in
+#include "FWCore/Framework/interface/ESHandle.h"                      // https://cmssdt.cern.ch/SDT/doxygen/CMSSW_8_0_13/doc/html/dd/d5c/HLTBitAnalyzer_8h_source.html
+#include "FWCore/Framework/interface/ConsumesCollector.h"             // https://cmssdt.cern.ch/SDT/doxygen/CMSSW_8_0_13/doc/html/d2/d04/HLTJets_8h_source.html
+#include "FWCore/ParameterSet/interface/ConfigurationDescriptions.h"  // https://cmssdt.cern.ch/SDT/doxygen/CMSSW_8_0_9/doc/html/df/d03/HLTEventAnalyzerRAW_8cc_source.html
+#include "FWCore/MessageLogger/interface/MessageLogger.h"             // https://cmssdt.cern.ch/SDT/doxygen/CMSSW_8_0_13/doc/html/d5/d74/HLTBitAnalyzer_8cc_source.html
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
-
-// from https://cmssdt.cern.ch/SDT/doxygen/CMSSW_8_0_13/doc/html/dd/d5c/HLTBitAnalyzer_8h_source.html
-#include "HLTrigger/HLTanalyzers/interface/EventHeader.h"
+#include "HLTrigger/HLTanalyzers/interface/EventHeader.h"             // https://cmssdt.cern.ch/SDT/doxygen/CMSSW_8_0_13/doc/html/dd/d5c/HLTBitAnalyzer_8h_source.html
 #include "HLTrigger/HLTanalyzers/interface/HLTInfo.h"
-// from https://cmssdt.cern.ch/SDT/doxygen/CMSSW_8_0_13/doc/html/d2/dc0/HLTEventAnalyzerAOD_8cc_source.html
-#include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
-
+#include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"            // https://cmssdt.cern.ch/SDT/doxygen/CMSSW_8_0_13/doc/html/d2/dc0/HLTEventAnalyzerAOD_8cc_source.html
 #include "FWCore/Common/interface/TriggerNames.h"
 #include "FWCore/Common/interface/TriggerResultsByName.h"
 #include "DataFormats/Common/interface/Handle.h"
-
 // event content access
-// event-header information
-#include "DataFormats/Luminosity/interface/LumiSummary.h" 
+#include "DataFormats/Luminosity/interface/LumiSummary.h"             // event-header information 
 #include "DataFormats/Luminosity/interface/LumiDetails.h"
-
-// trigger-related information
-#include "DataFormats/Common/interface/TriggerResults.h"
+#include "DataFormats/Common/interface/TriggerResults.h"              // trigger-related information
 #include "DataFormats/HLTReco/interface/TriggerEvent.h" 
 #include "DataFormats/HLTReco/interface/TriggerEventWithRefs.h"
-
-// jet-related information
-// from https://cmssdt.cern.ch/SDT/doxygen/CMSSW_8_0_13/doc/html/d2/d04/HLTJets_8h_source.html
-#include "DataFormats/JetReco/interface/CaloJetCollection.h"
-#include "DataFormats/JetReco/interface/PFJetCollection.h"
-
-// b-jet-tagging information
-// from https://cmssdt.cern.ch/SDT/doxygen/CMSSW_8_0_13/doc/html/d2/d2e/HLTBJet_8h_source.html
-#include "DataFormats/Common/interface/View.h"
-#include "DataFormats/JetReco/interface/Jet.h"
+#include "DataFormats/JetReco/interface/CaloJetCollection.h"          // jet-related information 
+#include "DataFormats/JetReco/interface/PFJetCollection.h"            // https://cmssdt.cern.ch/SDT/doxygen/CMSSW_8_0_13/doc/html/d2/d04/HLTJets_8h_source.html
+// #include "DataFormats/Common/interface/View.h"                     // b-jet-tagging information (View.h possibly unnecessary)
+#include "DataFormats/JetReco/interface/Jet.h"                        // https://cmssdt.cern.ch/SDT/doxygen/CMSSW_8_0_13/doc/html/d2/d2e/HLTBJet_8h_source.html  
 #include "DataFormats/BTauReco/interface/JetTag.h"
 
 //
@@ -92,100 +67,89 @@ class bbtoDijetAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResources>
       ~bbtoDijetAnalyzer();
       static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
-
    private:
       virtual void beginJob() override;
       virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
-      virtual void clear()  override;
+      virtual void clear();
       virtual void endJob() override;
 
-      // ----------member data ---------------------------
+     // ----------member data ---------------------------
+      
+     HLTConfigProvider                                       hltConfig_                    ;
+     EventHeader                                             eventHeader_                  ;
+     std::string                                             processName_                  ;
+     
+     // input tags
+     const edm::InputTag                                     triggerResultsTag_            ;
+     const edm::InputTag                                     triggerEventTag_              ;
+     const edm::InputTag                                     caloJetsTag_                  ;
+     const edm::InputTag                                     pfJetsTag_                    ; 
+     const edm::InputTag                                     bTagCSVOnlineTag_             ; 
+     const edm::InputTag                                     bTagCSVOfflineTag_            ;
+     
+     // tokens                                              
+     const edm::EDGetTokenT<edm::TriggerResults>             triggerResultsToken_          ;
+     const edm::EDGetTokenT<trigger::TriggerEvent>           triggerEventToken_            ;
+     const edm::EDGetTokenT<reco::CaloJetCollection>         caloJetsToken_                ;
+     const edm::EDGetTokenT<reco::PFJetCollection>           pfJetsToken_                  ;
+     const edm::EDGetTokenT<reco::JetTagCollection>          bTagCSVOnlineToken_           ; 
+     const edm::EDGetTokenT<reco::JetTagCollection>          bTagCSVOfflineToken_          ;
+     
+     // tree variables
+     // array sizes
+     static const size_t kMaxTriggerPass_     = 10000   ;
+     static const size_t kMaxCaloJet_         = 10000   ;
+     static const size_t kMaxPFJet_           = 10000   ;
+     static const size_t kMaxBTagCSVOnline_   = 1000    ;
+     static const size_t kMaxBTagCSVOffline_  = 1000    ;
+     
+     // set of variables for 
+     // event-header information: included in eventHeader_
+     // trigger-related information
+     bool          firstEvent_                 ;   // will create new branch for trigger path if firstEvent_ = true
+     unsigned int *triggerPass_                ;
+     // jet-related information
+     // CaloJet
+     int           caloJetCounter_             ;     
+     float        *caloJetPt_                  ;  
+     float        *caloJetEta_                 ; 
+     float        *caloJetPhi_                 ;  
+     float        *caloJetEt_                  ;  
+     float        *caloJetMass_                ; 
+     // PFJet
+     int           pfJetCounter_               ;     
+     float        *pfJetPt_                    ;  
+     float        *pfJetEta_                   ; 
+     float        *pfJetPhi_                   ;  
+     float        *pfJetEt_                    ;  
+     float        *pfJetMass_                  ; 
+     // b-jet-tagging information
+     // bTagCSVOnline
+     int           bTagCSVOnlineJetCounter_    ;     
+     double       *bTagCSVOnlineJetPt_         ;
+     float        *bTagCSVOnline_              ;
+     // bTagCSVOffline
+     int           bTagCSVOfflineJetCounter_   ;
+     double       *bTagCSVOfflineJetPt_        ;
+     float        *bTagCSVOffline_             ;
+     
+     TTree* outTree_;
+
 };
 
 //
-// constants, enums and typedefs
-//
-
-//
-// static data member definitions
-//
-
-// input variables
-// analysis tools
-HLTConfigProvider  hltConfig_    ;
-EventHeader        eventHeader_  ;
-std::string        processName_  ;
-
-// input tags
-const edm::InputTag                                     triggerResultsTag_            ;
-const edm::InputTag                                     triggerEventTag_              ;
-
-const edm::InputTag                                     pfJetsTag_                    ;
-const edm::InputTag                                     caloJetsTag_                  ;
-const edm::InputTag                                     bTagCSVOnlineTag_             ; 
-const edm::InputTag                                     bTagCSVOfflineTag_            ;
-
-// tokens                                              
-const edm::EDGetTokenT<edm::TriggerResults>             triggerResultsToken_          ;
-const edm::EDGetTokenT<trigger::TriggerEvent>           triggerEventToken_            ;
-const edm::EDGetTokemT<reco::CaloJetCollecton>          caloJetsToken_                ;
-const edm::EDGetTokenT<reco::PFJetCollection>           pfJetsToken_                  ;
-const edm::EDGetTokenT<reco::JetTagCollection>          bTagCSVOnlineToken_           ; 
-const edm::EDGetTokenT<reco::JetTagCollection>          bTagCSVOfflineToken_          ;
-
-// tree variables
-// array sizes
-static const int kMaxTriggerPass_    ;
-static const int kMaxCaloJet_        ;
-static const int kMaxPFJet_          ;
-static const int kMaxBTagCSVOnline_  ;
-static const int kMaxBTagCSVOffline_ ;
-
-// set of variables for 
-// event-header information: included in eventHeader_
-// trigger-related information
-bool          firstEvent_                 ;   // will create new branch for trigger path if firstEvent_ = true
-unsigned int  triggerPass_                ;
-// jet-related information
-// CaloJet
-int           caloJetCounter_             ;     
-float        *caloJetPt_                  ;  
-float        *caloJetEta_                 ; 
-float        *caloJetPhi_                 ;  
-float        *caloJetEt_                  ;  
-float        *caloJetMass_                ; 
-// PFJet
-int           pfJetCounter_               ;     
-float        *pfJetPt_                    ;  
-float        *pfJetEta_                   ; 
-float        *pfJetPhi_                   ;  
-float        *pfJetEt_                    ;  
-float        *pfJetMass_                  ; 
-// b-jet-tagging information
-// bTagCSVOnline
-int           bTagCSVOnlineJetCounter_    ;     
-float        *bTagCSVOnlineJetPt_         ;
-float        *bTagCSVOnline_              ;
-// bTagCSVOffline
-int           bTagCSVOfflineJetCounter_   ;
-float        *bTagCSVOfflineJetPt_        ;
-float        *bTagCSVOffline_             ;
-
-TTree* outTree_;
-
 // constructors and destructor
 //
 bbtoDijetAnalyzer::bbtoDijetAnalyzer(const edm::ParameterSet& iConfig) :
-  processName_                       (iConfig.getParameter<std::string>("processName"), 
-  eventHeader_                       (),                                              ,       
+  processName_                       (iConfig.getParameter<std::string>("processName")), 
   // initialize input tags 
   // (strings should match variable names in the *.py config file)
-  triggerResultsTag_                 (iConfig.getParameter<std::string>)("triggerResults"), 
-  triggerEventTag_                   (iConfig.getParameter<std::string>)("triggerEvent"),                     
-  pfJetsTag_                         (iConfig.getParameter<std::string>)("caloJets"),            
-  caloJetsTag_                       (iConfig.getParameter<std::string>)("pfJets"),            
-  bTagCSVOnlineTag_                  (iConfig.getParameter<std::string>)("bTagCSVOnline"),            
-  bTagCSVOfflineTag_                 (iConfig.getParameter<std::string>)("bTagCSVOffline"),            
+  triggerResultsTag_                 (iConfig.getParameter<std::string>("triggerResults")), 
+  triggerEventTag_                   (iConfig.getParameter<std::string>("triggerEvent")),                     
+  caloJetsTag_                       (iConfig.getParameter<std::string>("caloJets")),            
+  pfJetsTag_                         (iConfig.getParameter<std::string>("pfJets")),             
+  bTagCSVOnlineTag_                  (iConfig.getParameter<std::string>("bTagCSVOnline")),            
+  bTagCSVOfflineTag_                 (iConfig.getParameter<std::string>("bTagCSVOffline")),            
   // initialize tokens
   triggerResultsToken_               (consumes<edm::TriggerResults>(triggerResultsTag_)),
   triggerEventToken_                 (consumes<trigger::TriggerEvent>(triggerEventTag_)), 
@@ -194,46 +158,41 @@ bbtoDijetAnalyzer::bbtoDijetAnalyzer(const edm::ParameterSet& iConfig) :
   bTagCSVOnlineToken_                (consumes<reco::JetTagCollection>(bTagCSVOnlineTag_)),
   bTagCSVOfflineToken_               (consumes<reco::JetTagCollection>(bTagCSVOfflineTag_)), 
   // initialize tree variables
-  firstEvent_                        (true),
-  kMaxTriggerPass_                   (10000),
-  kMaxCaloJet_                       (10000),
-  kMaxPFJet_                         (10000),
-  kMaxBTagCSVOnline_                 (1000),
-  kMaxBTagCSVOffline_                (1000)
+  firstEvent_                        (true)
 {
    //now do what ever initialization is needed
    usesResource("TFileService");
   
    /*  Setup the analysis to put the branch-variables into the tree. */
-
+    
    // set of variables for
    // event-header information: included in eventHeader_ 
    // trigger-related information
-   triggerPass_               = new unsigned int[kMaxTriggerPass]   ;
+   triggerPass_               = new unsigned int[kMaxTriggerPass_]  ;
    // jet-related information
    // CaloJet
    caloJetCounter_            = 0                                   ;
-   caloJetPt_                 = new float[kMaxCaloJet]              ;        
-   caloJetEta_                = new float[kMaxCaloJet]              ; 
-   caloJetPhi_                = new float[kMaxCaloJet]              ; 
-   caloJetEt_                 = new float[kMaxCaloJet]              ; 
-   caloJetMass_               = new float[kMaxCaloJet]              ; 
+   caloJetPt_                 = new float[kMaxCaloJet_]             ;        
+   caloJetEta_                = new float[kMaxCaloJet_]             ; 
+   caloJetPhi_                = new float[kMaxCaloJet_]             ; 
+   caloJetEt_                 = new float[kMaxCaloJet_]             ; 
+   caloJetMass_               = new float[kMaxCaloJet_]             ; 
    // PFJet
    pfJetCounter_              = 0                                   ;
-   pfJetPt_                   = new float[kMaxPFJet]                ;         
-   pfJetEta_                  = new float[kMaxPFJet]                ;  
-   pfJetPhi_                  = new float[kMaxPFJet]                ;  
-   pfJetEt_                   = new float[kMaxPFJet]                ;  
-   pfJetMass_                 = new float[kMaxPFJet]                ; 
+   pfJetPt_                   = new float[kMaxPFJet_]               ;         
+   pfJetEta_                  = new float[kMaxPFJet_]               ;  
+   pfJetPhi_                  = new float[kMaxPFJet_]               ;  
+   pfJetEt_                   = new float[kMaxPFJet_]               ;  
+   pfJetMass_                 = new float[kMaxPFJet_]               ; 
    // b-jet-tagging information
    // bTagCSVOnline
    bTagCSVOnlineJetCounter_   = 0                                   ;
-   bTagCSVOnlineJetPt_        = new float[kMaxBTagCSVOnline]        ;
-   bTagCSVOnline_             = new float[kMaxBTagCSVOnline]        ;
+   bTagCSVOnlineJetPt_        = new double[kMaxBTagCSVOnline_]      ;
+   bTagCSVOnline_             = new float[kMaxBTagCSVOnline_]       ;
    // bTagCSVOffline 
    bTagCSVOfflineJetCounter_  = 0                                   ;  
-   bTagCSVOfflineJetPt_       = new float[kMaxBTagCSVOffline]       ;
-   bTagCSVOffline_            = new float[kMaxBTagCSVOffline]       ;
+   bTagCSVOfflineJetPt_       = new double[kMaxBTagCSVOffline_]     ;
+   bTagCSVOffline_            = new float[kMaxBTagCSVOffline_]      ;
 
    // open the tree file and initialize the tree
    edm::Service<TFileService> fs                                    ;
@@ -268,30 +227,27 @@ bbtoDijetAnalyzer::bbtoDijetAnalyzer(const edm::ParameterSet& iConfig) :
    // b-jet-tagging information
    // bTagCSVOnline
    outTree_->Branch("bTagCSVOnlineJetCounter",  &bTagCSVOnlineJetCounter_,   "bTagCSVOnlineJetCounter/I")                   ;
-   outTree_->Branch("bTagCSVOnlineJetPt",        bTagCSVOnlineJetPt_,        "bTagCSVOnlineJetPt[bTagCSVOnlineJetCounter]/F")                        ;
+   outTree_->Branch("bTagCSVOnlineJetPt",        bTagCSVOnlineJetPt_,        "bTagCSVOnlineJetPt[bTagCSVOnlineJetCounter]/D")                        ;
    outTree_->Branch("bTagCSVOnline",             bTagCSVOnline_,             "bTagCSVOnline[bTagCSVOnlineJetCounter]/F")    ;    
    // bTagCSVOffline
    outTree_->Branch("bTagCSVOfflineJetCounter", &bTagCSVOfflineJetCounter_,  "bTagCSVOfflineJetCounter/I")                  ;
-   outTree_->Branch("bTagCSVOfflineJetPt",       bTagCSVOfflineJetPt_,       "bTagCSVOfflineJetPt[bTagCSVOfflineJetCounter]/F")                       ;
+   outTree_->Branch("bTagCSVOfflineJetPt",       bTagCSVOfflineJetPt_,       "bTagCSVOfflineJetPt[bTagCSVOfflineJetCounter]/D")                      ;
    outTree_->Branch("bTagCSVOffline",            bTagCSVOffline_,            "bTagCSVOffline[bTagCSVOfflineJetCounter]/F")  ;    
 }
 
 bbtoDijetAnalyzer::~bbtoDijetAnalyzer()
-{
- 
+{ 
    // do anything here that needs to be done at desctruction time
    // (e.g. close files, deallocate resources etc.)  
    
    // jet-related information
    // CaloJet
-   delete[]  caloJetCounter_               ;
    delete[]  caloJetPt_                    ;   
    delete[]  caloJetEta_                   ;   
    delete[]  caloJetPhi_                   ;   
    delete[]  caloJetEt_                    ;   
    delete[]  caloJetMass_                  ;   
    // PFJet
-   delete[]  pfJetCounter_                 ;       
    delete[]  pfJetPt_                      ;       
    delete[]  pfJetEta_                     ;       
    delete[]  pfJetPhi_                     ;       
@@ -299,19 +255,19 @@ bbtoDijetAnalyzer::~bbtoDijetAnalyzer()
    delete[]  pfJetMass_                    ;       
    // b-jet-tagging information
    // bTagCSVOnline       
-   delete[]  bTagCSVOnlineJetCounter_      ;
    delete[]  bTagCSVOnlineJetPt_           ;
    delete[]  bTagCSVOnline_                ;
    // bTagCSVOffline       
-   delete[]  bTagCSVOfflineJetCounter_     ;
    delete[]  bTagCSVOfflineJetPt_          ;
    delete[]  bTagCSVOffline_               ;      
-   
+}
 //
 // member functions
 // 
 
-// ------------ method called for each event  ------------
+// ----------- method called in the body of analyze to clear memory ----------------
+// ----------- does not clear the memory for trigger results!       ----------------
+
 void
 bbtoDijetAnalyzer::clear()
 {
@@ -333,24 +289,21 @@ bbtoDijetAnalyzer::clear()
    std::memset(pfJetMass_,           '\0',  kMaxPFJet_            *  sizeof(float))  ;    
    // b-jet-tagging information
    // bTagCSVOnline
-   bTagCSVOnlineJetCounter_           = 0                                           ;
-   std::memset(bTagCSVOnlineJetPt_,   '\0',  kMaxBTagCSVOffline_  *  sizeof(float)) ;
-   std::memset(bTagCSVOnline_,        '\0',  kMaxBTagCSVOffline_  *  sizeof(float)) ;           
+   bTagCSVOnlineJetCounter_           = 0                                            ;
+   std::memset(bTagCSVOnlineJetPt_,   '\0',  kMaxBTagCSVOffline_  *  sizeof(double)) ;
+   std::memset(bTagCSVOnline_,        '\0',  kMaxBTagCSVOffline_  *  sizeof(float))  ;           
    // bTagCSVOffline
    bTagCSVOfflineJetCounter_          = 0                                            ;
-   std::memset(bTagCSVOfflineJetPt_, '\0',  kMaxBTagCSVOffline_   *  sizeof(float))  ;
+   std::memset(bTagCSVOfflineJetPt_, '\0',  kMaxBTagCSVOffline_   *  sizeof(double)) ;
    std::memset(bTagCSVOffline_,      '\0',  kMaxBTagCSVOffline_   *  sizeof(float))  ;           
 }
-
-void
-bbtoDijetAnalyzer::analyzeJets(const edm::View<reco::Jet>)
-
+// ------------ method called for each event  ------------
 void
 bbtoDijetAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
 { 
     // set handles
     const edm::Handle<edm::TriggerResults>       triggerResultsHandle    ;
-    const edm::Handle<trigger:TriggerEvent>      triggerEventHandle      ;
+    const edm::Handle<trigger::TriggerEvent>     triggerEventHandle      ;
     const edm::Handle<reco::CaloJetCollection>   caloJetsHandle          ;
     const edm::Handle<reco::PFJetCollection>     pfJetsHandle            ;
     const edm::Handle<reco::JetTagCollection>    bTagCSVOnlineHandle     ;
@@ -358,8 +311,8 @@ bbtoDijetAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
   
     // get trigger results
     iEvent.getByToken(triggerResultsToken_, triggerResultsHandle)                        ;
-    edm::TriggerNames const& triggerNames = iEvent.triggerNames( *triggerResultsHandle ) ;
-    for(unsigned int itrig = ; triggerResultsHandle->size(); ++itrig) {
+    edm::TriggerNames const& triggerNames = iEvent.triggerNames(*triggerResultsHandle)   ;
+    for(unsigned int itrig = 0; triggerResultsHandle->size(); ++itrig) {
       TString triggerName = triggerNames.triggerName(itrig);
       if(firstEvent_){
         outTree_->Branch(triggerName, &triggerPass_[itrig], triggerName+"/i");
@@ -374,7 +327,7 @@ bbtoDijetAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
     // if the required collections are available, fill the corresponding tree branches
     // get jet-related information
     // CaloJets
-    if(iEvent.getByToken(caloJetsTokem_, caloJetsHandle)){
+    if(iEvent.getByToken(caloJetsToken_, caloJetsHandle)){
       const reco::CaloJetCollection & caloJets = *(caloJetsHandle.product());
       caloJetCounter_ = caloJets.size();
       for(int i = 0; i != caloJetCounter_; ++i) {
@@ -386,7 +339,7 @@ bbtoDijetAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
       }
     }
     // PFJets
-    if(iEvent.getByToken(pfJetsTokem_, pfJetsHandle)){
+    if(iEvent.getByToken(pfJetsToken_, pfJetsHandle)){
       const reco::PFJetCollection & pfJets = *(pfJetsHandle.product());
       pfJetCounter_ = pfJets.size();
       for(int i = 0; i != pfJetCounter_; ++i) {
@@ -405,7 +358,7 @@ bbtoDijetAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
       for(int i = 0; i != bTagCSVOnlineJetCounter_; ++i){
         // save the tag and corresponding pt
         // see  https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookBTagEdAnalyzer17X
-        bTagCSVOnlineJetPt_[i] = bTagCSVOnline[i].first;
+        bTagCSVOnlineJetPt_[i] = bTagCSVOnline[i].first->pt;
         bTagCSVOnline_[i]      = bTagCSVOnline[i].second;
       }
     }
@@ -416,7 +369,7 @@ bbtoDijetAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
       for(int i = 0; i != bTagCSVOfflineJetCounter_; ++i){
         // save the tag and corresponding pt
         // see  https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookBTagEdAnalyzer17X
-        bTagCSVOfflineJetPt_[i] = bTagCSVOffline[i].first;
+        bTagCSVOfflineJetPt_[i] = bTagCSVOffline[i].first->pt;
         bTagCSVOffline_[i]      = bTagCSVOffline[i].second;
       }
     }
@@ -435,6 +388,21 @@ void
 bbtoDijetAnalyzer::endJob() 
 {
 }
+// ------------ method called when starting to processes a run  ------------
+void 
+bbtoDijetAnalyzer::beginRun(edm::Run const &run, edm::EventSetup const &es)
+{
+    bool changed;
+
+    if (!hltConfig_.init(run, es, processName_, changed)) {
+      edm::LogError("bbtoDijetAnalyzer") << "Initialization of HLTConfigProvider failed.";
+      return;
+    }
+}
+// ------------ method called when starting to processes a run  ------------
+void
+bbtoDijetAnalyzer::endRun(edm::Run const&, edm::EventSetup const&)
+{}
 
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
 void
@@ -443,9 +411,9 @@ bbtoDijetAnalyzer::fillDescriptions(edm::ConfigurationDescriptions& descriptions
   edm::ParameterSetDescription desc;
   desc.add<std::string>("processName", "TEST");
   desc.add<edm::InputTag>("triggerResults", edm::InputTag("TriggerResults::TEST"));
-  desc.add<edm::InputTag>("triggerEvent",   edm::InputTag("hltTriggerSummaryAOD", "", "TEST");
-  desc.add<edm::InputTag>("pfJets",         edm::InputTag(""));
-  desc.add<edm::InputTag>("caloJets",       edm::InputTag(""));
+  desc.add<edm::InputTag>("triggerEvent",   edm::InputTag("hltTriggerSummaryAOD", "", "TEST"); 
+  desc.add<edm::InputTag>("caloJets",       edm::InputTag("ak4CaloJets::RECO"));
+  desc.add<edm::InputTag>("pfJets",         edm::InputTag("ak4PFJets::RECO"));
   desc.add<edm::InputTag>("bTagCSVOnline",  edm::InputTag("hltCombinedSecondaryVertexBJetTagsCalo"));
   desc.add<edm::InputTag>("bTagCSVOffline", edm::InputTag("pfCombinedSecondaryVertexV2BJetTags"));
   descriptions.add("bbtoDijetAnalyzer", desc);

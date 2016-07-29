@@ -86,6 +86,7 @@ class SimpleHLTAnalyzer : public edm::EDAnalyzer {
     // all variables for a given object 
     // (e.g., pt's of a jet)
     const int maxResults_;
+
     unsigned int *passtrig_;
     // b-tagging discriminants
     int nbtagCSVOnlinejets_;
