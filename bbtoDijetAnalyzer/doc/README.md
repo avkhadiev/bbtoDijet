@@ -10,7 +10,5 @@ Example code:
 
 WTD:
 
-1. Debug bbtoDijetAnalyzer.cc
-2. Create a copy of the hlt_bbtoDijetV11.py replacing the lines corresponding to SimpleHLTAnalyzer with bbtoDijetAnalyzer
-3. Try to run with cmsRun locally on a small sample
-4. Try to run with CRAB on a small-ish sample to test memory management
+1. Add et, phi and eta information for each CSV tag 
+2. Try to run with CRAB on a small-ish sample to test memory management
