@@ -56,3 +56,17 @@ For the efficiency studies, we use the following control triggers:
 
 1. HLT_DoubleJetsC100_p014_DoublePFJetsC100MaxDeta1p6_v2 and HLT_DoubleJetsC100_p026_DoublePFJetsC160_v2 -- the triggers of interest with the CSV tagger removed, for b-tagging efficiency studies. 
 2. HLT_Mu50_v3 as a control trigger for the kinematics efficiency studies.
+
+## What to do next
+
+At this point, the following task are at hand:
+
+1. Run the trigger on MC b-jet signal data to see what the distribution should look like. 
+2. Estimate the fraction of b-jets in real data (requires summing data + signal, allow normalizations to float, and find best fit by maximizing the likelihood function)
+
+## Current questions 
+
+1. Do I get MC samples from David?
+2. Once we know the shape of the true CSV distributution, what are the next steps?
+3. How do we tell the trigger reached the target sensitivity? Do we look at the mass of two leading-pT jets?
+4. To estimate the rate for our trigger, we will need to know the rate of our control trigger -- that requires running HLTPhysics jobs on control triggers to gauge their rate.
