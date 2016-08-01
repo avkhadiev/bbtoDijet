@@ -73,9 +73,7 @@ class SimpleHLTAnalyzer : public edm::EDAnalyzer {
     edm::EDGetTokenT<reco::JetTagCollection> btagsCSVOnlineToken_; 
     edm::EDGetTokenT<reco::JetTagCollection> btagsCSVOfflineToken_;
 
-
-    
-// tree variablesunsigned int run_;
+    unsigned int run_;
     unsigned int lumi_;
     unsigned int evt_;
  
