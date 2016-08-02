@@ -2,13 +2,11 @@
 import os
 import glob
 import math
-import array
-import numpy as np
+from array import array
 import sys
 import time
 import string
 import ROOT
-
 
 # import tdrstyle
 # tdrstyle.setTDRStyle()
@@ -17,16 +15,12 @@ ROOT.gStyle.SetPadLeftMargin(0.12);
 ROOT.gStyle.SetPadRightMargin(0.25);
 ROOT.gStyle.SetPaintTextFormat("1.1f");
 ROOT.gROOT.SetBatch()
-# see https://root.cern.ch/phpBB3/viewtopic.php?t=15076	ROOT.gEnv.GetValue("Canvas.SavePrecision", -1)
-ROOT.gEnv.GetValue("Canvas.SavePrecision", -1)
-ROOT.gEnv.SetValue('Canvas.SavePrecision', "15")
-# print sys.float_info
 
-probes = ["HLT_DoubleJetsC100_DoubleBTagCSV_p014_DoublePFJetsC100MaxDeta1p6_v2",
+probes = [ "HLT_DoubleJetsC100_DoubleBTagCSV_p014_DoublePFJetsC100MaxDeta1p6_v2",
      "HLT_DoubleJetsC100_DoubleBTagCSV_p026_DoublePFJetsC160_v2"
     ]
-tags = ["HLT_DoubleJetsC100_p014_DoublePFJetsC100MaxDeta1p6_v2",
-   # "HLT_Mu50_v3"#, # "HLT_TkMu50_v1",
+tags = [ "HLT_DoubleJetsC100_p014_DoublePFJetsC100MaxDeta1p6_v2",
+    # "HLT_Mu50_v3"#, # "HLT_TkMu50_v1",
      "HLT_DoubleJetsC100_p026_DoublePFJetsC160_v2"#,
    # "HLT_AK8PFJet140_v1",
    # "HLT_AK8PFJet200_v1",
@@ -38,8 +32,8 @@ tags = ["HLT_DoubleJetsC100_p014_DoublePFJetsC100MaxDeta1p6_v2",
 jets = [0, 1]
 
         # PARAMETER NAME |     AXIS TITLE    | BINS,   MIN,   MAX
-parameters = {'bTagCSVOnline':      ('Online CSV',            100,  0, 1.0     ),
-        'bTagCSVOffline':          ('Offline CSV',              100,  0, 1.0    )#,
+parameters = { 'bTagCSVOnline':      ('Online CSV',            10,  0, 1.1     ),
+        'bTagCSVOffline':          ('Offline CSV',             10,  0, 1.1     )#,
       #    'pfjetpt':         ('PFJet p_{T} (GeV)', 30,  0, 300    )#,
       #    'pfjetmass':        ('PFJet mass (GeV)',  24    0, 1200
       #   'pfjeteta':         ('PFJet eta',         10,   0, 5      )
@@ -47,7 +41,8 @@ parameters = {'bTagCSVOnline':      ('Online CSV',            100,  0, 1.0     )
 
 
 # open file
-input_file = ROOT.TFile('/eos/uscms/store/user/aavkhadi/JetHT/eff_bTagDijetV11/hlt_bTagDijetV11.root')
+input_file = ROOT.TFile('/eos/uscms/store/user/aavkhadi/JetHT/eff_bTagDijetV11_lowlumi/160724_072918/0000/hlt_bTagDijetV11_704.root')
+#'/eos/uscms/store/user/aavkhadi/JetHT/eff_bTagDijetV11/hlt_bTagDijetV11.root')
 tree = input_file.Get('hltana/HLTAnalysis')
 
 # speed things up by disabling branches
@@ -55,12 +50,9 @@ tree.SetBranchStatus("*", 0)
 for parameter in parameters:
     tree.SetBranchStatus(parameter, 1)
 for tag in tags:
-     tree.SetBranchStatus(tag, 1)
+    tree.SetBranchStatus(tag, 1)
 for probe in probes:
     tree.SetBranchStatus(probe, 1)
-# offline cuts
-tree.SetBranchStatus("pfjetpt", 1)
-tree.SetBranchStatus("pfjeteta", 1)
 
 # WANT OPTION PARSER
 # WANT Loop over parameters, then over probes, then over tags, then jets
@@ -95,12 +87,12 @@ def fillHistograms(probe, tag,  parameter, tree):
         numerator   = histograms[jet][0]
         denominator = histograms[jet][1]
 	# cheap trick to get the second max if it exists, max ow
-        tree.Draw("%s[%d]>>%s" % (parameter, jet, numerator.GetName()), "(%s == 1) && (%s == 1)" % (tag, probe))
+        tree.Draw("(MaxIf$(%s,%s<Max$(%s)))>>%s"               % (parameter, parameter, parameter,  numerator.GetName()),    "(%s == 1) && (%s == 1)" % (tag, probe))
         # debugging ------------------------
         # print ("Entries in %s --- %d" % (numerator.GetName(), numerator.GetEntries()))
         # print ("Entries in %s --- %d" % (histoPairs[jet][0].GetName(), histoPairs[jet][0].GetEntries()))
         # ----------------------------------
-        tree.Draw("%s[%d]>>%s" % (parameter, jet, denominator.GetName()), "(%s == 1)"            % (tag       ))
+        tree.Draw("(MaxIf$(%s,%s<Max$(%s)))>>%s"               % (parameter, parameter, parameter,  denominator.GetName()), "(%s == 1)"              % (tag       ))
         # debugging ------------------------
         # print ("Entries in %s --- %d" % (denominator.GetName(), denominator.GetEntries()))
         # print ("Entries in %s --- %d" % (histoPairs[jet][1].GetName(), histoPairs[jet][1].GetEntries()))
@@ -274,38 +266,42 @@ def makeCurves(histograms, parameter):
 # input: string yaxis, xaxis, trigger cut
 #        float ymin, ymax, xmin, xmax
 #        name of the tree (from where to draw)
-# output: 2D histogram for the output 
-def plotCorrelation(paramY, paramX, trigger_cut):
-    global tree 
-    global parameters
-    ROOT.gStyle.SetOptStat(0)
+# output: will write a graph of events yaxis vs. xaxis with trigger_cut applied
+def plotCorrelation(yaxis, ymin, ymax, xaxis, xmin, xmax, trigger_cut):
+    print 'making plots for %s vs. %s' % (yaxis, xaxis)
+    print 'applying trigger cut %s' % (trigger_cut)
+    global tree
     for jet in jets:
-	axisTitleY, nbinsY, minbinY, maxbinY = parameters[paramY]
-	axisTitleX, nbinsX, minbinX, maxbinX = parameters[paramX]
-	histo = ROOT.TH2D("%s_vs_%s_%d_%s" % (paramY, paramX, jet, trigger_cut),"%s vs. %s (%d)" % (paramY, paramX, jet) + ";" + axisTitleX + str(jet) + ";" + axisTitleY + str(jet) + ";" + "Events" + ";", nbinsX, minbinX, maxbinX, nbinsY, minbinY, maxbinY)	
-	tree.Draw("%s[%d]:%s[%d]>>%s" % (paramY, jet, paramX, jet, histo.GetName()),"%s == 1" % (trigger_cut))
-	# set up canvas
-	histocanvas = ROOT.TCanvas(histo.GetName(),"%s vs %s (%d)" % (paramY, paramX, jet), 800, 600) 
-        histocanvas.SetFillColor( 19 ) 
-        xAxis = histo.GetXaxis()
-        yAxis = histo.GetYaxis()
-	zAxis = histo.GetZaxis()
-        xAxis.SetTitle(parameters[paramX][0])
-        yAxis.SetTitle(parameters[paramY][0])
-        zAxis.SetTitle("Events")
-	zAxis.SetRangeUser(50, 10000)
-	histo.Draw("COLZ")
-        histocanvas.SaveAs(histocanvas.GetName() + ".pdf")
+	gr = ROOT.TGraph(tree.GetEntries("(%s == 1)" % (trigger_cut)))
+	entries = tree.GetEntries("(%s == 1)" % (trigger_cut))
+	gr.SetName("%s_vs_%s_%d_%s" % (yaxis, xaxis, jet, trigger_cut))
+        x = ROOT.TVector(entries)
+	y = ROOT.TVector(entries)
+	tree.Draw("%s[%d]>>y" % (yaxis, jet), "(%s == 1)" % (trigger_cut) ) 
+	print y[100]
+	xAxis = gr.GetXaxis()
+        yAxis = gr.GetYaxis()
+        xAxis.SetRangeUser(xmin, xmax)
+        xAxis.SetTitle("%s [%d]" % (xaxis, jet))
+        xAxis.CenterTitle()
+        yAxis.SetRangeUser(ymin, ymax)
+        yAxis.SetTitle("%s [%d]" % (yaxis, jet))
+        yAxis.CenterTitle()
+        gr.SetMarkerColor( 4 )
+        gr.SetTitle("%s vs. %s [%d] (%s)" % (yaxis, xaxis, jet, trigger_cut))
+	gr.Draw("ALP")
+	ROOT.gPad.Update()
+	ROOT.gPad.Print("graph_compare_%s_vs_%s_%d_%s.pdf" % (yaxis, xaxis, jet, trigger_cut))
     return
 
 # loop over T&P pairs
-for probe in probes:
-	for parameter in parameters:
-		for tag in tags:
-        		histograms = declareHistograms(probe, tag, parameter)
-        		fillHistograms(probe, tag, parameter, tree)
-        		makeCurves(histograms, parameter)  
+#for probe in probes:
+#	for parameter in parameters:
+#		for tag in tags:
+#        		histograms = declareHistograms(probe, tag, parameter)
+#        		fillHistograms(probe, tag, parameter, tree)
+#        		makeCurves(histograms, parameter)  
 
 
 for tag in tags:
-	plotCorrelation("bTagCSVOffline", "bTagCSVOnline", tag) 
+		plotCorrelation("bTagCSVOffline", 0, 1.1, "bTagCSVOnline", 0, 1.1, tag) 
