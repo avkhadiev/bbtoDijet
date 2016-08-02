@@ -5,17 +5,24 @@
 // 
 /**\class bbtoDijetAnalyzer bbtoDijetAnalyzer.cc bbtoDijet/bbtoDijetAnalyzer/plugins/bbtoDijetAnalyzer.cc
 
- Description: [one line class summary]
+ Description: collect b-tagging data (online and offline), calo and pf jet kinematics, and trigger results 
 
  Implementation:
-     [Notes on implementation]
+    - set up tree variables during construction
+    - clear (memset) variables before each event
+    - collect data in analyze() per event
+    - delete tree variables during destruction
+    FIXME: branches for trigger results are created in analyze();
+        corresponding arrays are not cleared nor deleted. 
+        This can lead to excessive memory use on some CRAB jobs, need testing to verify. 
+    FIXME: getting data for calo and pf jets, and getting data for online and offline CSV tags is very similar; 
+        writing two functions to get the event information will simplify code
 */
 //
 // Original Author:  Artur Avkhadiev
 //         Created:  Fri, 22 Jul 2016 08:05:25 GMT
 //
 //
-
 
 // system include file
 #include <memory>                                                     // included by default
@@ -41,16 +48,12 @@
 #include "FWCore/Common/interface/TriggerResultsByName.h"
 #include "DataFormats/Common/interface/Handle.h"
 // event content access
-#include "DataFormats/Luminosity/interface/LumiSummary.h"             // event-header information 
-#include "DataFormats/Luminosity/interface/LumiDetails.h"
 #include "DataFormats/Common/interface/TriggerResults.h"              // trigger-related information
 #include "DataFormats/HLTReco/interface/TriggerEvent.h" 
-#include "DataFormats/HLTReco/interface/TriggerEventWithRefs.h"
 #include "DataFormats/JetReco/interface/CaloJetCollection.h"          // jet-related information 
 #include "DataFormats/JetReco/interface/PFJetCollection.h"            // https://cmssdt.cern.ch/SDT/doxygen/CMSSW_8_0_13/doc/html/d2/d04/HLTJets_8h_source.html
-#include "DataFormats/Common/interface/View.h"                        // b-jet-tagging information (View.h possibly unnecessary)
-#include "DataFormats/JetReco/interface/Jet.h"                        // https://cmssdt.cern.ch/SDT/doxygen/CMSSW_8_0_13/doc/html/d2/d2e/HLTBJet_8h_source.html  
-#include "DataFormats/BTauReco/interface/JetTag.h"
+#include "DataFormats/JetReco/interface/Jet.h"                        // b-jet-tagging information
+#include "DataFormats/BTauReco/interface/JetTag.h"                    // https://cmssdt.cern.ch/SDT/doxygen/CMSSW_8_0_13/doc/html/d2/d2e/HLTBJet_8h_source.html  
 
 //
 // class declaration
@@ -80,7 +83,7 @@ class bbtoDijetAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResources>
      // ----------member data ---------------------------
       
      HLTConfigProvider                                       hltConfig_                    ;
-     EventHeader                                             eventHeader_                  ;
+     EventHeader                                             eventHeader_                  ; 
      std::string                                             processName_                  ;
      
      // input tags
@@ -115,26 +118,42 @@ class bbtoDijetAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResources>
      // jet-related information
      // CaloJet
      int           caloJetCounter_             ;     
-     float        *caloJetPt_                  ;  
+     double       *caloJetPt_                  ;  
      float        *caloJetEta_                 ; 
      float        *caloJetPhi_                 ;  
-     float        *caloJetEt_                  ;  
-     float        *caloJetMass_                ; 
+     double       *caloJetEt_                  ;  
+     float        *caloJetMass_                ;
+     double       *caloJetEnergy_              ;
+     double       *caloJetPx_                  ;
+     double       *caloJetPy_                  ;
+     double       *caloJetPz_                  ;
      // PFJet
      int           pfJetCounter_               ;     
-     float        *pfJetPt_                    ;  
+     double       *pfJetPt_                    ;  
      float        *pfJetEta_                   ; 
      float        *pfJetPhi_                   ;  
-     float        *pfJetEt_                    ;  
-     float        *pfJetMass_                  ; 
+     double       *pfJetEt_                    ;  
+     double       *pfJetMass_                  ;
+     double       *pfJetEnergy_                ;
+     double       *pfJetPx_                    ;
+     double       *pfJetPy_                    ;
+     double       *pfJetPz_                    ;
      // b-jet-tagging information
      // bTagCSVOnline
      int           bTagCSVOnlineJetCounter_    ;     
      double       *bTagCSVOnlineJetPt_         ;
+     float        *bTagCSVOnlineJetEta_        ;
+     float        *bTagCSVOnlineJetPhi_        ;
+     double       *bTagCSVOnlineJetEt_         ;
+     double       *bTagCSVOnlineJetMass_       ;
      float        *bTagCSVOnline_              ;
      // bTagCSVOffline
      int           bTagCSVOfflineJetCounter_   ;
      double       *bTagCSVOfflineJetPt_        ;
+     float        *bTagCSVOfflineJetEta_       ;
+     float        *bTagCSVOfflineJetPhi_       ;
+     double       *bTagCSVOfflineJetEt_        ;
+     double       *bTagCSVOfflineJetMass_      ;
      float        *bTagCSVOffline_             ;
      
      TTree* outTree_;
@@ -144,8 +163,8 @@ class bbtoDijetAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResources>
 //
 // constructors and destructor
 //
-bbtoDijetAnalyzer::bbtoDijetAnalyzer(const edm::ParameterSet& iConfig) :
-  processName_                       (iConfig.getParameter<std::string>("processName")), 
+bbtoDijetAnalyzer::bbtoDijetAnalyzer(const edm::ParameterSet& iConfig) : 
+  processName_                       (iConfig.getParameter<std::string>("processName")),  
   // initialize input tags 
   // (strings should match variable names in the *.py config file)
   triggerResultsTag_                 (iConfig.getParameter<edm::InputTag>("triggerResults")), 
@@ -176,33 +195,49 @@ bbtoDijetAnalyzer::bbtoDijetAnalyzer(const edm::ParameterSet& iConfig) :
    // jet-related information
    // CaloJet
    caloJetCounter_            = 0                                   ;
-   caloJetPt_                 = new float[kMaxCaloJet_]             ;        
+   caloJetPt_                 = new double[kMaxCaloJet_]            ;        
    caloJetEta_                = new float[kMaxCaloJet_]             ; 
    caloJetPhi_                = new float[kMaxCaloJet_]             ; 
-   caloJetEt_                 = new float[kMaxCaloJet_]             ; 
-   caloJetMass_               = new float[kMaxCaloJet_]             ; 
+   caloJetEt_                 = new double[kMaxCaloJet_]            ; 
+   caloJetMass_               = new float[kMaxCaloJet_]             ;
+   caloJetEnergy_             = new double[kMaxCaloJet_]            ;
+   caloJetPx_                 = new double[kMaxCaloJet_]            ; 
+   caloJetPy_                 = new double[kMaxCaloJet_]            ;
+   caloJetPz_                 = new double[kMaxCaloJet_]            ;
    // PFJet
    pfJetCounter_              = 0                                   ;
-   pfJetPt_                   = new float[kMaxPFJet_]               ;         
+   pfJetPt_                   = new double[kMaxPFJet_]              ;         
    pfJetEta_                  = new float[kMaxPFJet_]               ;  
    pfJetPhi_                  = new float[kMaxPFJet_]               ;  
-   pfJetEt_                   = new float[kMaxPFJet_]               ;  
-   pfJetMass_                 = new float[kMaxPFJet_]               ; 
+   pfJetEt_                   = new double[kMaxPFJet_]              ;  
+   pfJetMass_                 = new double[kMaxPFJet_]              ; 
+   pfJetEnergy_               = new double[kMaxPFJet_]              ;
+   pfJetPx_                   = new double[kMaxPFJet_]              ; 
+   pfJetPy_                   = new double[kMaxPFJet_]              ;
+   pfJetPz_                   = new double[kMaxPFJet_]              ;
    // b-jet-tagging information
    // bTagCSVOnline
    bTagCSVOnlineJetCounter_   = 0                                   ;
    bTagCSVOnlineJetPt_        = new double[kMaxBTagCSVOnline_]      ;
+   bTagCSVOnlineJetEta_       = new float[kMaxBTagCSVOnline_]       ;
+   bTagCSVOnlineJetPhi_       = new float[kMaxBTagCSVOnline_]       ;
+   bTagCSVOnlineJetEt_        = new double[kMaxBTagCSVOnline_]      ;
+   bTagCSVOnlineJetMass_      = new double[kMaxBTagCSVOnline_]      ;
    bTagCSVOnline_             = new float[kMaxBTagCSVOnline_]       ;
    // bTagCSVOffline 
    bTagCSVOfflineJetCounter_  = 0                                   ;  
    bTagCSVOfflineJetPt_       = new double[kMaxBTagCSVOffline_]     ;
+   bTagCSVOfflineJetEta_      = new float[kMaxBTagCSVOffline_]      ;
+   bTagCSVOfflineJetPhi_      = new float[kMaxBTagCSVOffline_]      ;
+   bTagCSVOfflineJetEt_       = new double[kMaxBTagCSVOffline_]     ;
+   bTagCSVOfflineJetMass_     = new double[kMaxBTagCSVOffline_]     ;
    bTagCSVOffline_            = new float[kMaxBTagCSVOffline_]      ;
 
    // open the tree file and initialize the tree
    edm::Service<TFileService> fs                                    ;
    outTree_ = fs->make<TTree>("efficiencyTree", "")                 ;
 
-   // setup event header analysis
+   // setup event header and HLT results analysis
    eventHeader_.setup(consumesCollector(), outTree_);
 
    // create branches
@@ -215,28 +250,44 @@ bbtoDijetAnalyzer::bbtoDijetAnalyzer(const edm::ParameterSet& iConfig) :
    // trigger-related information: created in ``analyze'' 
    // jet-related information
    // CaloJet
-   outTree_->Branch("caloJetCounter",           &caloJetCounter_,            "caloJetCounter/I")                            ;
-   outTree_->Branch("caloJetPt",                 caloJetPt_,                 "caloJetPT[caloJetCounter]/F")                 ;    
-   outTree_->Branch("caloJetEta",                caloJetEta_,                "caloJetEta[caloJetCounter]/F")                ;    
-   outTree_->Branch("caloJetPhi",                caloJetPhi_,                "caloJetPhi[caloJetCounter]/F")                ;    
-   outTree_->Branch("caloJetEt",                 caloJetEt_,                 "caloJetEt[caloJetCounter]/F")                 ;    
-   outTree_->Branch("caloJetMass",               caloJetMass_,               "caloJetMass[caloJetCounter]/F")               ;    
+   outTree_->Branch("caloJetCounter",           &caloJetCounter_,            "caloJetCounter/I")                                   ;
+   outTree_->Branch("caloJetPt",                 caloJetPt_,                 "caloJetPT[caloJetCounter]/D")                        ;    
+   outTree_->Branch("caloJetEta",                caloJetEta_,                "caloJetEta[caloJetCounter]/F")                       ;    
+   outTree_->Branch("caloJetPhi",                caloJetPhi_,                "caloJetPhi[caloJetCounter]/F")                       ;    
+   outTree_->Branch("caloJetEt",                 caloJetEt_,                 "caloJetEt[caloJetCounter]/D")                        ;    
+   outTree_->Branch("caloJetMass",               caloJetMass_,               "caloJetMass[caloJetCounter]/F")                      ;    
+   outTree_->Branch("caloJetEnergy",             caloJetEnergy_,             "caloJetEnergy[caloJetCounter]/D")                    ;
+   outTree_->Branch("caloJetPx",                 caloJetPx_,                 "caloJetPx[caloJetCounter]/D")                        ;
+   outTree_->Branch("caloJetPy",                 caloJetPy_,                 "caloJetPy[caloJetCounter]/D")                        ;
+   outTree_->Branch("caloJetPz",                 caloJetPz_,                 "caloJetPz[caloJetCounter]/D")                        ;
    // PFJet
-   outTree_->Branch("pfJetCounter",             &pfJetCounter_,              "pfJetCounter/I")                              ;
-   outTree_->Branch("pfJetPt",                   pfJetPt_,                   "pfJetPT[pfJetCounter]/F")                     ;    
-   outTree_->Branch("pfJetEta",                  pfJetEta_,                  "pfJetEta[pfJetCounter]/F")                    ;    
-   outTree_->Branch("pfJetPhi",                  pfJetPhi_,                  "pfJetPhi[pfJetCounter]/F")                    ;    
-   outTree_->Branch("pfJetEt",                   pfJetEt_,                   "pfJetEt[pfJetCounter]/F")                     ;    
-   outTree_->Branch("pfJetMass",                 pfJetMass_,                 "pfJetMass[pfJetCounter]/F")                   ;    
+   outTree_->Branch("pfJetCounter",             &pfJetCounter_,              "pfJetCounter/I")                                     ;
+   outTree_->Branch("pfJetPt",                   pfJetPt_,                   "pfJetPT[pfJetCounter]/D")                            ;    
+   outTree_->Branch("pfJetEta",                  pfJetEta_,                  "pfJetEta[pfJetCounter]/F")                           ;    
+   outTree_->Branch("pfJetPhi",                  pfJetPhi_,                  "pfJetPhi[pfJetCounter]/F")                           ;    
+   outTree_->Branch("pfJetEt",                   pfJetEt_,                   "pfJetEt[pfJetCounter]/D")                            ;    
+   outTree_->Branch("pfJetMass",                 pfJetMass_,                 "pfJetMass[pfJetCounter]/D")                          ;    
+   outTree_->Branch("pfJetEnergy",               pfJetEnergy_,               "pfJetEnergy[pfJetCounter]/D")                        ;
+   outTree_->Branch("pfJetPx",                   pfJetPx_,                   "pfJetPx[pfJetCounter]/D")                            ;
+   outTree_->Branch("pfJetPy",                   pfJetPy_,                   "pfJetPy[pfJetCounter]/D")                            ;
+   outTree_->Branch("pfJetPz",                   pfJetPz_,                   "pfJetPz[pfJetCounter]/D")                            ;
    // b-jet-tagging information
    // bTagCSVOnline
-   outTree_->Branch("bTagCSVOnlineJetCounter",  &bTagCSVOnlineJetCounter_,   "bTagCSVOnlineJetCounter/I")                   ;
-   outTree_->Branch("bTagCSVOnlineJetPt",        bTagCSVOnlineJetPt_,        "bTagCSVOnlineJetPt[bTagCSVOnlineJetCounter]/D")                        ;
-   outTree_->Branch("bTagCSVOnline",             bTagCSVOnline_,             "bTagCSVOnline[bTagCSVOnlineJetCounter]/F")    ;    
+   outTree_->Branch("bTagCSVOnlineJetCounter",  &bTagCSVOnlineJetCounter_,   "bTagCSVOnlineJetCounter/I")                          ;
+   outTree_->Branch("bTagCSVOnlineJetPt",        bTagCSVOnlineJetPt_,        "bTagCSVOnlineJetPt[bTagCSVOnlineJetCounter]/D")      ;
+   outTree_->Branch("bTagCSVOnlineJetEta",       bTagCSVOnlineJetEta_,       "bTagCSVOnlineJetEta[bTagCSVOnlineJetCounter]/F")     ;
+   outTree_->Branch("bTagCSVOnlineJetPhi",       bTagCSVOnlineJetPhi_,       "bTagCSVOnlineJetPhi[bTagCSVOnlineJetCounter]/F")     ;
+   outTree_->Branch("bTagCSVOnlineJetEt",        bTagCSVOnlineJetEt_,        "bTagCSVOnlineJetEt[bTagCSVOnlineJetCounter]/D")      ;
+   outTree_->Branch("bTagCSVOnlineJetMass",      bTagCSVOnlineJetMass_,      "bTagCSVOnlineJetMass[bTagCSVOnlineJetCounter]/D")    ;
+   outTree_->Branch("bTagCSVOnline",             bTagCSVOnline_,             "bTagCSVOnline[bTagCSVOnlineJetCounter]/F")           ;
    // bTagCSVOffline
-   outTree_->Branch("bTagCSVOfflineJetCounter", &bTagCSVOfflineJetCounter_,  "bTagCSVOfflineJetCounter/I")                  ;
-   outTree_->Branch("bTagCSVOfflineJetPt",       bTagCSVOfflineJetPt_,       "bTagCSVOfflineJetPt[bTagCSVOfflineJetCounter]/D")                      ;
-   outTree_->Branch("bTagCSVOffline",            bTagCSVOffline_,            "bTagCSVOffline[bTagCSVOfflineJetCounter]/F")  ;    
+   outTree_->Branch("bTagCSVOfflineJetCounter", &bTagCSVOfflineJetCounter_,  "bTagCSVOfflineJetCounter/I")                         ;
+   outTree_->Branch("bTagCSVOfflineJetPt",       bTagCSVOfflineJetPt_,       "bTagCSVOfflineJetPt[bTagCSVOfflineJetCounter]/D")    ;
+   outTree_->Branch("bTagCSVOfflineJetEta",      bTagCSVOfflineJetEta_,      "bTagCSVOfflineJetEta[bTagCSVOfflineJetCounter]/F")   ;
+   outTree_->Branch("bTagCSVOfflineJetPhi",      bTagCSVOfflineJetPhi_,      "bTagCSVOfflineJetPhi[bTagCSVOfflineJetCounter]/F")   ;
+   outTree_->Branch("bTagCSVOfflineJetEt",       bTagCSVOfflineJetEt_,       "bTagCSVOfflineJetEt[bTagCSVOfflineJetCounter]/D")    ;
+   outTree_->Branch("bTagCSVOfflineJetMass",     bTagCSVOfflineJetMass_,     "bTagCSVOfflineJetMass[bTagCSVOfflineJetCounter]/D")  ;
+   outTree_->Branch("bTagCSVOffline",            bTagCSVOffline_,            "bTagCSVOffline[bTagCSVOfflineJetCounter]/F")         ;    
 }
 
 bbtoDijetAnalyzer::~bbtoDijetAnalyzer()
@@ -251,18 +302,34 @@ bbtoDijetAnalyzer::~bbtoDijetAnalyzer()
    delete[]  caloJetPhi_                   ;   
    delete[]  caloJetEt_                    ;   
    delete[]  caloJetMass_                  ;   
+   delete[]  caloJetEnergy_                ;
+   delete[]  caloJetPx_                    ;
+   delete[]  caloJetPy_                    ;
+   delete[]  caloJetPz_                    ;
    // PFJet
    delete[]  pfJetPt_                      ;       
    delete[]  pfJetEta_                     ;       
    delete[]  pfJetPhi_                     ;       
    delete[]  pfJetEt_                      ;       
    delete[]  pfJetMass_                    ;       
+   delete[]  pfJetEnergy_                  ;
+   delete[]  pfJetPx_                      ;
+   delete[]  pfJetPy_                      ;
+   delete[]  pfJetPz_                      ;
    // b-jet-tagging information
    // bTagCSVOnline       
    delete[]  bTagCSVOnlineJetPt_           ;
+   delete[]  bTagCSVOnlineJetEta_          ;
+   delete[]  bTagCSVOnlineJetPhi_          ;
+   delete[]  bTagCSVOnlineJetEt_           ;
+   delete[]  bTagCSVOnlineJetMass_         ;
    delete[]  bTagCSVOnline_                ;
    // bTagCSVOffline       
    delete[]  bTagCSVOfflineJetPt_          ;
+   delete[]  bTagCSVOfflineJetEta_         ;
+   delete[]  bTagCSVOfflineJetPhi_         ;
+   delete[]  bTagCSVOfflineJetEt_          ;
+   delete[]  bTagCSVOfflineJetMass_        ;
    delete[]  bTagCSVOffline_               ;      
 }
 //
@@ -270,7 +337,7 @@ bbtoDijetAnalyzer::~bbtoDijetAnalyzer()
 // 
 
 // ----------- method called in the body of analyze to clear memory ----------------
-// ----------- does not clear the memory for trigger results!       ----------------
+// -----------      does not clear  memory for trigger results!     ----------------
 
 void
 bbtoDijetAnalyzer::clear()
@@ -278,28 +345,44 @@ bbtoDijetAnalyzer::clear()
    // set memory for branch variables
    // jet-related information
    // CaloJet 
-   caloJetCounter_                    = 0                                            ;
-   std::memset(caloJetPt_,           '\0',  kMaxCaloJet_          *  sizeof(float))  ;           
-   std::memset(caloJetEta_,          '\0',  kMaxCaloJet_          *  sizeof(float))  ;    
-   std::memset(caloJetPhi_,          '\0',  kMaxCaloJet_          *  sizeof(float))  ;   
-   std::memset(caloJetEt_,           '\0',  kMaxCaloJet_          *  sizeof(float))  ;   
-   std::memset(caloJetMass_,         '\0',  kMaxCaloJet_          *  sizeof(float))  ;    
+   caloJetCounter_                     = 0                                             ;
+   std::memset(caloJetPt_,            '\0',  kMaxCaloJet_          *  sizeof(double))  ;           
+   std::memset(caloJetEta_,           '\0',  kMaxCaloJet_          *  sizeof(float))   ;    
+   std::memset(caloJetPhi_,           '\0',  kMaxCaloJet_          *  sizeof(float))   ;   
+   std::memset(caloJetEt_,            '\0',  kMaxCaloJet_          *  sizeof(double))  ;   
+   std::memset(caloJetMass_,          '\0',  kMaxCaloJet_          *  sizeof(float))   ;
+   std::memset(caloJetEnergy_,        '\0',  kMaxCaloJet_          *  sizeof(double))  ;
+   std::memset(caloJetPx_,            '\0',  kMaxCaloJet_          *  sizeof(double))  ;
+   std::memset(caloJetPy_,            '\0',  kMaxCaloJet_          *  sizeof(double))  ;
+   std::memset(caloJetPz_,            '\0',  kMaxCaloJet_          *  sizeof(double))  ;
    // CaloJet   
-   pfJetCounter_                      = 0                                            ;
-   std::memset(pfJetPt_,             '\0',  kMaxPFJet_            *  sizeof(float))  ;           
-   std::memset(pfJetEta_,            '\0',  kMaxPFJet_            *  sizeof(float))  ;    
-   std::memset(pfJetPhi_,            '\0',  kMaxPFJet_            *  sizeof(float))  ;   
-   std::memset(pfJetEt_,             '\0',  kMaxPFJet_            *  sizeof(float))  ;   
-   std::memset(pfJetMass_,           '\0',  kMaxPFJet_            *  sizeof(float))  ;    
+   pfJetCounter_                       = 0                                             ;
+   std::memset(pfJetPt_,              '\0',  kMaxPFJet_            *  sizeof(double))  ;           
+   std::memset(pfJetEta_,             '\0',  kMaxPFJet_            *  sizeof(float))   ;    
+   std::memset(pfJetPhi_,             '\0',  kMaxPFJet_            *  sizeof(float))   ;   
+   std::memset(pfJetEt_,              '\0',  kMaxPFJet_            *  sizeof(double))  ;   
+   std::memset(pfJetMass_,            '\0',  kMaxPFJet_            *  sizeof(double))  ;    
+   std::memset(pfJetEnergy_,          '\0',  kMaxPFJet_            *  sizeof(double))  ;
+   std::memset(pfJetPx_,              '\0',  kMaxPFJet_            *  sizeof(double))  ;
+   std::memset(pfJetPy_,              '\0',  kMaxPFJet_            *  sizeof(double))  ;
+   std::memset(pfJetPz_,              '\0',  kMaxPFJet_            *  sizeof(double))  ;
    // b-jet-tagging information
    // bTagCSVOnline
-   bTagCSVOnlineJetCounter_           = 0                                            ;
-   std::memset(bTagCSVOnlineJetPt_,   '\0',  kMaxBTagCSVOffline_  *  sizeof(double)) ;
-   std::memset(bTagCSVOnline_,        '\0',  kMaxBTagCSVOffline_  *  sizeof(float))  ;           
+   bTagCSVOnlineJetCounter_           = 0                                              ;
+   std::memset(bTagCSVOnlineJetPt_,   '\0',  kMaxBTagCSVOnline_    *  sizeof(double))  ;
+   std::memset(bTagCSVOnlineJetEta_,  '\0',  kMaxBTagCSVOnline_    *  sizeof(float))   ;
+   std::memset(bTagCSVOnlineJetPhi_,  '\0',  kMaxBTagCSVOnline_    *  sizeof(float))   ;
+   std::memset(bTagCSVOnlineJetEt_,   '\0',  kMaxBTagCSVOnline_    *  sizeof(double))  ;
+   std::memset(bTagCSVOnlineJetMass_, '\0',  kMaxBTagCSVOnline_    *  sizeof(double))  ;
+   std::memset(bTagCSVOnline_,        '\0',  kMaxBTagCSVOnline_    *  sizeof(float))   ;           
    // bTagCSVOffline
-   bTagCSVOfflineJetCounter_          = 0                                            ;
-   std::memset(bTagCSVOfflineJetPt_, '\0',  kMaxBTagCSVOffline_   *  sizeof(double)) ;
-   std::memset(bTagCSVOffline_,      '\0',  kMaxBTagCSVOffline_   *  sizeof(float))  ;           
+   bTagCSVOfflineJetCounter_          = 0                                              ;
+   std::memset(bTagCSVOfflineJetPt_,  '\0',  kMaxBTagCSVOffline_   *  sizeof(double))  ;
+   std::memset(bTagCSVOfflineJetEta_, '\0',  kMaxBTagCSVOffline_   *  sizeof(float))   ;
+   std::memset(bTagCSVOfflineJetPhi_, '\0',  kMaxBTagCSVOffline_   *  sizeof(float))   ;
+   std::memset(bTagCSVOfflineJetEt_,  '\0',  kMaxBTagCSVOffline_   *  sizeof(double))  ;
+   std::memset(bTagCSVOfflineJetMass_,'\0',  kMaxBTagCSVOffline_   *  sizeof(double))  ;
+   std::memset(bTagCSVOffline_,       '\0',  kMaxBTagCSVOffline_   *  sizeof(float))   ;           
 }
 // ------------ method called for each event  ------------
 void
@@ -338,11 +421,15 @@ bbtoDijetAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
       const reco::CaloJetCollection & caloJets = *(caloJetsHandle.product());
       caloJetCounter_ = caloJets.size();
       for(int i = 0; i != caloJetCounter_; ++i) {
-        caloJetPt_[i]   = caloJets[i].pt()   ;
-        caloJetEta_[i]  = caloJets[i].eta()  ;
-        caloJetPhi_[i]  = caloJets[i].phi()  ;
-        caloJetEt_[i]   = caloJets[i].et()   ;
-        caloJetMass_[i] = caloJets[i].mass() ;
+        caloJetPt_[i]     = caloJets[i].pt()   ;
+        caloJetEta_[i]    = caloJets[i].eta()  ;
+        caloJetPhi_[i]    = caloJets[i].phi()  ;
+        caloJetEt_[i]     = caloJets[i].et()   ;
+        caloJetMass_[i]   = caloJets[i].mass() ;
+        caloJetEnergy_[i] = caloJets[i].energy()  ;
+        caloJetPx_[i]     = caloJets[i].px()   ;
+        caloJetPy_[i]     = caloJets[i].py()   ;
+        caloJetPz_[i]     = caloJets[i].pz()   ;
       }
     }
     // PFJets
@@ -355,6 +442,10 @@ bbtoDijetAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
         pfJetPhi_[i]    = pfJets[i].phi()  ;
         pfJetEt_[i]     = pfJets[i].et()   ;
         pfJetMass_[i]   = pfJets[i].mass() ;
+        pfJetEnergy_[i] = pfJets[i].energy() ;
+        pfJetPx_[i]     = pfJets[i].px()   ;
+        pfJetPy_[i]     = pfJets[i].py()   ;
+        pfJetPz_[i]     = pfJets[i].pz()   ;
       }
     }
     // get b-jet-tagging information
@@ -365,8 +456,12 @@ bbtoDijetAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
       for(int i = 0; i != bTagCSVOnlineJetCounter_; ++i){
         // save the tag and corresponding pt
         // see  https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookBTagEdAnalyzer17X
-        bTagCSVOnlineJetPt_[i] = bTagCSVOnline[i].first->pt();
-        bTagCSVOnline_[i]      = bTagCSVOnline[i].second;
+        bTagCSVOnlineJetPt_[i]   = bTagCSVOnline[i].first->pt()    ;
+        bTagCSVOnlineJetEta_[i]  = bTagCSVOnline[i].first->eta()   ;
+        bTagCSVOnlineJetPhi_[i]  = bTagCSVOnline[i].first->phi()   ;
+        bTagCSVOnlineJetEt_[i]   = bTagCSVOnline[i].first->et()    ;
+        bTagCSVOnlineJetMass_[i] = bTagCSVOnline[i].first->mass()  ;
+        bTagCSVOnline_[i]        = bTagCSVOnline[i].second         ;
       }
     }
     // bTagCSVOffline         
@@ -376,8 +471,12 @@ bbtoDijetAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
       for(int i = 0; i != bTagCSVOfflineJetCounter_; ++i){
         // save the tag and corresponding pt
         // see  https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookBTagEdAnalyzer17X
-        bTagCSVOfflineJetPt_[i] = bTagCSVOffline[i].first->pt();
-        bTagCSVOffline_[i]      = bTagCSVOffline[i].second;
+        bTagCSVOfflineJetPt_[i]   = bTagCSVOffline[i].first->pt()  ;
+        bTagCSVOfflineJetEta_[i]  = bTagCSVOffline[i].first->eta() ;
+        bTagCSVOfflineJetPhi_[i]  = bTagCSVOffline[i].first->phi() ;
+        bTagCSVOfflineJetEt_[i]   = bTagCSVOffline[i].first->et()  ;
+        bTagCSVOfflineJetMass_[i] = bTagCSVOffline[i].first->mass();
+        bTagCSVOffline_[i]        = bTagCSVOffline[i].second       ;
       }
     }
 
