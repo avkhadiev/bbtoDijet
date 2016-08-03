@@ -9,5 +9,4 @@ hltana = cms.EDAnalyzer('SimpleHLTAnalyzer',
     lumiProducer = cms.InputTag('lumiProducer'),
     pfJets = cms.InputTag('ak4PFJets::RECO'),
     bTagsCSVOffline = cms.InputTag('pfCombinedSecondaryVertexV2BJetTags'),
-    bTagsCSVOnline  = cms.InputTag('hltCombinedSecondaryVertexBJetTagsCalo')
-)
+    bTagsCSVOnline  = cms.InputTag('hltCombinedSecondaryVertexBJetTagsCalo'))

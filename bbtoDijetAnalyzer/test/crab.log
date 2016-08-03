@@ -1,0 +1,16 @@
+DEBUG 2016-08-02 16:23:52,250: 	 Executing command: 'kill'
+DEBUG 2016-08-02 16:23:52,250: 	 Found CRAB cache file /afs/cern.ch/user/a/aavkhadi/.crab3
+ERROR 2016-08-02 16:23:52,251: 	 Error: dir=/afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11/src/bbtoDijet/bbtoDijetAnalyzer/test/crab_test_bbtoDijetAnalyzer_test/crab_bbtoDijetAnalyzer_test is not a valid CRAB project directory.
+ERROR 2016-08-02 16:23:52,251: 	 Caught exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc493/cms/crabclient/3.3.1607.patch2/bin/crab", line 160, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc493/cms/crabclient/3.3.1607.patch2/bin/crab", line 146, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc493/cms/crabclient/3.3.1607.patch2/lib/python2.7/site-packages/CRABClient/Commands/SubCommand.py", line 257, in __init__
+    self.validateOptions()
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc493/cms/crabclient/3.3.1607.patch2/lib/python2.7/site-packages/CRABClient/Commands/kill.py", line 62, in validateOptions
+    SubCommand.validateOptions(self)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc493/cms/crabclient/3.3.1607.patch2/lib/python2.7/site-packages/CRABClient/Commands/SubCommand.py", line 566, in validateOptions
+    raise ConfigurationException(msg)
+ConfigurationException: [91mError[0m: dir=/afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11/src/bbtoDijet/bbtoDijetAnalyzer/test/crab_test_bbtoDijetAnalyzer_test/crab_bbtoDijetAnalyzer_test is not a valid CRAB project directory.
