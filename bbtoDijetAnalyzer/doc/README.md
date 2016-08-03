@@ -10,4 +10,5 @@ Example code:
 
 WTD:
 
-- Try to run with CRAB on a small-ish sample to test memory management
+- Running with CRAB on a small-ish sample to test memory management showed the excessive memory usage is not resolved. 
+- Try reducing number of lumi sections per job
