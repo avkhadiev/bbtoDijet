@@ -34,28 +34,7 @@ Clone the repository:
     git clone https://github.com/avkhadiev/bbtoDijet.git
     
 ### Running 7_6_X on MC
-Use the [HLT NTuple Production from STEAM Twiki](https://twiki.cern.ch/twiki/bin/view/Sandbox/HLTNtupleProductionSTEAM#Setup_2015_recipe_CMSSW_76X "Setup: 2015 recipe (CMSSW_76X)") and [SWGuideGlobalHLT Twiki](https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideGlobalHLT#CMSSW_7_6_X_Previous_CMSSW_devel "CMSSW_7_6_X (Previous CMSSW development release)") as reference. The instructions below work on lxplus:
-
-    cmsrel CMSSW_7_6_5_patch1
-    cd CMSSW_7_6_5_patch1/src/
-    cmsenv
-    git cms-init
-    # the three lines below -- only in MC Ntuple production:
-    git cms-addpkg GeneratorInterface/GenFilters
-    git cms-addpkg SimGeneral/MixingModule
-    git clone git@github.com:cms-steam/RemovePileUpDominatedEvents.git RemovePileUpDominatedEvents
-    git cms-addpkg HLTrigger/Configuration
-    git cms-addpkg HLTrigger/HLTanalyzers
-    git cms-addpkg HLTrigger/Configuration
-    git cms-addpkg L1TriggerConfig/L1GtConfigProducers
-    git clone git@github.com:cms-steam/HLTrigger temp
-    cp -r temp/* HLTrigger/
-    rm -fr temp/
-    # download the L1 XML menu missing in the release:
-    cp /afs/cern.ch/user/t/tmatsush/public/L1Menu/L1Menu_Collisions2015_25nsStage1_v5/xml/L1Menu_Collisions2015_25nsStage1_v5_L1T_Scales_20141121.xml L1TriggerConfig/L1GtConfigProducers/data/Luminosity/startup/L1Menu_Collisions2015_25nsStage1_v5_L1T_Scales_20141121.xml
-    # only in MC production: override L1 prescales (they depend on the menu!)
-    cp /afs/cern.ch/work/g/georgia/public/L1prescales/Stage1-v5_prescales/7e33/* L1TriggerConfig/L1GtConfigProducers/python/.
-    scram build -j 4
+Use the [HLT NTuple Production from STEAM Twiki](https://twiki.cern.ch/twiki/bin/view/Sandbox/HLTNtupleProductionSTEAM#Setup_2015_recipe_CMSSW_76X "Setup: 2015 recipe (CMSSW_76X)") and [SWGuideGlobalHLT Twiki](https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideGlobalHLT#CMSSW_7_6_X_Previous_CMSSW_devel "CMSSW_7_6_X (Previous CMSSW development release)") as reference. Because of issues with [STEAM repository](https://github.com/cms-steam "cms-steam"), I suggest you use 8X releases.
 
 ## Obtaining the trigger menu configuration file
 
