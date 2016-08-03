@@ -44,7 +44,7 @@ Obtain the user menu from [ConfDB](https://cmsweb.cern.ch/confdb/ "HLT Configura
     # for 2016 data
     hltGetConfiguration /users/aavkhadi/bTagDijet/V11 --full --offline --data --unprescale --process TEST --l1Xml L1Menu_Collisions2016_v4.xml --globaltag 80X_dataRun2_HLT_v12 > hlt_bTagDijetV11.py
     # for 7_6_X MC 
-    hltGetConfiguration /users/aavkhadi/bTagDijet/V11 --full --offline --mc --unprescale --process TEST --l1Xml L1Menu_Collisions2016_v4.xml --globaltag 80X_mcRun2_asymptotic_ForTSGStudies_fromRunIIFall15DR76_v1 --input /GluGluSpin0ToBBbar_W_1p0_M_750_TuneCUEP8M1_13TeV_pythia8/bianchi-DIGI-RECO-1-32f870ac2e5a27e6c7b243a0bfc25281/USER --parent /GluGluSpin0ToBBbar_W_1p0_M_750_TuneCUEP8M1_13TeV_pythia8/bianchi-GEN-SIM-1996af734f472cabbb886e4b4c3f158b/USER > hlt_bbtoDijetV11_MC.py
+    hltGetConfiguration /users/aavkhadi/bTagDijet/V11 --full --offline --mc --unprescale --process TEST --l1Xml L1Menu_Collisions2016_v4.xml --globaltag 80X_mcRun2_asymptotic_ForTSGStudies_fromRunIIFall15DR76_v1 --input root://cms-xrd-global.cern.ch//store/user/bianchi/GluGluSpin0ToBBbar_W_1p0_M_750_TuneCUEP8M1_13TeV_pythia8/DIGI-RECO-1/160429_050010/0000/DIGI-RECO_step1_1.root --parent root://cms-xrd-global.cern.ch//store/user/bianchi/GluGluSpin0ToBBbar_W_1p0_M_750_TuneCUEP8M1_13TeV_pythia8/GEN-SIM/160427_120149/0000/GEN-SIM_1.root > hlt_bbtoDijetV11_MC.py
     # Edit the config file and add the following line just after 'process = cms.Process( "TEST" )': process.load("setup_cff")
     
 ## Workflow
