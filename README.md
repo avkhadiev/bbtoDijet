@@ -41,7 +41,10 @@ Use the [HLT NTuple Production from STEAM Twiki](https://twiki.cern.ch/twiki/bin
 Obtain the user menu from [ConfDB](https://cmsweb.cern.ch/confdb/ "HLT Configurations Explorer") at /users/aavkhadi/hlt_bTagDijet/V11. The procedure is similar to the one outlined in [HLTNtupleProductionSTEAM Twiki](https://twiki.cern.ch/twiki/bin/view/Sandbox/HLTNtupleProductionSTEAM#Create_CMSSW_config_files_user_m "Create CMSSW config files from a user menu"). 
 
     hltConfigFromDB --cff --configName /dev/CMSSW_8_0_0/GRun --nopaths --services -PrescaleService,-EvFDaqDirector,-FastMonitoringService > setup_cff.py
-    hltGetConfiguration /users/aavkhadi/hlt_bbtoDijet/V11 --full --offline --data --unprescale --process TEST --l1Xml L1Menu_Collisions2016_v4.xml --globaltag 80X_dataRun2_HLT_v12 --input > hlt_bTagDijetV11.py
+    # for 2016 data
+    hltGetConfiguration /users/aavkhadi/bTagDijet/V11 --full --offline --data --unprescale --process TEST --l1Xml L1Menu_Collisions2016_v4.xml --globaltag 80X_dataRun2_HLT_v12 > hlt_bTagDijetV11.py
+    # for 7_6_X MC 
+    hltGetConfiguration /users/aavkhadi/bTagDijet/V11 --full --offline --mc --unprescale --process TEST --l1Xml L1Menu_Collisions2016_v4.xml --globaltag 80X_mcRun2_asymptotic_ForTSGStudies_fromRunIIFall15DR76_v1 --input /GluGluSpin0ToBBbar_W_1p0_M_750_TuneCUEP8M1_13TeV_pythia8/bianchi-DIGI-RECO-1-32f870ac2e5a27e6c7b243a0bfc25281/USER --parent /GluGluSpin0ToBBbar_W_1p0_M_750_TuneCUEP8M1_13TeV_pythia8/bianchi-GEN-SIM-1996af734f472cabbb886e4b4c3f158b/USER > hlt_bbtoDijetV11_MC.py
     # Edit the config file and add the following line just after 'process = cms.Process( "TEST" )': process.load("setup_cff")
     
 ## Workflow
