@@ -2,6 +2,7 @@
 Modifying 2 CMS high-level triggers to lower the mass threshold while conserving the rate.
 
 ## Setup 
+### Running 8_0_X on data
 Use the [SWGuideGlobalHLT Twiki](https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideGlobalHLT#Preparing_a_80X_CMSSW_developer/ "Preparing a working area for 80X") and [TSG tutorials](https://indico.cern.ch/event/520258/ "Trigger Tutorial") to prepare your working area area. The instructions below work on lxplus:
 
     cmsrel CMSSW_8_0_11
@@ -31,6 +32,30 @@ Create a working directory:
 Clone the repository:
 
     git clone https://github.com/avkhadiev/bbtoDijet.git
+    
+### Running 7_6_X on MC
+Use the [HLT NTuple Production from STEAM Twiki](https://twiki.cern.ch/twiki/bin/view/Sandbox/HLTNtupleProductionSTEAM#Setup_2015_recipe_CMSSW_76X "Setup: 2015 recipe (CMSSW_76X)") and [SWGuideGlobalHLT Twiki](https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideGlobalHLT#CMSSW_7_6_X_Previous_CMSSW_devel "CMSSW_7_6_X (Previous CMSSW development release)") as reference. The instructions below work on lxplus:
+
+    cmsrel CMSSW_7_6_5_patch1
+    cd CMSSW_7_6_5_patch1/src/
+    cmsenv
+    git cms-init
+    # the three lines below -- only in MC Ntuple production:
+    git cms-addpkg GeneratorInterface/GenFilters
+    git cms-addpkg SimGeneral/MixingModule
+    git clone git@github.com:cms-steam/RemovePileUpDominatedEvents.git RemovePileUpDominatedEvents
+    git cms-addpkg HLTrigger/Configuration
+    git cms-addpkg HLTrigger/HLTanalyzers
+    git cms-addpkg HLTrigger/Configuration
+    git cms-addpkg L1TriggerConfig/L1GtConfigProducers
+    git clone git@github.com:cms-steam/HLTrigger temp
+    cp -r temp/* HLTrigger/
+    rm -fr temp/
+    # download the L1 XML menu missing in the release:
+    cp /afs/cern.ch/user/t/tmatsush/public/L1Menu/L1Menu_Collisions2015_25nsStage1_v5/xml/L1Menu_Collisions2015_25nsStage1_v5_L1T_Scales_20141121.xml L1TriggerConfig/L1GtConfigProducers/data/Luminosity/startup/L1Menu_Collisions2015_25nsStage1_v5_L1T_Scales_20141121.xml
+    # only in MC production: override L1 prescales (they depend on the menu!)
+    cp /afs/cern.ch/work/g/georgia/public/L1prescales/Stage1-v5_prescales/7e33/* L1TriggerConfig/L1GtConfigProducers/python/.
+    scram build -j 4
 
 ## Obtaining the trigger menu configuration file
 
@@ -63,10 +88,3 @@ At this point, the following task are at hand:
 
 1. Run the trigger on MC b-jet signal data to see what the distribution should look like. 
 2. Estimate the fraction of b-jets in real data (requires summing data + signal, allow normalizations to float, and find best fit by maximizing the likelihood function)
-
-## Current questions 
-
-1. Do I get MC samples from David?
-2. Once we know the shape of the true CSV distributution, what are the next steps?
-3. How do we tell the trigger reached the target sensitivity? Do we look at the mass of two leading-pT jets?
-4. To estimate the rate for our trigger, we will need to know the rate of our control trigger -- that requires running HLTPhysics jobs on control triggers to gauge their rate.
