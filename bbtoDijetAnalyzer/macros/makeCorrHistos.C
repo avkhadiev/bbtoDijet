@@ -125,6 +125,7 @@ void runTrigEffPlots(std::vector<TString> infileNames)
         
   // ****************************************************************************************
     if(passControl) {
+	float minDeltaR[2]        = {10.0, 10.0}    ;
         float maxCSVOnline[2]     = {-10.0, -10.0}  ;
         int   iMaxCSVOnline[2]    = {0, 0}          ;
         float matchCSVOffline[2]  = {-10.0, -10.0}  ;
@@ -144,20 +145,23 @@ void runTrigEffPlots(std::vector<TString> infileNames)
         }
         // match offline discriminants to max and submax online discriminants
         for(int itag = 0; itag < 2; itag ++) {
-            float minDeltaR = 10.0  ;
+            minDeltaR[itag] = 10.0 ;
             for(int imatch = 0; imatch < bTagCSVOfflineJetCounter; imatch ++) {
                 float iDeltaR = deltaR(bTagCSVOnlineJetEta[iMaxCSVOnline[itag]], bTagCSVOnlineJetPhi[iMaxCSVOnline[itag]], bTagCSVOfflineJetEta[imatch], bTagCSVOfflineJetPhi[imatch]) ;
-                if(iDeltaR < minDeltaR){
-                    minDeltaR = iDeltaR;
+                if(iDeltaR < minDeltaR[itag]){
+                    minDeltaR[itag] = iDeltaR;
                     matchCSVOffline[itag]  = bTagCSVOffline[imatch] ;
                     iMatchCSVOffline[itag] = imatch ; 
                 }
             }
-            printf("minDeltaR = %f \n", minDeltaR);
-            printf("Online = %4.2f, Offline = %4.2f \n", maxCSVOnline[itag], matchCSVOffline[itag]);
-        }
-        correlationHisto1->Fill(maxCSVOnline[0], matchCSVOffline[0]) ;
-        correlationHisto2->Fill(maxCSVOnline[1], matchCSVOffline[1]) ;
+	    // debugging 
+            if(ievent % 100 == 0) { 
+	    	printf("minDeltaR = %f \n", minDeltaR[itag]);
+            	printf("Online = %4.2f, Offline = %4.2f \n", maxCSVOnline[itag], matchCSVOffline[itag]);
+        	}
+	}
+	if(minDeltaR[0] < 0.5) { correlationHisto1->Fill(maxCSVOnline[0], matchCSVOffline[0]) ; }
+        if(minDeltaR[1] < 0.5) { correlationHisto2->Fill(maxCSVOnline[1], matchCSVOffline[1]) ; }
     }
   }
   // make plots
@@ -175,7 +179,7 @@ void makeCorrHistos()
   std::vector<TString> filelist;
 
   // specify output tree
-  filelist.push_back("test_bTagDijetV11.root"); 
+  filelist.push_back("/eos/uscms/store/user/aavkhadi/JetHT/bbtoDijetV11/hlt_bTagDijetV11_0000.root");
 
   runTrigEffPlots(filelist);
 
