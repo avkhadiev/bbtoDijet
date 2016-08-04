@@ -2,6 +2,7 @@
 Modifying 2 CMS high-level triggers to lower the mass threshold while conserving the rate.
 
 ## Setup 
+### Running 8_0_X on data
 Use the [SWGuideGlobalHLT Twiki](https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideGlobalHLT#Preparing_a_80X_CMSSW_developer/ "Preparing a working area for 80X") and [TSG tutorials](https://indico.cern.ch/event/520258/ "Trigger Tutorial") to prepare your working area area. The instructions below work on lxplus:
 
     cmsrel CMSSW_8_0_11
@@ -31,13 +32,19 @@ Create a working directory:
 Clone the repository:
 
     git clone https://github.com/avkhadiev/bbtoDijet.git
+    
+### Running 7_6_X on MC
+Use the [HLT NTuple Production from STEAM Twiki](https://twiki.cern.ch/twiki/bin/view/Sandbox/HLTNtupleProductionSTEAM#Setup_2015_recipe_CMSSW_76X "Setup: 2015 recipe (CMSSW_76X)") and [SWGuideGlobalHLT Twiki](https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideGlobalHLT#CMSSW_7_6_X_Previous_CMSSW_devel "CMSSW_7_6_X (Previous CMSSW development release)") as reference. Because of issues with [STEAM repository](https://github.com/cms-steam "cms-steam"), I suggest you use 8X releases.
 
 ## Obtaining the trigger menu configuration file
 
 Obtain the user menu from [ConfDB](https://cmsweb.cern.ch/confdb/ "HLT Configurations Explorer") at /users/aavkhadi/hlt_bTagDijet/V11. The procedure is similar to the one outlined in [HLTNtupleProductionSTEAM Twiki](https://twiki.cern.ch/twiki/bin/view/Sandbox/HLTNtupleProductionSTEAM#Create_CMSSW_config_files_user_m "Create CMSSW config files from a user menu"). 
 
     hltConfigFromDB --cff --configName /dev/CMSSW_8_0_0/GRun --nopaths --services -PrescaleService,-EvFDaqDirector,-FastMonitoringService > setup_cff.py
-    hltGetConfiguration /users/aavkhadi/hlt_bbtoDijet/V11 --full --offline --data --unprescale --process TEST --l1Xml L1Menu_Collisions2016_v4.xml --globaltag 80X_dataRun2_HLT_v12 --input > hlt_bTagDijetV11.py
+    # for 2016 data
+    hltGetConfiguration /users/aavkhadi/bTagDijet/V11 --full --offline --data --unprescale --process TEST --l1Xml L1Menu_Collisions2016_v4.xml --globaltag 80X_dataRun2_HLT_v12 > hlt_bTagDijetV11.py
+    # for 7_6_X MC 
+    hltGetConfiguration /users/aavkhadi/bTagDijet/V11 --full --offline --mc --unprescale --process TEST --l1Xml L1Menu_Collisions2016_v4.xml --globaltag 80X_mcRun2_asymptotic_ForTSGStudies_fromRunIIFall15DR76_v1 --input root://cms-xrd-global.cern.ch//store/user/bianchi/GluGluSpin0ToBBbar_W_1p0_M_750_TuneCUEP8M1_13TeV_pythia8/DIGI-RECO-1/160429_050010/0000/DIGI-RECO_step1_1.root --parent root://cms-xrd-global.cern.ch//store/user/bianchi/GluGluSpin0ToBBbar_W_1p0_M_750_TuneCUEP8M1_13TeV_pythia8/GEN-SIM/160427_120149/0000/GEN-SIM_1.root > hlt_bbtoDijetV11_MC.py
     # Edit the config file and add the following line just after 'process = cms.Process( "TEST" )': process.load("setup_cff")
     
 ## Workflow
@@ -63,10 +70,3 @@ At this point, the following task are at hand:
 
 1. Run the trigger on MC b-jet signal data to see what the distribution should look like. 
 2. Estimate the fraction of b-jets in real data (requires summing data + signal, allow normalizations to float, and find best fit by maximizing the likelihood function)
-
-## Current questions 
-
-1. Do I get MC samples from David?
-2. Once we know the shape of the true CSV distributution, what are the next steps?
-3. How do we tell the trigger reached the target sensitivity? Do we look at the mass of two leading-pT jets?
-4. To estimate the rate for our trigger, we will need to know the rate of our control trigger -- that requires running HLTPhysics jobs on control triggers to gauge their rate.

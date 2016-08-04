@@ -58,9 +58,11 @@ for tag in tags:
      tree.SetBranchStatus(tag, 1)
 for probe in probes:
     tree.SetBranchStatus(probe, 1)
+
 # offline cuts
-tree.SetBranchStatus("pfjetpt", 1)
+# for plotting correlations with kinematics cuts:
 tree.SetBranchStatus("pfjeteta", 1)
+tree.SetBranchStatus("pfjetpt", 1)
 
 # WANT OPTION PARSER
 # WANT Loop over parameters, then over probes, then over tags, then jets
@@ -270,6 +272,30 @@ def makeCurves(histograms, parameter):
 	CP2.Draw()
         canvas.SaveAs("output/plots/" + canvas.GetName() + ".pdf")
     return
+    
+# makeCorrelationPlots: tag, onParam, offParam, offlineCut -> TH2D correlation plot onParam vs. offParam for events accepted by tag (+ offlineCut on offParam)
+def makeCorrelationPlots(tag, onParam, offParam, offlineCut):
+    global tree
+    print 'making correlation plots for %s vs. %s' % (onParam, offParam)
+    axisTitleX, nbinsX, minbinX, maxbinX = parameters[onParam]
+    axisTitleY, nbinsY, minbinY, maxbinY = parameters[offParam]
+    for jet in jets:
+        print 'working with jet %d' % (jet)
+        print 'declaring a 2D histogram...'
+        correlation = ROOT.TH2D(("%s_vs_%s_%s_%d") % (onParam, offParam, tag, jet), "%s vs. %s, offline cut %s, [%d]" % (onParam, offParam, offlineCut, jet) + ";" + axisTitleX + ";" + axisTitleY + ";" + "Events", nbinsX, minbinX, maxbinX, nbinsY, minbinY, maxbinY)
+        correlation
+        print 'filling the histogram %s...' % (correlation.GetName())
+        tree.Draw("MaxIf$(%s, %s):Max$(%s)>>%s" % (offParam, offlineCut, onParam, correlation.GetName()), "(%s == 1)" % (tag))
+        print 'Printing histograms...'
+        canvas = ROOT.TCanvas(correlation.GetName(), correlation.GetTitle(), 800, 600)
+        canvas.SetFillColor( 19 )
+        # xAxis = correlation.GetXaxis()
+        # yAxis = correlation.GetYaxis()
+        zAxis = correlation.GetZaxis()
+        zAxis.SetRangeUser(10, 20000)
+        correlation.Draw("COLZ")
+        canvas.SaveAs("output/correlations/" + "corr_" + correlation.GetName() + ".pdf")
+    return
 
 # input: string yaxis, xaxis, trigger cut
 #        float ymin, ymax, xmin, xmax
@@ -306,6 +332,6 @@ for probe in probes:
         		fillHistograms(probe, tag, parameter, tree)
         		makeCurves(histograms, parameter)  
 
-
 for tag in tags:
 	plotCorrelation("bTagCSVOffline", "bTagCSVOnline", tag) 
+

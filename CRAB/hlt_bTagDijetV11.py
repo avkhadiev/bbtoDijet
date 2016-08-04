@@ -6,13 +6,11 @@ process = cms.Process( "TEST" )
 
 # following the instructions from
 # https://twiki.cern.ch/twiki/bin/view/Sandbox/HLTNtupleProductionSTEAM#Create_CMSSW_config_files_user_m
-# process.load("TriggerStudy.SimpleHLTAnalyzer.setup_cff")
-process.load("setup_cff")
+process.load("bbtoDijet.bbtoDijetAnalyzer.setup_cff")
 
 # load the trigger plugin
-# process.load("TriggerStudy.SimpleHLTAnalyzer.SimpleHLTAnalyzer_cfi")
-process.load("SimpleHLTAnalyzer_cfi")
-process.SimpleAnalyzer = cms.EndPath(process.hltana)
+process.load("bbtoDijet.bbtoDijetAnalyzer.bbtoDijetAnalyzer_cfi")
+process.bbtoDijetAnalyzer = cms.EndPath(process.bbtoDijet)
 
 process.HLTConfigVersion = cms.PSet(
   tableName = cms.string('/users/aavkhadi/bTagDijet/V11')
@@ -5515,12 +5513,12 @@ process.HLT_DoubleJetsC100_DoubleBTagCSV_p014_DoublePFJetsC100MaxDeta1p6_v2 = cm
 process.HLTriggerFinalPath = cms.Path( process.hltGtStage2Digis + process.hltScalersRawToDigi + process.hltFEDSelector + process.hltTriggerSummaryAOD + process.hltTriggerSummaryRAW + process.hltBoolFalse )
 
 
-process.HLTSchedule = cms.Schedule( *(process.HLTriggerFirstPath, process.HLT_DoubleJetsC100_p026_DoublePFJetsC160_v2, process.HLT_DoubleJetsC100_p014_DoublePFJetsC100MaxDeta1p6_v2, process.HLT_DoubleJetsC100_DoubleBTagCSV_p026_DoublePFJetsC160_v2, process.HLT_DoubleJetsC100_DoubleBTagCSV_p014_DoublePFJetsC100MaxDeta1p6_v2, process.HLTriggerFinalPath, process.SimpleAnalyzer ))
+process.HLTSchedule = cms.Schedule( *(process.HLTriggerFirstPath, process.HLT_DoubleJetsC100_p026_DoublePFJetsC160_v2, process.HLT_DoubleJetsC100_p014_DoublePFJetsC100MaxDeta1p6_v2, process.HLT_DoubleJetsC100_DoubleBTagCSV_p026_DoublePFJetsC160_v2, process.HLT_DoubleJetsC100_DoubleBTagCSV_p014_DoublePFJetsC100MaxDeta1p6_v2, process.HLTriggerFinalPath, process.bbtoDijetAnalyzer ))
 
 
 process.source = cms.Source( "PoolSource",
     fileNames = cms.untracked.vstring(
-        # 'root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/22E3D39A-6633-E611-836C-02163E011821.root',
+        'root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/22E3D39A-6633-E611-836C-02163E011821.root',
         'root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/2606CB81-7033-E611-B28B-02163E01359F.root',
         'root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/4C9B77D0-B933-E611-A87E-02163E0144AC.root',
         'root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/5860B38F-6633-E611-BD71-02163E014600.root',
@@ -5663,7 +5661,7 @@ _customInfo['inputFiles'][True]  = "file:RelVal_Raw_GRun_DATA.root"
 _customInfo['inputFiles'][False] = "file:RelVal_Raw_GRun_MC.root"
 _customInfo['maxEvents' ]=  100
 _customInfo['globalTag' ]= "80X_dataRun2_HLT_v12"
-_customInfo['inputFile' ]= ['root://xrootd-cms.infn.it//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/2606CB81-7033-E611-B28B-02163E01359F.root', 'root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/22E3D39A-6633-E611-836C-02163E011821.root']#, 'root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/4C9B77D0-B933-E611-A87E-02163E0144AC.root', 'root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/5860B38F-6633-E611-BD71-02163E014600.root', 'root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/6AB4AE97-6633-E611-86A6-02163E01347B.root', 'root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/965A1292-6833-E611-A37D-02163E014761.root', 'root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/98391674-C433-E611-A1E7-02163E0145A7.root', 'root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/A46FFB89-7D33-E611-B311-02163E0138F5.root', 'root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/AAC89A15-6733-E611-BF42-02163E0140F3.root', 'root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/C498AF99-6633-E611-80C4-02163E01215B.root', 'root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/D83FF895-6633-E611-8485-02163E012960.root', 'root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/E0F39740-9233-E611-9C39-02163E014786.root']
+_customInfo['inputFile' ]= ['root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/22E3D39A-6633-E611-836C-02163E011821.root']#, 'root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/2606CB81-7033-E611-B28B-02163E01359F.root']# 'root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/4C9B77D0-B933-E611-A87E-02163E0144AC.root', 'root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/5860B38F-6633-E611-BD71-02163E014600.root', 'root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/6AB4AE97-6633-E611-86A6-02163E01347B.root', 'root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/965A1292-6833-E611-A37D-02163E014761.root', 'root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/98391674-C433-E611-A1E7-02163E0145A7.root', 'root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/A46FFB89-7D33-E611-B311-02163E0138F5.root', 'root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/AAC89A15-6733-E611-BF42-02163E0140F3.root', 'root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/C498AF99-6633-E611-80C4-02163E01215B.root', 'root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/D83FF895-6633-E611-8485-02163E012960.root', 'root://cms-xrd-global.cern.ch//store/data/Run2016B/HLTPhysics/AOD/PromptReco-v2/000/274/998/00000/E0F39740-9233-E611-9C39-02163E014786.root']
 _customInfo['realData'  ]=  True
 from HLTrigger.Configuration.customizeHLTforALL import customizeHLTforAll
 process = customizeHLTforAll(process,"GRun",_customInfo)
