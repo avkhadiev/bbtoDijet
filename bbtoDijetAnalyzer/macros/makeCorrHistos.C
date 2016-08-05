@@ -4,10 +4,12 @@
 #include "TChain.h"
 #include "TString.h"
 #include "TH1F.h"
+#include "TH2D.h"
 #include "TGraphAsymmErrors.h"
 #include "TEfficiency.h"
 #include <vector>
 #include <string>
+#include <math.h>       /* ceil */
 #include "Style.hh"
 #endif
 
@@ -53,7 +55,7 @@ TGraphAsymmErrors* makeEffGraph(TH1F* pass, TH1F* total, bool debug=false) {
 
 }
 
-void runTrigEffPlots(std::vector<TString> infileNames)
+void runCorrHistos(std::vector<TString> infileNames)
 {
 
   const char * tagName   = "HLT_DoubleJetsC100_DoubleBTagCSV_p026_DoublePFJetsC160_v2";
@@ -101,8 +103,14 @@ void runTrigEffPlots(std::vector<TString> infileNames)
 
   // declare histograms
   TH2D * correlationHisto1 = new TH2D("correlationHisto1", "Offline vs. Online CSV [Max];Online CSV;Offline CSV;Accepted",    50, 0, 1, 50, 0, 1);
-  TH2D * correlationHisto2 = new TH2D("correlationHisto1", "Offline vs. Online CSV [SubMax];Online CSV;Offline CSV;Accepted", 50, 0, 1, 50, 0, 1);
+  TH2D * correlationHisto2 = new TH2D("correlationHisto2", "Offline vs. Online CSV [SubMax];Online CSV;Offline CSV;Accepted", 50, 0, 1, 50, 0, 1);
 
+  // declare output file
+  TFile outputFile("corrHistos.root", "recreate")                       ;
+  TTree *outputTree = new TTree("histosTree", "Correlation Histograms") ;
+  outputTree->Branch(correlationHisto1->GetName(), "TH2D", &correlationHisto1, 32000, 0) ;
+  outputTree->Branch(correlationHisto2->GetName(), "TH2D", &correlationHisto2, 32000, 0) ;
+  
   // Loop over all jets in the event
   for(int ievent = 0; ievent < nevents; ievent++) {
     chain->GetEntry(ievent);
@@ -160,16 +168,28 @@ void runTrigEffPlots(std::vector<TString> infileNames)
             	printf("Online = %4.2f, Offline = %4.2f \n", maxCSVOnline[itag], matchCSVOffline[itag]);
         	}
 	}
-	if(minDeltaR[0] < 0.5) { correlationHisto1->Fill(maxCSVOnline[0], matchCSVOffline[0]) ; }
+	if(minDeltaR[0] < 0.1) { correlationHisto1->Fill(maxCSVOnline[0], matchCSVOffline[0]) ; }
         if(minDeltaR[1] < 0.5) { correlationHisto2->Fill(maxCSVOnline[1], matchCSVOffline[1]) ; }
     }
   }
+
   // make plots
-  SetStyle();
+  // write histograms as tree branches 
+  outputFile.Write();
+  outputFile.Close();
+
+  gStyle->SetOptStat(0)                           ;
+  int zMin, zMax                                  ; 
   TCanvas *c = MakeCanvas("corrCanvas","",800,600);
+  zMin = ceil(0.0001 * correlationHisto1->GetEntries()) ; 
+  //  zMax = ceil(0.1    * correlationHisto1->GetEntries()) ; 
+  correlationHisto1->SetMinimum(zMin)             ;
   correlationHisto1->Draw("COLZ")                 ;
   c->SaveAs("correlation_1.pdf")                  ;
+  zMin = ceil(0.0001 * correlationHisto2->GetEntries()) ; 
+  // zMax = ceil(0.1    * correlationHisto2->GetEntries()) ; 
   correlationHisto2->Draw("COLZ")                 ;
+  correlationHisto2->SetMinimum(zMin)             ;
   c->SaveAs("correlation_2.pdf")                  ;
 }
 
@@ -179,8 +199,8 @@ void makeCorrHistos()
   std::vector<TString> filelist;
 
   // specify output tree
-  filelist.push_back("/eos/uscms/store/user/aavkhadi/JetHT/bbtoDijetV11/hlt_bTagDijetV11_0000.root");
+  filelist.push_back("/afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11/src/bbtoDijet/bbtoDijetAnalyzer/test/test_bTagDijetV11.root");
 
-  runTrigEffPlots(filelist);
+  runCorrHistos(filelist);
 
 }
