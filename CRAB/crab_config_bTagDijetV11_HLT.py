@@ -1,14 +1,15 @@
 ############################
 #                          #
-#    JetHT Run 2016B       #
+#   HLTPhysics Run 2016B   #
 #                          #
 ############################
 
 from CRABClient.UserUtilities import config, getUsernameFromSiteDB
 config = config()
 
-name = 'eff_bTagDijetV11_HLT' # will be part of the work area name and the storage subdir name
-runNom = '274968,274998'
+name = 'bbtoDijetV11_HLT' # will be part of the work area name and the storage subdir name
+runNom = '274998' #
+
 # For information on config parameters, see
 # https://twiki.cern.ch/twiki/bin/view/CMSPublic/CRAB3ConfigurationFile
 
@@ -20,13 +21,13 @@ config.General.transferLogs = True
 
 # section JobType
 config.JobType.pluginName = 'Analysis'
-config.JobType.psetName = 'hlt_bTagDijetV11.py'
-config.JobType.outputFiles = ['hlt_bTagDijetV11.root']
+config.JobType.psetName = 'hlt_bTagDijetV11_HLT.py'
+config.JobType.outputFiles = ['hlt_bTagDijetV11_HLT.root']
 config.JobType.numCores = 16
 # section Data
-config.Data.inputDataset = '/HLTPhysics/Run2016B-PromptReco-v2/AOD' # '/HLTPhysics/Run2016B-PromptReco-v2/AOD'
+config.Data.inputDataset = '/HLTPhysics/Run2016B-PromptReco-v2/AOD'
 config.Data.splitting = 'LumiBased'
-config.Data.unitsPerJob = 3  # use crab submit --dryrun *.py to find optimal splitting
+config.Data.unitsPerJob = 9  # use crab submit --dryrun *.py to find optimal splitting
 config.Data.secondaryInputDataset = '/HLTPhysics/Run2016B-v2/RAW'
 config.Data.lumiMask = 'https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions16/13TeV/Cert_271036-275125_13TeV_PromptReco_Collisions16_JSON.txt' # specifes good lumi sections to be used
 config.Data.totalUnits = -1 # analyze all events after applying the lumi mask
