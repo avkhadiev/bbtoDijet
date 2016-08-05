@@ -104,13 +104,7 @@ void runCorrHistos(std::vector<TString> infileNames)
   // declare histograms
   TH2D * correlationHisto1 = new TH2D("correlationHisto1", "Offline vs. Online CSV [Max];Online CSV;Offline CSV;Accepted",    50, 0, 1, 50, 0, 1);
   TH2D * correlationHisto2 = new TH2D("correlationHisto2", "Offline vs. Online CSV [SubMax];Online CSV;Offline CSV;Accepted", 50, 0, 1, 50, 0, 1);
-
-  // declare output file
-  TFile outputFile("corrHistos.root", "recreate")                       ;
-  TTree *outputTree = new TTree("histosTree", "Correlation Histograms") ;
-  outputTree->Branch(correlationHisto1->GetName(), "TH2D", &correlationHisto1, 32000, 0) ;
-  outputTree->Branch(correlationHisto2->GetName(), "TH2D", &correlationHisto2, 32000, 0) ;
-  
+ 
   // Loop over all jets in the event
   for(int ievent = 0; ievent < nevents; ievent++) {
     chain->GetEntry(ievent);
@@ -175,7 +169,13 @@ void runCorrHistos(std::vector<TString> infileNames)
 
   // make plots
   // write histograms as tree branches 
-  outputFile.Write();
+  TFile outputFile("corrHistos.root", "recreate")                       ;
+ 
+  outputFile.mkdir("histos_");
+  outputFile.cd("histos_");
+  correlationHisto1->Write();
+  correlationHisto2->Write();
+  outputFile.cd();
   outputFile.Close();
 
   gStyle->SetOptStat(0)                           ;
