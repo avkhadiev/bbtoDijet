@@ -175,9 +175,8 @@ void runCorrHistos(std::vector<TString> infileNames)
             }
 	}
 	if(minDeltaR[0] < 0.1) { 
-        correlationHisto1->Fill(maxCSVOnline[0], matchCSVOffline[0])    ;
-        // only want to consider a tight CSV cut -- adjust as necessary
-        if(maxCSVOnline[1] > 0.73){
+        correlationHisto1->Fill(maxCSVOnline[0], matchCSVOffline[0]) ;
+        if(passTrigger){
         correlationHistoPt->Fill(iMaxCSVOnline[0], iMaxCSVOnline[1]) ;
         }
     }
@@ -218,7 +217,7 @@ void makeCorrHistos()
 
   // "root://cmsxrootd.fnal.gov//store/user/aavkhadi/JetHT/bbtoDijetV11/hlt_bTagDijetV11.root"
   // specify output tree
-  filelist.push_back("/afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11/src/bbtoDijet/bbtoDijetAnalyzer/test/test_bTagDijetV11.root");
+  filelist.push_back("root://cmsxrootd.fnal.gov//store/user/aavkhadi/JetHT/bbtoDijetV11/hlt_bTagDijetV11.root");
 
   runCorrHistos(filelist);
 
