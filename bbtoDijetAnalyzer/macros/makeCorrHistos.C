@@ -87,24 +87,29 @@ void runCorrHistos(std::vector<TString> infileNames)
   float        caloJetEta[kMaxCaloJet]                          ;    chain->SetBranchAddress("caloJetEta",               &caloJetEta)                   ; 
   float        caloJetPhi[kMaxCaloJet]                          ;    chain->SetBranchAddress("caloJetPhi",               &caloJetPhi)                   ;  
   double       caloJetEt[kMaxCaloJet]                           ;    chain->SetBranchAddress("caloJetEt",                &caloJetEt)                    ;  
+  // PFJet
+  int          pfJetCounter                            = 0      ;    chain->SetBranchAddress("pfJetCounter",             &pfJetCounter)                 ;
+  double       pfJetPt[kMaxPFJet]                               ;    chain->SetBranchAddress("pfJetPt",                  &pfJetPt)                      ;  
   // b-jet-tagging information 
   // CSVOnline
   int          bTagCSVOnlineJetCounter                 = 0      ;    chain->SetBranchAddress("bTagCSVOnlineJetCounter",  &bTagCSVOnlineJetCounter)      ;
   float        bTagCSVOnlineJetEta[kMaxBTagCSVOnline]           ;    chain->SetBranchAddress("bTagCSVOnlineJetEta",      &bTagCSVOnlineJetEta)          ; 
   float        bTagCSVOnlineJetPhi[kMaxBTagCSVOnline]           ;    chain->SetBranchAddress("bTagCSVOnlineJetPhi",      &bTagCSVOnlineJetPhi)          ; 
   double       bTagCSVOnlineJetEt[kMaxBTagCSVOnline]            ;    chain->SetBranchAddress("bTagCSVOnlineJetEt",       &bTagCSVOnlineJetEt)           ;  
+  double       bTagCSVOnlineJetPt[kMaxBTagCSVOnline]            ;    chain->SetBranchAddress("bTagCSVOnlineJetPt",       &bTagCSVOnlineJetPt)           ;  
   float        bTagCSVOnline[kMaxBTagCSVOnline]                 ;    chain->SetBranchAddress("bTagCSVOnline",            &bTagCSVOnline)                ;
   // CSVOffline
   int          bTagCSVOfflineJetCounter                = 0      ;    chain->SetBranchAddress("bTagCSVOfflineJetCounter", &bTagCSVOfflineJetCounter)     ;
   float        bTagCSVOfflineJetEta[kMaxBTagCSVOffline]         ;    chain->SetBranchAddress("bTagCSVOfflineJetEta",     &bTagCSVOfflineJetEta)         ; 
   float        bTagCSVOfflineJetPhi[kMaxBTagCSVOffline]         ;    chain->SetBranchAddress("bTagCSVOfflineJetPhi",     &bTagCSVOfflineJetPhi)         ; 
   double       bTagCSVOfflineJetEt[kMaxBTagCSVOffline]          ;    chain->SetBranchAddress("bTagCSVOfflineJetEt",      &bTagCSVOfflineJetEt)          ;  
+  double       bTagCSVOfflineJetPt[kMaxBTagCSVOffline]          ;    chain->SetBranchAddress("bTagCSVOfflineJetPt",      &bTagCSVOfflineJetPt)          ;  
   float        bTagCSVOffline[kMaxBTagCSVOffline]               ;    chain->SetBranchAddress("bTagCSVOffline",           &bTagCSVOffline)               ;
 
   // declare histograms
-  TH2D * correlationHisto1 = new TH2D("correlationHisto1", "Offline vs. Online CSV [Max];Online CSV;Offline CSV;Accepted",    50, 0, 1, 50, 0, 1);
-  TH2D * correlationHisto2 = new TH2D("correlationHisto2", "Offline vs. Online CSV [SubMax];Online CSV;Offline CSV;Accepted", 50, 0, 1, 50, 0, 1);
- 
+  TH2D * correlationHisto1  = new TH2D("correlationHisto1",  "Offline vs. Online CSV [Max];Online CSV;Offline CSV;Accepted",    50, 0, 1, 50, 0, 1);
+  TH2D * correlationHisto2  = new TH2D("correlationHisto2",  "Offline vs. Online CSV [SubMax];Online CSV;Offline CSV;Accepted", 50, 0, 1, 50, 0, 1);
+  TH2D * correlationHistoPt = new TH2D("correlationHistoPt", "Submax Online vs. Max Online CSV [p_{T} index];Max Online CSV p_{T} index;Submax Online CSV p_{T} index;Accepted", 6, 0, 5, 6, 0, 5);
   // Loop over all jets in the event
   for(int ievent = 0; ievent < nevents; ievent++) {
     chain->GetEntry(ievent);
@@ -126,6 +131,10 @@ void runCorrHistos(std::vector<TString> infileNames)
   //      }
         
   // ****************************************************************************************
+    // filter bTagCSVOnline in decreasing order of bTagCSVOnlineJetPt -- it's not ordered originally!
+    int iOrderedPt[bTagCSVOnlineJetCounter];
+    TMath::Sort(bTagCSVOnlineJetCounter, bTagCSVOnlineJetPt, iOrderedPt); // output array of indices corresponding to the decreasing order of pt 
+
     if(passControl) {
 	float minDeltaR[2]        = {10.0, 10.0}    ;
         float maxCSVOnline[2]     = {-10.0, -10.0}  ;
@@ -134,15 +143,15 @@ void runCorrHistos(std::vector<TString> infileNames)
         int   iMatchCSVOffline[2] = {0, 0}          ;
         // find max and submax online discriminants
         for(int ijet = 0; ijet < bTagCSVOnlineJetCounter; ijet++) { 
-            if(maxCSVOnline[0] < bTagCSVOnline[ijet]) {
+            if(maxCSVOnline[0] < bTagCSVOnline[iOrderedPt[ijet]]) {
                 iMaxCSVOnline[1] = iMaxCSVOnline[0]    ;
-                iMaxCSVOnline[0] = ijet                ;
+                iMaxCSVOnline[0] = iOrderedPt[ijet]                ;
                 maxCSVOnline[1]  = maxCSVOnline[0]     ;
-                maxCSVOnline[0]  = bTagCSVOnline[ijet] ;
+                maxCSVOnline[0]  = bTagCSVOnline[iOrderedPt[ijet]] ;
             }
-            else if(maxCSVOnline[1] < bTagCSVOnline[ijet]){
-                iMaxCSVOnline[1] = ijet                ;
-                maxCSVOnline[1]  = bTagCSVOnline[ijet] ;
+            else if(maxCSVOnline[1] < bTagCSVOnline[iOrderedPt[ijet]]){
+                iMaxCSVOnline[1] = iOrderedPt[ijet]                ;
+                maxCSVOnline[1]  = bTagCSVOnline[iOrderedPt[ijet]] ;
             }
         }
         // match offline discriminants to max and submax online discriminants
@@ -156,41 +165,50 @@ void runCorrHistos(std::vector<TString> infileNames)
                     iMatchCSVOffline[itag] = imatch ; 
                 }
             }
-	    // debugging 
+	        // debugging 
             if(ievent % 100 == 0) { 
 	    	printf("minDeltaR = %f \n", minDeltaR[itag]);
-            	printf("Online = %4.2f, Offline = %4.2f \n", maxCSVOnline[itag], matchCSVOffline[itag]);
-        	}
+            printf("Online = %4.2f, Offline = %4.2f \n", maxCSVOnline[itag], matchCSVOffline[itag]);
+        	printf("Max online pt index = %d, Submax online pt index = %d \n", iMaxCSVOnline[0], iMaxCSVOnline[1]);
+        	printf("Max online = %4.2f, Submax online = %4.2f \n", maxCSVOnline[0], maxCSVOnline[1]);
+        	printf("Pt for max online = %4.2f, Pt for submax online = %4.2f \n", bTagCSVOnlineJetPt[iMaxCSVOnline[0]],bTagCSVOnlineJetPt[iMaxCSVOnline[1]]);
+            }
 	}
-	if(minDeltaR[0] < 0.1) { correlationHisto1->Fill(maxCSVOnline[0], matchCSVOffline[0]) ; }
-        if(minDeltaR[1] < 0.5) { correlationHisto2->Fill(maxCSVOnline[1], matchCSVOffline[1]) ; }
+	if(minDeltaR[0] < 0.1) { 
+        correlationHisto1->Fill(maxCSVOnline[0], matchCSVOffline[0])    ;
+        // only want to consider a tight CSV cut -- adjust as necessary
+        if(maxCSVOnline[1] > 0.73){
+        correlationHistoPt->Fill(iMaxCSVOnline[0], iMaxCSVOnline[1]) ;
+        }
+    }
+    if(minDeltaR[1] < 0.1) { correlationHisto2->Fill(maxCSVOnline[1], matchCSVOffline[1]) ; }
     }
   }
 
   // make plots
   // write histograms as tree branches 
   TFile outputFile("corrHistos.root", "recreate")                       ;
- 
   outputFile.mkdir("histos_");
   outputFile.cd("histos_");
   correlationHisto1->Write();
   correlationHisto2->Write();
+  correlationHistoPt->Write();
   outputFile.cd();
   outputFile.Close();
 
-  gStyle->SetOptStat(0)                           ;
-  int zMin, zMax                                  ; 
-  TCanvas *c = MakeCanvas("corrCanvas","",800,600);
-  zMin = ceil(0.0001 * correlationHisto1->GetEntries()) ; 
-  //  zMax = ceil(0.1    * correlationHisto1->GetEntries()) ; 
-  correlationHisto1->SetMinimum(zMin)             ;
-  correlationHisto1->Draw("COLZ")                 ;
-  c->SaveAs("correlation_1.pdf")                  ;
-  zMin = ceil(0.0001 * correlationHisto2->GetEntries()) ; 
-  // zMax = ceil(0.1    * correlationHisto2->GetEntries()) ; 
-  correlationHisto2->Draw("COLZ")                 ;
-  correlationHisto2->SetMinimum(zMin)             ;
-  c->SaveAs("correlation_2.pdf")                  ;
+  //gStyle->SetOptStat(0)                           ;
+  //int zMin, zMax                                  ; 
+  //TCanvas *c = MakeCanvas("corrCanvas","",800,600);
+  //zMin = ceil(0.0001 * correlationHisto1->GetEntries()) ; 
+  ////  zMax = ceil(0.1    * correlationHisto1->GetEntries()) ; 
+  //correlationHisto1->SetMinimum(zMin)             ;
+  //correlationHisto1->Draw("COLZ")                 ;
+  //c->SaveAs("correlation_1.pdf")                  ;
+  //zMin = ceil(0.0001 * correlationHisto2->GetEntries()) ; 
+  //// zMax = ceil(0.1    * correlationHisto2->GetEntries()) ; 
+  //correlationHisto2->Draw("COLZ")                 ;
+  //correlationHisto2->SetMinimum(zMin)             ;
+  //c->SaveAs("correlation_2.pdf")                  ;
 }
 
 void makeCorrHistos()
@@ -198,6 +216,7 @@ void makeCorrHistos()
 
   std::vector<TString> filelist;
 
+  // "root://cmsxrootd.fnal.gov//store/user/aavkhadi/JetHT/bbtoDijetV11/hlt_bTagDijetV11.root"
   // specify output tree
   filelist.push_back("/afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11/src/bbtoDijet/bbtoDijetAnalyzer/test/test_bTagDijetV11.root");
 
