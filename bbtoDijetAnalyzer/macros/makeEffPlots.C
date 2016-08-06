@@ -55,7 +55,7 @@ TGraphAsymmErrors* makeEffGraph(TH1F* pass, TH1F* total, bool debug=false) {
 
 }
 
-void runCorrHistos(std::vector<TString> infileNames)
+void runEffPlots(std::vector<TString> infileNames)
 {
 
   const char * tagName   = "HLT_DoubleJetsC100_p026_DoublePFJetsC160_v2";
@@ -107,8 +107,12 @@ void runCorrHistos(std::vector<TString> infileNames)
   float        bTagCSVOffline[kMaxBTagCSVOffline]               ;    chain->SetBranchAddress("bTagCSVOffline",           &bTagCSVOffline)               ;
 
   // declare effPlot
-  TEfficiency * effPlot = new TEfficiency("eff", "Rate(Max, Submax Online CSV);Max Online CSV;Submax Online CSV;Rate", 10, 0, 1.0, 10, 0, 1.0);
-  
+  TEfficiency * effPlot = new TEfficiency("eff", "Rate(Max, Submax Online CSV);Max Online CSV;Submax Online CSV;Rate", 15, 0.7, 1.0, 15, 0.7, 1.0);
+  TH2F * passHisto    = new TH2F("passHisto",    "Pass p78;Max Online CSV;Submax Online CSV;Rate", 100, 0, 1.0, 100, 0, 1.0);
+  TH2F * controlHisto = new TH2F("controlHisto", "Control p78;Max Online CSV;Submax Online CSV;Rate", 100, 0, 1.0, 100, 0, 1.0); 
+  TH2F * missHisto = new TH2F("missHisto", "Miss p78;Max Online CSV;Submax Online CSV;Rate", 100, 0, 1.0, 100, 0, 1.0);
+  TH2F * badHisto = new TH2F("badHisto", "Bad p78;Max Online CSV;Submax Online CSV;Rate", 100, 0, 1.0, 100, 0, 1.0);
+
   // Loop over all jets in the event
   for(int ievent = 0; ievent < nevents; ievent++) {
     chain->GetEntry(ievent);
@@ -130,27 +134,44 @@ void runCorrHistos(std::vector<TString> infileNames)
   //      }
         
   // ****************************************************************************************
+    int iOrderedEt[bTagCSVOnlineJetCounter];
+    TMath::Sort(bTagCSVOnlineJetCounter, bTagCSVOnlineJetEt, iOrderedEt); // output array of indices corresponding to the decreasing order of pt 
+    
     float maxCSVOnline[2]     = {-10.0, -10.0}  ;
     int   iMaxCSVOnline[2]    = {0, 0}          ;
     // find max and submax online discriminants
     for(int ijet = 0; ijet < bTagCSVOnlineJetCounter; ijet++) { 
-        if(maxCSVOnline[0] < bTagCSVOnline[ijet]) {
+        if(maxCSVOnline[0] < bTagCSVOnline[iOrderedEt[ijet]]) {
             iMaxCSVOnline[1] = iMaxCSVOnline[0]    ;
-            iMaxCSVOnline[0] = ijet                ;
+            iMaxCSVOnline[0] = iOrderedEt[ijet]                ;
             maxCSVOnline[1]  = maxCSVOnline[0]     ;
-            maxCSVOnline[0]  = bTagCSVOnline[ijet] ;
+            maxCSVOnline[0]  = bTagCSVOnline[iOrderedEt[ijet]] ;
         }
-        else if(maxCSVOnline[1] < bTagCSVOnline[ijet]){
-            iMaxCSVOnline[1] = ijet                            ;
-            maxCSVOnline[1]  = bTagCSVOnline[ijet]             ;
+        else if(maxCSVOnline[1] < bTagCSVOnline[iOrderedEt[ijet]]){
+            iMaxCSVOnline[1] = iOrderedEt[ijet]                            ;
+            maxCSVOnline[1]  = bTagCSVOnline[iOrderedEt[ijet]]             ;
         }
     }
 	// debugging 
     if(ievent % 100 == 0) { 
     printf("Max online = %4.2f, Submax online = %4.2f \n", maxCSVOnline[0], maxCSVOnline[1]);
+    printf("index in decreasing Et: iMax = %d, iSubmax = %d \n", iMaxCSVOnline[0], iMaxCSVOnline[1]);  
+    printf("corresponding Et: Max = %4.2f, Submax = %4.2f \n", bTagCSVOnlineJetEt[iMaxCSVOnline[0]], bTagCSVOnlineJetEt[iMaxCSVOnline[1]]);
     }
     if(passControl){
-        effPlot->Fill(passTrigger, maxCSVOnline[0], maxCSVOnline[1]);       
+        effPlot->Fill(passTrigger, maxCSVOnline[0], maxCSVOnline[1]);
+	controlHisto->Fill(maxCSVOnline[0], maxCSVOnline[1]);	      
+	if(passTrigger){
+	   passHisto->Fill(maxCSVOnline[0], maxCSVOnline[1]);
+	}
+	else {
+	   if(bTagCSVOnlineJetEt[iMaxCSVOnline[1]] > 80.0 && bTagCSVOnlineJetEt[iMaxCSVOnline[0]] > 80.0 && iMaxCSVOnline[1] < 5 && iMaxCSVOnline[0] < 5){
+	     missHisto->Fill(maxCSVOnline[0], maxCSVOnline[1]);
+	   }
+	   else{
+	     badHisto->Fill(maxCSVOnline[0], maxCSVOnline[1]);
+	   }	
+	}
     }
   }
 
@@ -160,6 +181,10 @@ void runCorrHistos(std::vector<TString> infileNames)
   outputFile.mkdir("efficiencies_");
   outputFile.cd("efficiencies_");
   effPlot->Write();
+  controlHisto->Write();
+  passHisto->Write();
+  missHisto->Write();	  
+  badHisto->Write();	  
   outputFile.cd();
   outputFile.Close();
 
@@ -185,8 +210,8 @@ void makeEffPlots()
 
   // "root://cmsxrootd.fnal.gov//store/user/aavkhadi/JetHT/bbtoDijetV11/hlt_bTagDijetV11.root"
   // specify output tree
-  filelist.push_back("/afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11/src/bbtoDijet/bbtoDijetAnalyzer/test/test_bTagDijetV11.root");
+  filelist.push_back("root://cmsxrootd.fnal.gov//store/user/aavkhadi/JetHT/bbtoDijetV11/hlt_bTagDijetV11.root");
 
-  runCorrHistos(filelist);
+  runEffPlots(filelist);
 
 }
