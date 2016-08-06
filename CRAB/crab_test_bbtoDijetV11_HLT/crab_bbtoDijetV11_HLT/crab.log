@@ -152,3 +152,300 @@ INFO 2016-08-05 17:38:23,055: 	 Task name: 160805_153822:aavkhadi_crab_bbtoDijet
 INFO 2016-08-05 17:38:23,055: 	 Please use 'crab status' to check how the submission process proceeds.
 DEBUG 2016-08-05 17:38:23,056: 	 About to return
 INFO 2016-08-05 17:38:23,059: 	 Log file is /afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11/src/bbtoDijet/CRAB/crab_test_bbtoDijetV11_HLT/crab_bbtoDijetV11_HLT/crab.log
+DEBUG 2016-08-05 22:07:49,955: 	 Executing command: 'status'
+DEBUG 2016-08-05 22:07:49,956: 	 Found CRAB cache file /afs/cern.ch/user/a/aavkhadi/.crab3
+DEBUG 2016-08-05 22:07:50,000: 	 Checking credentials
+DEBUG 2016-08-05 22:07:50,000: 	 Proxy file /tmp/x509up_u90315 not found
+DEBUG 2016-08-05 22:07:50,000: 	 Creating new proxy for 24:00 hours with VO group '' and VO role 'NULL'.
+DEBUG 2016-08-05 22:07:59,719: 	 Executing : 
+ command : voms-proxy-init -voms cms:/cms -valid 24:00 -rfc
+ output : None
+ error: None
+ retcode : 0
+DEBUG 2016-08-05 22:08:00,224: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u90315 -timeleft
+ output : 86398
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-05 22:08:00,627: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u90315 -actimeleft
+ output : 86398
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-05 22:08:01,031: 	 Executing : 
+ command : env X509_USER_PROXY=/tmp/x509up_u90315 voms-proxy-info -fqan
+ output : /cms/Role=NULL/Capability=NULL
+/cms/uscms/Role=NULL/Capability=NULL
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-05 22:08:01,032: 	 Proxy created.
+DEBUG 2016-08-05 22:08:01,183: 	 Executing : 
+ command : openssl x509 -in ~/.globus/usercert.pem -subject -noout
+ output : subject= /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=aavkhadi/CN=787760/CN=Artur Avkhadiev
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-05 22:08:01,183: 	 Checking credentials
+DEBUG 2016-08-05 22:08:01,185: 	 Found proxy file /tmp/x509up_u90315
+DEBUG 2016-08-05 22:08:01,185: 	 Getting proxy life time left
+DEBUG 2016-08-05 22:08:01,588: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u90315 -timeleft
+ output : 86397
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-05 22:08:02,092: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u90315 -actimeleft
+ output : 86397
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-05 22:08:02,093: 	 Proxy valid for 23:59:57 hours
+DEBUG 2016-08-05 22:08:03,955: 	 Registering user credentials for server /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0118a|0119|0108).cern.ch
+DEBUG 2016-08-05 22:08:04,065: 	 Executing : 
+ command : openssl x509 -in ~/.globus/usercert.pem -subject -noout
+ output : subject= /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=aavkhadi/CN=787760/CN=Artur Avkhadiev
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-05 22:08:04,065: 	 Getting myproxy life time left for myproxy.cern.ch
+DEBUG 2016-08-05 22:08:04,065: 	 Calculating hash of /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=aavkhadi/CN=787760/CN=Artur Avkhadiev_cmsweb.cern.ch for credential name
+DEBUG 2016-08-05 22:08:05,773: 	 Executing : 
+ command : myproxy-info -l af506bb0adced5c04d0edc26b15a795e17202015 -s myproxy.cern.ch
+ output : username: af506bb0adced5c04d0edc26b15a795e17202015
+owner: /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=aavkhadi/CN=787760/CN=Artur Avkhadiev
+  renewal policy: /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0118a|0119|0108).cern.ch
+  trusted retrieval policy: /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0118a|0119|0108).cern.ch
+  timeleft: 443:42:05  (18.5 days)
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-05 22:08:05,774: 	 Myproxy is valid: 1597325
+DEBUG 2016-08-05 22:08:05,774: 	 Command use: status
+DEBUG 2016-08-05 22:08:05,774: 	 Options use: []
+DEBUG 2016-08-05 22:08:06,336: 	 CRABClient version: 3.3.1607.patch2
+DEBUG 2016-08-05 22:08:06,336: 	 Instance is prod
+DEBUG 2016-08-05 22:08:06,336: 	 Server base url is cmsweb.cern.ch
+DEBUG 2016-08-05 22:08:06,336: 	 Command url /crabserver/prod/workflow
+DEBUG 2016-08-05 22:08:06,336: 	 Looking up detailed status of task 160805_153822:aavkhadi_crab_bbtoDijetV11_HLT
+DEBUG 2016-08-05 22:08:07,275: 	 {'status': 'SUBMITTED', 'username': 'aavkhadi', 'jobsPerStatus': {'failed': 7, 'finished': 5, 'transferring': 62, 'running': 6}, 'jobs': {'58': {'State': 'transferring'}, '30': {'State': 'transferring'}, '28': {'State': 'transferring'}, '43': {'State': 'running'}, '60': {'State': 'transferring'}, '61': {'State': 'transferring'}, '62': {'State': 'transferring'}, '63': {'State': 'transferring'}, '64': {'State': 'transferring'}, '65': {'State': 'transferring'}, '66': {'State': 'transferring'}, '67': {'State': 'transferring'}, '68': {'State': 'failed', 'Error': [139, 'CmsRunFailure', {}]}, '69': {'State': 'transferring'}, '80': {'State': 'transferring'}, '34': {'State': 'transferring'}, '24': {'State': 'finished'}, '25': {'State': 'failed', 'Error': [135, 'CmsRunFailure', {}]}, '26': {'State': 'transferring'}, '27': {'State': 'transferring'}, '20': {'State': 'transferring'}, '21': {'State': 'failed', 'Error': [139, 'CmsRunFailure', {}]}, '48': {'State': 'failed', 'Error': [8028, "CmsRunFailure\nCMSSW error message follows.\nFatal Exception\nAn exception of category 'FallbackFileOpenError' occurred while\n   [0] Constructing the EventProcessor\n   [1] Constructing input source of type PoolSource\n   [2] Calling RootFileSequenceBase::initTheFile()\n   [3] Calling StorageFactory::open()\n   [4] Calling XrdFile::open()\nException Message:\nFailed to open the file 'root://xrootd-cms.infn.it//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root'\n   Additional Info:\n      [a] XrdCl::File::Open(name='root://eoscms.cern.ch//eos/cms/store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root', flags=0x10, permissions=0660) => error '[ERROR] Server responded with an error: [3005] Unable to open file /eos/cms/store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root; Success\n' (errno=3005, code=400). No additional data servers were found.\n      [b] Last URL tried: root://eoscms.cern.ch:1094//eos/cms/store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root?tried=\n      [c] Problematic data server: eoscms.cern.ch:1094\n      [d] Disabled source: eoscms.cern.ch:1094\n      [e] Input file root://eoscms.cern.ch//eos/cms/store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root could not be opened.\nFallback Input file root://xrootd-cms.infn.it//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root also could not be opened.\nOriginal exception info is above; fallback exception info is below.\n      [f] XrdCl::File::Open(name='root://xrootd-cms.infn.it//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root', flags=0x10, permissions=0660) => error '[ERROR] Server responded with an error: [3011] No servers are available to read the file.\n' (errno=3011, code=400). No additional data servers were found.\n      [g] Last URL tried: root://cms-xrd-transit.cern.ch:1094//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root?tried=+1098xrdcmsglobal011098xrdcmsglobal02.cern.ch,+1213xrootd.ba.infn.it,,xrootd.unl.edu\n      [h] Problematic data server: cms-xrd-transit.cern.ch:1094\n      [i] Disabled source: cms-xrd-transit.cern.ch:1094\n", {'type': 'Fatal Exception', 'details': "An exception of category 'FallbackFileOpenError' occurred while\n   [0] Constructing the EventProcessor\n   [1] Constructing input source of type PoolSource\n   [2] Calling RootFileSequenceBase::initTheFile()\n   [3] Calling StorageFactory::open()\n   [4] Calling XrdFile::open()\nException Message:\nFailed to open the file 'root://xrootd-cms.infn.it//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root'\n   Additional Info:\n      [a] XrdCl::File::Open(name='root://eoscms.cern.ch//eos/cms/store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root', flags=0x10, permissions=0660) => error '[ERROR] Server responded with an error: [3005] Unable to open file /eos/cms/store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root; Success\n' (errno=3005, code=400). No additional data servers were found.\n      [b] Last URL tried: root://eoscms.cern.ch:1094//eos/cms/store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root?tried=\n      [c] Problematic data server: eoscms.cern.ch:1094\n      [d] Disabled source: eoscms.cern.ch:1094\n      [e] Input file root://eoscms.cern.ch//eos/cms/store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root could not be opened.\nFallback Input file root://xrootd-cms.infn.it//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root also could not be opened.\nOriginal exception info is above; fallback exception info is below.\n      [f] XrdCl::File::Open(name='root://xrootd-cms.infn.it//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root', flags=0x10, permissions=0660) => error '[ERROR] Server responded with an error: [3011] No servers are available to read the file.\n' (errno=3011, code=400). No additional data servers were found.\n      [g] Last URL tried: root://cms-xrd-transit.cern.ch:1094//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root?tried=+1098xrdcmsglobal011098xrdcmsglobal02.cern.ch,+1213xrootd.ba.infn.it,,xrootd.unl.edu\n      [h] Problematic data server: cms-xrd-transit.cern.ch:1094\n      [i] Disabled source: cms-xrd-transit.cern.ch:1094", 'exitCode': '8028'}]}, '49': {'State': 'transferring'}, '46': {'State': 'running'}, '23': {'State': 'finished'}, '44': {'State': 'transferring'}, '45': {'State': 'failed', 'Error': [50660, 'Not retrying job due to excessive memory use (job automatically killed on the worker node)', {}]}, '42': {'State': 'transferring'}, '29': {'State': 'transferring'}, '40': {'State': 'transferring'}, '41': {'State': 'transferring'}, '1': {'State': 'transferring'}, '35': {'State': 'transferring'}, '3': {'State': 'finished'}, '2': {'State': 'transferring'}, '5': {'State': 'transferring'}, '4': {'State': 'transferring'}, '7': {'State': 'transferring'}, '6': {'State': 'finished'}, '9': {'State': 'transferring'}, '8': {'State': 'transferring'}, '32': {'State': 'transferring'}, '18': {'State': 'transferring'}, '13': {'State': 'transferring'}, '77': {'State': 'transferring'}, '76': {'State': 'transferring'}, '75': {'State': 'transferring'}, '12': {'State': 'transferring'}, '73': {'State': 'running'}, '72': {'State': 'transferring'}, '71': {'State': 'running'}, '70': {'State': 'running'}, '15': {'State': 'transferring'}, '79': {'State': 'transferring'}, '78': {'State': 'running'}, '11': {'State': 'transferring'}, '10': {'State': 'transferring'}, '39': {'State': 'transferring'}, '38': {'State': 'transferring'}, '59': {'State': 'transferring'}, '22': {'State': 'transferring'}, '14': {'State': 'transferring'}, '16': {'State': 'failed', 'Error': [135, 'CmsRunFailure', {}]}, '19': {'State': 'transferring'}, '54': {'State': 'transferring'}, '31': {'State': 'failed', 'Error': [135, 'CmsRunFailure', {}]}, '56': {'State': 'transferring'}, '51': {'State': 'finished'}, '36': {'State': 'transferring'}, '53': {'State': 'transferring'}, '52': {'State': 'transferring'}, '33': {'State': 'transferring'}, '55': {'State': 'transferring'}, '74': {'State': 'transferring'}, '37': {'State': 'transferring'}, '47': {'State': 'transferring'}, '17': {'State': 'transferring'}, '57': {'State': 'transferring'}, '50': {'State': 'transferring'}}, 'publication': {'disabled': []}, 'taskWarningMsg': [], 'schedd': 'crab3-4@vocms066.cern.ch', 'publicationFailures': {}, 'outdatasets': None, 'statusFailureMsg': '', 'taskFailureMsg': '', 'failedJobdefs': 0, 'ASOURL': 'https://cmsweb.cern.ch/couchdb2', 'command': 'SUBMIT', 'totalJobdefs': 0, 'submissionTime': 1470411503, 'jobdefErrors': [], 'collector': 'cmsgwms-collector-global.cern.ch,cmssrv221.fnal.gov', 'jobList': [['transferring', 56], ['transferring', 77], ['transferring', 54], ['transferring', 42], ['failed', 48], ['transferring', 60], ['transferring', 61], ['transferring', 62], ['transferring', 63], ['transferring', 64], ['transferring', 49], ['transferring', 66], ['transferring', 67], ['failed', 68], ['transferring', 69], ['transferring', 80], ['transferring', 52], ['transferring', 53], ['finished', 24], ['failed', 25], ['transferring', 26], ['transferring', 27], ['transferring', 20], ['failed', 21], ['transferring', 22], ['finished', 23], ['running', 46], ['transferring', 47], ['transferring', 44], ['failed', 45], ['transferring', 28], ['transferring', 29], ['transferring', 40], ['transferring', 41], ['transferring', 1], ['finished', 3], ['transferring', 2], ['transferring', 5], ['transferring', 4], ['transferring', 7], ['finished', 6], ['transferring', 9], ['transferring', 8], ['running', 78], ['finished', 51], ['running', 43], ['transferring', 39], ['transferring', 65], ['transferring', 76], ['transferring', 75], ['transferring', 38], ['running', 73], ['transferring', 72], ['running', 71], ['running', 70], ['transferring', 59], ['transferring', 79], ['transferring', 58], ['transferring', 11], ['transferring', 10], ['transferring', 13], ['transferring', 12], ['transferring', 15], ['transferring', 14], ['transferring', 17], ['failed', 16], ['transferring', 19], ['transferring', 18], ['failed', 31], ['transferring', 30], ['transferring', 37], ['transferring', 36], ['transferring', 35], ['transferring', 34], ['transferring', 33], ['transferring', 55], ['transferring', 74], ['transferring', 32], ['transferring', 57], ['transferring', 50]]}
+INFO 2016-08-05 22:08:07,276: 	 CRAB project directory:		/afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11/src/bbtoDijet/CRAB/crab_test_bbtoDijetV11_HLT/crab_bbtoDijetV11_HLT
+INFO 2016-08-05 22:08:07,276: 	 Task name:			160805_153822:aavkhadi_crab_bbtoDijetV11_HLT
+INFO 2016-08-05 22:08:07,276: 	 Grid scheduler:			crab3-4@vocms066.cern.ch
+INFO 2016-08-05 22:08:07,276: 	 Task status:			SUBMITTED
+INFO 2016-08-05 22:08:07,276: 	 Dashboard monitoring URL:	http://dashb-cms-job.cern.ch/dashboard/templates/task-analysis/#user=aavkhadi&table=Mains&pattern=160805_153822%3Aaavkhadi_crab_bbtoDijetV11_HLT
+INFO 2016-08-05 22:08:07,276: 	 
+Jobs status:			failed          8.8% ( 7/80)
+INFO 2016-08-05 22:08:07,276: 	 				finished        6.2% ( 5/80)
+INFO 2016-08-05 22:08:07,276: 	 				running         7.5% ( 6/80)
+INFO 2016-08-05 22:08:07,276: 	 				transferring   77.5% (62/80)
+INFO 2016-08-05 22:08:07,276: 	 
+No publication information (publication has been disabled in the CRAB configuration file)
+INFO 2016-08-05 22:08:07,276: 	 
+Error Summary: (use crab status --verboseErrors for details about the errors)
+
+ 3 jobs failed with exit code 135
+
+ 2 jobs failed with exit code 139
+
+ 1 jobs failed with exit code 50660
+
+ 1 jobs failed with exit code 8028
+
+Have a look at https://twiki.cern.ch/twiki/bin/viewauth/CMSPublic/JobExitCodes for a description of the exit codes.
+INFO 2016-08-05 22:08:07,316: 	 Log file is /afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11/src/bbtoDijet/CRAB/crab_test_bbtoDijetV11_HLT/crab_bbtoDijetV11_HLT/crab.log
+DEBUG 2016-08-06 13:38:08,032: 	 Executing command: 'status'
+DEBUG 2016-08-06 13:38:08,033: 	 Found CRAB cache file /afs/cern.ch/user/a/aavkhadi/.crab3
+DEBUG 2016-08-06 13:38:08,040: 	 Checking credentials
+DEBUG 2016-08-06 13:38:08,040: 	 Found proxy file /tmp/x509up_u90315
+DEBUG 2016-08-06 13:38:08,040: 	 Getting proxy life time left
+DEBUG 2016-08-06 13:38:08,543: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u90315 -timeleft
+ output : 43189
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-06 13:38:09,050: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u90315 -actimeleft
+ output : 43188
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-06 13:38:09,050: 	 Proxy valid for 11:59:49 hours
+DEBUG 2016-08-06 13:38:09,162: 	 Executing : 
+ command : openssl x509 -in ~/.globus/usercert.pem -subject -noout
+ output : subject= /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=aavkhadi/CN=787760/CN=Artur Avkhadiev
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-06 13:38:09,162: 	 Checking credentials
+DEBUG 2016-08-06 13:38:09,162: 	 Found proxy file /tmp/x509up_u90315
+DEBUG 2016-08-06 13:38:09,162: 	 Getting proxy life time left
+DEBUG 2016-08-06 13:38:09,667: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u90315 -timeleft
+ output : 43188
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-06 13:38:10,172: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u90315 -actimeleft
+ output : 43186
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-06 13:38:10,172: 	 Proxy valid for 11:59:48 hours
+DEBUG 2016-08-06 13:38:10,501: 	 Registering user credentials for server /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0118a|0119|0108).cern.ch
+DEBUG 2016-08-06 13:38:10,609: 	 Executing : 
+ command : openssl x509 -in ~/.globus/usercert.pem -subject -noout
+ output : subject= /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=aavkhadi/CN=787760/CN=Artur Avkhadiev
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-06 13:38:10,609: 	 Getting myproxy life time left for myproxy.cern.ch
+DEBUG 2016-08-06 13:38:10,609: 	 Calculating hash of /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=aavkhadi/CN=787760/CN=Artur Avkhadiev_cmsweb.cern.ch for credential name
+DEBUG 2016-08-06 13:38:11,213: 	 Executing : 
+ command : myproxy-info -l af506bb0adced5c04d0edc26b15a795e17202015 -s myproxy.cern.ch
+ output : username: af506bb0adced5c04d0edc26b15a795e17202015
+owner: /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=aavkhadi/CN=787760/CN=Artur Avkhadiev
+  renewal policy: /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0118a|0119|0108).cern.ch
+  trusted retrieval policy: /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0118a|0119|0108).cern.ch
+  timeleft: 428:11:59  (17.8 days)
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-06 13:38:11,214: 	 Myproxy is valid: 1541519
+DEBUG 2016-08-06 13:38:11,214: 	 Command use: status
+DEBUG 2016-08-06 13:38:11,214: 	 Options use: []
+DEBUG 2016-08-06 13:38:11,570: 	 CRABClient version: 3.3.1607.patch2
+DEBUG 2016-08-06 13:38:11,570: 	 Instance is prod
+DEBUG 2016-08-06 13:38:11,570: 	 Server base url is cmsweb.cern.ch
+DEBUG 2016-08-06 13:38:11,570: 	 Command url /crabserver/prod/workflow
+DEBUG 2016-08-06 13:38:11,570: 	 Looking up detailed status of task 160805_153822:aavkhadi_crab_bbtoDijetV11_HLT
+DEBUG 2016-08-06 13:38:22,686: 	 {'status': 'SUBMITTED', 'username': 'aavkhadi', 'jobsPerStatus': {'failed': 11, 'finished': 65, 'running': 4}, 'jobs': {'58': {'State': 'finished'}, '30': {'State': 'finished'}, '28': {'State': 'finished'}, '43': {'State': 'finished'}, '60': {'State': 'finished'}, '61': {'State': 'finished'}, '62': {'State': 'finished'}, '63': {'State': 'finished'}, '64': {'State': 'finished'}, '65': {'State': 'finished'}, '66': {'State': 'running'}, '67': {'State': 'finished'}, '68': {'State': 'failed', 'Error': [139, 'CmsRunFailure', {}]}, '69': {'State': 'finished'}, '80': {'State': 'finished'}, '34': {'State': 'finished'}, '24': {'State': 'finished'}, '25': {'State': 'failed', 'Error': [135, 'CmsRunFailure', {}]}, '26': {'State': 'finished'}, '27': {'State': 'finished'}, '20': {'State': 'running'}, '21': {'State': 'failed', 'Error': [139, 'CmsRunFailure', {}]}, '48': {'State': 'failed', 'Error': [8028, "CmsRunFailure\nCMSSW error message follows.\nFatal Exception\nAn exception of category 'FallbackFileOpenError' occurred while\n   [0] Constructing the EventProcessor\n   [1] Constructing input source of type PoolSource\n   [2] Calling RootFileSequenceBase::initTheFile()\n   [3] Calling StorageFactory::open()\n   [4] Calling XrdFile::open()\nException Message:\nFailed to open the file 'root://xrootd-cms.infn.it//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root'\n   Additional Info:\n      [a] XrdCl::File::Open(name='root://eoscms.cern.ch//eos/cms/store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root', flags=0x10, permissions=0660) => error '[ERROR] Server responded with an error: [3005] Unable to open file /eos/cms/store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root; Success\n' (errno=3005, code=400). No additional data servers were found.\n      [b] Last URL tried: root://eoscms.cern.ch:1094//eos/cms/store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root?tried=\n      [c] Problematic data server: eoscms.cern.ch:1094\n      [d] Disabled source: eoscms.cern.ch:1094\n      [e] Input file root://eoscms.cern.ch//eos/cms/store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root could not be opened.\nFallback Input file root://xrootd-cms.infn.it//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root also could not be opened.\nOriginal exception info is above; fallback exception info is below.\n      [f] XrdCl::File::Open(name='root://xrootd-cms.infn.it//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root', flags=0x10, permissions=0660) => error '[ERROR] Server responded with an error: [3011] No servers are available to read the file.\n' (errno=3011, code=400). No additional data servers were found.\n      [g] Last URL tried: root://cms-xrd-transit.cern.ch:1094//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root?tried=+1098xrdcmsglobal011098xrdcmsglobal02.cern.ch,+1213xrootd.ba.infn.it,,xrootd.unl.edu\n      [h] Problematic data server: cms-xrd-transit.cern.ch:1094\n      [i] Disabled source: cms-xrd-transit.cern.ch:1094\n", {'type': 'Fatal Exception', 'details': "An exception of category 'FallbackFileOpenError' occurred while\n   [0] Constructing the EventProcessor\n   [1] Constructing input source of type PoolSource\n   [2] Calling RootFileSequenceBase::initTheFile()\n   [3] Calling StorageFactory::open()\n   [4] Calling XrdFile::open()\nException Message:\nFailed to open the file 'root://xrootd-cms.infn.it//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root'\n   Additional Info:\n      [a] XrdCl::File::Open(name='root://eoscms.cern.ch//eos/cms/store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root', flags=0x10, permissions=0660) => error '[ERROR] Server responded with an error: [3005] Unable to open file /eos/cms/store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root; Success\n' (errno=3005, code=400). No additional data servers were found.\n      [b] Last URL tried: root://eoscms.cern.ch:1094//eos/cms/store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root?tried=\n      [c] Problematic data server: eoscms.cern.ch:1094\n      [d] Disabled source: eoscms.cern.ch:1094\n      [e] Input file root://eoscms.cern.ch//eos/cms/store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root could not be opened.\nFallback Input file root://xrootd-cms.infn.it//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root also could not be opened.\nOriginal exception info is above; fallback exception info is below.\n      [f] XrdCl::File::Open(name='root://xrootd-cms.infn.it//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root', flags=0x10, permissions=0660) => error '[ERROR] Server responded with an error: [3011] No servers are available to read the file.\n' (errno=3011, code=400). No additional data servers were found.\n      [g] Last URL tried: root://cms-xrd-transit.cern.ch:1094//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root?tried=+1098xrdcmsglobal011098xrdcmsglobal02.cern.ch,+1213xrootd.ba.infn.it,,xrootd.unl.edu\n      [h] Problematic data server: cms-xrd-transit.cern.ch:1094\n      [i] Disabled source: cms-xrd-transit.cern.ch:1094", 'exitCode': '8028'}]}, '49': {'State': 'failed', 'Error': [90000, "Got recoverable stageout exception:\nStageout failed with code 1.\nThere were 2 failed/killed stageout jobs.\nFailure reasons (per document) follow:\n- 9692cf782528e0d5448af1f1966263085afdbab00b056a9c73f9f7c3:\n  -----> ASO log start -----\n  ['SOURCE Failed to get source file size: Error reported from srm_ifce : 2 [SE][Ls][SRM_INVALID_PATH] No such file or directory.']\n  <----- ASO log finish ----\n  The last failure reason is recoverable.\n- 4ec835baf0a4c557e531b04d5129a9a8d777bd398b30196645d6ba14:\n  -----> ASO log start -----\n  ['SOURCE Failed to get source file size: Error reported from srm_ifce : 2 [SE][Ls][SRM_INVALID_PATH] No such file or directory.']\n  <----- ASO log finish ----\n  The last failure reason is recoverable.", {}]}, '46': {'State': 'running'}, '23': {'State': 'finished'}, '44': {'State': 'finished'}, '45': {'State': 'failed', 'Error': [50660, 'Not retrying job due to excessive memory use (job automatically killed on the worker node)', {}]}, '42': {'State': 'finished'}, '29': {'State': 'finished'}, '40': {'State': 'finished'}, '41': {'State': 'finished'}, '1': {'State': 'finished'}, '35': {'State': 'finished'}, '3': {'State': 'finished'}, '2': {'State': 'finished'}, '5': {'State': 'finished'}, '4': {'State': 'finished'}, '7': {'State': 'finished'}, '6': {'State': 'finished'}, '9': {'State': 'finished'}, '8': {'State': 'finished'}, '32': {'State': 'finished'}, '18': {'State': 'finished'}, '13': {'State': 'finished'}, '77': {'State': 'finished'}, '76': {'State': 'finished'}, '75': {'State': 'finished'}, '12': {'State': 'finished'}, '73': {'State': 'failed', 'Error': [50660, 'Not retrying job due to excessive memory use (job automatically killed on the worker node)', {}]}, '72': {'State': 'finished'}, '71': {'State': 'finished'}, '70': {'State': 'failed', 'Error': [50660, 'Not retrying job due to excessive memory use (job automatically killed on the worker node)', {}]}, '15': {'State': 'finished'}, '79': {'State': 'finished'}, '78': {'State': 'finished'}, '11': {'State': 'finished'}, '10': {'State': 'finished'}, '39': {'State': 'finished'}, '38': {'State': 'finished'}, '59': {'State': 'finished'}, '22': {'State': 'finished'}, '14': {'State': 'running'}, '16': {'State': 'failed', 'Error': [135, 'CmsRunFailure', {}]}, '19': {'State': 'finished'}, '54': {'State': 'finished'}, '31': {'State': 'failed', 'Error': [135, 'CmsRunFailure', {}]}, '56': {'State': 'finished'}, '51': {'State': 'finished'}, '36': {'State': 'finished'}, '53': {'State': 'finished'}, '52': {'State': 'finished'}, '33': {'State': 'finished'}, '55': {'State': 'finished'}, '74': {'State': 'finished'}, '37': {'State': 'finished'}, '47': {'State': 'finished'}, '17': {'State': 'finished'}, '57': {'State': 'finished'}, '50': {'State': 'failed', 'Error': [8001, "CmsRunFailure\nCMSSW error message follows.\nFatal Exception\nAn exception of category 'PluginLibraryLoadError' occurred while\n   [0] Constructing the EventProcessor\nException Message:\nunable to load /cvmfs/cms.cern.ch/slc6_amd64_gcc530/cms/cmssw/CMSSW_8_0_11/lib/slc6_amd64_gcc530/pluginHLTriggerTimerPlugins.so because /cvmfs/cms.cern.ch/slc6_amd64_gcc530/cms/cmssw/CMSSW_8_0_11/lib/slc6_amd64_gcc530/pluginHLTriggerTimerPlugins.so: cannot open shared object file: Input/output error\n", {'type': 'Fatal Exception', 'details': "An exception of category 'PluginLibraryLoadError' occurred while\n   [0] Constructing the EventProcessor\nException Message:\nunable to load /cvmfs/cms.cern.ch/slc6_amd64_gcc530/cms/cmssw/CMSSW_8_0_11/lib/slc6_amd64_gcc530/pluginHLTriggerTimerPlugins.so because /cvmfs/cms.cern.ch/slc6_amd64_gcc530/cms/cmssw/CMSSW_8_0_11/lib/slc6_amd64_gcc530/pluginHLTriggerTimerPlugins.so: cannot open shared object file: Input/output error", 'exitCode': '8001'}]}}, 'publication': {'disabled': []}, 'taskWarningMsg': [], 'schedd': 'crab3-4@vocms066.cern.ch', 'publicationFailures': {}, 'outdatasets': None, 'statusFailureMsg': '', 'taskFailureMsg': '', 'failedJobdefs': 0, 'ASOURL': 'https://cmsweb.cern.ch/couchdb2', 'command': 'SUBMIT', 'totalJobdefs': 0, 'submissionTime': 1470411503, 'jobdefErrors': [], 'collector': 'cmsgwms-collector-global.cern.ch,cmssrv221.fnal.gov', 'jobList': [['finished', 56], ['finished', 77], ['finished', 54], ['finished', 42], ['failed', 48], ['finished', 60], ['finished', 61], ['finished', 62], ['finished', 63], ['finished', 64], ['failed', 49], ['running', 66], ['finished', 67], ['failed', 68], ['finished', 69], ['finished', 80], ['finished', 52], ['finished', 53], ['finished', 24], ['failed', 25], ['finished', 26], ['finished', 27], ['running', 20], ['failed', 21], ['finished', 22], ['finished', 23], ['running', 46], ['finished', 47], ['finished', 44], ['failed', 45], ['finished', 28], ['finished', 29], ['finished', 40], ['finished', 41], ['finished', 1], ['finished', 3], ['finished', 2], ['finished', 5], ['finished', 4], ['finished', 7], ['finished', 6], ['finished', 9], ['finished', 8], ['finished', 78], ['finished', 51], ['finished', 43], ['finished', 39], ['finished', 65], ['finished', 76], ['finished', 75], ['finished', 38], ['failed', 73], ['finished', 72], ['finished', 71], ['failed', 70], ['finished', 59], ['finished', 79], ['finished', 58], ['finished', 11], ['finished', 10], ['finished', 13], ['finished', 12], ['finished', 15], ['running', 14], ['finished', 17], ['failed', 16], ['finished', 19], ['finished', 18], ['failed', 31], ['finished', 30], ['finished', 37], ['finished', 36], ['finished', 35], ['finished', 34], ['finished', 33], ['finished', 55], ['finished', 74], ['finished', 32], ['finished', 57], ['failed', 50]]}
+INFO 2016-08-06 13:38:22,687: 	 CRAB project directory:		/afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11/src/bbtoDijet/CRAB/crab_test_bbtoDijetV11_HLT/crab_bbtoDijetV11_HLT
+INFO 2016-08-06 13:38:22,687: 	 Task name:			160805_153822:aavkhadi_crab_bbtoDijetV11_HLT
+INFO 2016-08-06 13:38:22,687: 	 Grid scheduler:			crab3-4@vocms066.cern.ch
+INFO 2016-08-06 13:38:22,687: 	 Task status:			SUBMITTED
+INFO 2016-08-06 13:38:22,687: 	 Dashboard monitoring URL:	http://dashb-cms-job.cern.ch/dashboard/templates/task-analysis/#user=aavkhadi&table=Mains&pattern=160805_153822%3Aaavkhadi_crab_bbtoDijetV11_HLT
+INFO 2016-08-06 13:38:22,687: 	 
+Jobs status:			failed         13.8% (11/80)
+INFO 2016-08-06 13:38:22,687: 	 				finished       81.2% (65/80)
+INFO 2016-08-06 13:38:22,687: 	 				running         5.0% ( 4/80)
+INFO 2016-08-06 13:38:22,688: 	 
+No publication information (publication has been disabled in the CRAB configuration file)
+INFO 2016-08-06 13:38:22,688: 	 
+Error Summary: (use crab status --verboseErrors for details about the errors)
+
+ 3 jobs failed with exit code 50660
+
+ 3 jobs failed with exit code 135
+
+ 2 jobs failed with exit code 139
+
+ 1 jobs failed in postprocessing step
+
+ 1 jobs failed with exit code 8028
+
+ 1 jobs failed with exit code 8001
+
+Have a look at https://twiki.cern.ch/twiki/bin/viewauth/CMSPublic/JobExitCodes for a description of the exit codes.
+INFO 2016-08-06 13:38:22,692: 	 Log file is /afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11/src/bbtoDijet/CRAB/crab_test_bbtoDijetV11_HLT/crab_bbtoDijetV11_HLT/crab.log
+DEBUG 2016-08-06 13:53:51,176: 	 Executing command: 'status'
+DEBUG 2016-08-06 13:53:51,177: 	 Found CRAB cache file /afs/cern.ch/user/a/aavkhadi/.crab3
+DEBUG 2016-08-06 13:53:51,187: 	 Checking credentials
+DEBUG 2016-08-06 13:53:51,187: 	 Found proxy file /tmp/x509up_u90315
+DEBUG 2016-08-06 13:53:51,187: 	 Getting proxy life time left
+DEBUG 2016-08-06 13:53:51,692: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u90315 -timeleft
+ output : 42246
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-06 13:53:52,199: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u90315 -actimeleft
+ output : 42244
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-06 13:53:52,199: 	 Proxy valid for 11:44:06 hours
+DEBUG 2016-08-06 13:53:52,310: 	 Executing : 
+ command : openssl x509 -in ~/.globus/usercert.pem -subject -noout
+ output : subject= /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=aavkhadi/CN=787760/CN=Artur Avkhadiev
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-06 13:53:52,310: 	 Checking credentials
+DEBUG 2016-08-06 13:53:52,310: 	 Found proxy file /tmp/x509up_u90315
+DEBUG 2016-08-06 13:53:52,310: 	 Getting proxy life time left
+DEBUG 2016-08-06 13:53:52,814: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u90315 -timeleft
+ output : 42245
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-06 13:53:53,321: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u90315 -actimeleft
+ output : 42243
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-06 13:53:53,321: 	 Proxy valid for 11:44:05 hours
+DEBUG 2016-08-06 13:53:53,641: 	 Registering user credentials for server /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0118a|0119|0108).cern.ch
+DEBUG 2016-08-06 13:53:53,748: 	 Executing : 
+ command : openssl x509 -in ~/.globus/usercert.pem -subject -noout
+ output : subject= /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=aavkhadi/CN=787760/CN=Artur Avkhadiev
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-06 13:53:53,748: 	 Getting myproxy life time left for myproxy.cern.ch
+DEBUG 2016-08-06 13:53:53,748: 	 Calculating hash of /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=aavkhadi/CN=787760/CN=Artur Avkhadiev_cmsweb.cern.ch for credential name
+DEBUG 2016-08-06 13:53:54,352: 	 Executing : 
+ command : myproxy-info -l af506bb0adced5c04d0edc26b15a795e17202015 -s myproxy.cern.ch
+ output : username: af506bb0adced5c04d0edc26b15a795e17202015
+owner: /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=aavkhadi/CN=787760/CN=Artur Avkhadiev
+  renewal policy: /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0118a|0119|0108).cern.ch
+  trusted retrieval policy: /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0118a|0119|0108).cern.ch
+  timeleft: 427:56:16  (17.8 days)
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-06 13:53:54,353: 	 Myproxy is valid: 1540576
+DEBUG 2016-08-06 13:53:54,353: 	 Command use: status
+DEBUG 2016-08-06 13:53:54,353: 	 Options use: []
+DEBUG 2016-08-06 13:53:54,671: 	 CRABClient version: 3.3.1607.patch2
+DEBUG 2016-08-06 13:53:54,671: 	 Instance is prod
+DEBUG 2016-08-06 13:53:54,671: 	 Server base url is cmsweb.cern.ch
+DEBUG 2016-08-06 13:53:54,671: 	 Command url /crabserver/prod/workflow
+DEBUG 2016-08-06 13:53:54,671: 	 Looking up detailed status of task 160805_153822:aavkhadi_crab_bbtoDijetV11_HLT
+DEBUG 2016-08-06 13:53:56,503: 	 {'status': 'SUBMITTED', 'username': 'aavkhadi', 'jobsPerStatus': {'failed': 11, 'finished': 65, 'running': 4}, 'jobs': {'58': {'State': 'finished'}, '30': {'State': 'finished'}, '28': {'State': 'finished'}, '43': {'State': 'finished'}, '60': {'State': 'finished'}, '61': {'State': 'finished'}, '62': {'State': 'finished'}, '63': {'State': 'finished'}, '64': {'State': 'finished'}, '65': {'State': 'finished'}, '66': {'State': 'running'}, '67': {'State': 'finished'}, '68': {'State': 'failed', 'Error': [139, 'CmsRunFailure', {}]}, '69': {'State': 'finished'}, '80': {'State': 'finished'}, '34': {'State': 'finished'}, '24': {'State': 'finished'}, '25': {'State': 'failed', 'Error': [135, 'CmsRunFailure', {}]}, '26': {'State': 'finished'}, '27': {'State': 'finished'}, '20': {'State': 'running'}, '21': {'State': 'failed', 'Error': [139, 'CmsRunFailure', {}]}, '48': {'State': 'failed', 'Error': [8028, "CmsRunFailure\nCMSSW error message follows.\nFatal Exception\nAn exception of category 'FallbackFileOpenError' occurred while\n   [0] Constructing the EventProcessor\n   [1] Constructing input source of type PoolSource\n   [2] Calling RootFileSequenceBase::initTheFile()\n   [3] Calling StorageFactory::open()\n   [4] Calling XrdFile::open()\nException Message:\nFailed to open the file 'root://xrootd-cms.infn.it//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root'\n   Additional Info:\n      [a] XrdCl::File::Open(name='root://eoscms.cern.ch//eos/cms/store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root', flags=0x10, permissions=0660) => error '[ERROR] Server responded with an error: [3005] Unable to open file /eos/cms/store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root; Success\n' (errno=3005, code=400). No additional data servers were found.\n      [b] Last URL tried: root://eoscms.cern.ch:1094//eos/cms/store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root?tried=\n      [c] Problematic data server: eoscms.cern.ch:1094\n      [d] Disabled source: eoscms.cern.ch:1094\n      [e] Input file root://eoscms.cern.ch//eos/cms/store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root could not be opened.\nFallback Input file root://xrootd-cms.infn.it//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root also could not be opened.\nOriginal exception info is above; fallback exception info is below.\n      [f] XrdCl::File::Open(name='root://xrootd-cms.infn.it//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root', flags=0x10, permissions=0660) => error '[ERROR] Server responded with an error: [3011] No servers are available to read the file.\n' (errno=3011, code=400). No additional data servers were found.\n      [g] Last URL tried: root://cms-xrd-transit.cern.ch:1094//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root?tried=+1098xrdcmsglobal011098xrdcmsglobal02.cern.ch,+1213xrootd.ba.infn.it,,xrootd.unl.edu\n      [h] Problematic data server: cms-xrd-transit.cern.ch:1094\n      [i] Disabled source: cms-xrd-transit.cern.ch:1094\n", {'type': 'Fatal Exception', 'details': "An exception of category 'FallbackFileOpenError' occurred while\n   [0] Constructing the EventProcessor\n   [1] Constructing input source of type PoolSource\n   [2] Calling RootFileSequenceBase::initTheFile()\n   [3] Calling StorageFactory::open()\n   [4] Calling XrdFile::open()\nException Message:\nFailed to open the file 'root://xrootd-cms.infn.it//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root'\n   Additional Info:\n      [a] XrdCl::File::Open(name='root://eoscms.cern.ch//eos/cms/store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root', flags=0x10, permissions=0660) => error '[ERROR] Server responded with an error: [3005] Unable to open file /eos/cms/store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root; Success\n' (errno=3005, code=400). No additional data servers were found.\n      [b] Last URL tried: root://eoscms.cern.ch:1094//eos/cms/store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root?tried=\n      [c] Problematic data server: eoscms.cern.ch:1094\n      [d] Disabled source: eoscms.cern.ch:1094\n      [e] Input file root://eoscms.cern.ch//eos/cms/store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root could not be opened.\nFallback Input file root://xrootd-cms.infn.it//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root also could not be opened.\nOriginal exception info is above; fallback exception info is below.\n      [f] XrdCl::File::Open(name='root://xrootd-cms.infn.it//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root', flags=0x10, permissions=0660) => error '[ERROR] Server responded with an error: [3011] No servers are available to read the file.\n' (errno=3011, code=400). No additional data servers were found.\n      [g] Last URL tried: root://cms-xrd-transit.cern.ch:1094//store/data/Run2016B/HLTPhysics/RAW/v2/000/274/998/00000/58390591-4532-E611-847B-02163E0137BF.root?tried=+1098xrdcmsglobal011098xrdcmsglobal02.cern.ch,+1213xrootd.ba.infn.it,,xrootd.unl.edu\n      [h] Problematic data server: cms-xrd-transit.cern.ch:1094\n      [i] Disabled source: cms-xrd-transit.cern.ch:1094", 'exitCode': '8028'}]}, '49': {'State': 'failed', 'Error': [90000, "Got recoverable stageout exception:\nStageout failed with code 1.\nThere were 2 failed/killed stageout jobs.\nFailure reasons (per document) follow:\n- 9692cf782528e0d5448af1f1966263085afdbab00b056a9c73f9f7c3:\n  -----> ASO log start -----\n  ['SOURCE Failed to get source file size: Error reported from srm_ifce : 2 [SE][Ls][SRM_INVALID_PATH] No such file or directory.']\n  <----- ASO log finish ----\n  The last failure reason is recoverable.\n- 4ec835baf0a4c557e531b04d5129a9a8d777bd398b30196645d6ba14:\n  -----> ASO log start -----\n  ['SOURCE Failed to get source file size: Error reported from srm_ifce : 2 [SE][Ls][SRM_INVALID_PATH] No such file or directory.']\n  <----- ASO log finish ----\n  The last failure reason is recoverable.", {}]}, '46': {'State': 'running'}, '23': {'State': 'finished'}, '44': {'State': 'finished'}, '45': {'State': 'failed', 'Error': [50660, 'Not retrying job due to excessive memory use (job automatically killed on the worker node)', {}]}, '42': {'State': 'finished'}, '29': {'State': 'finished'}, '40': {'State': 'finished'}, '41': {'State': 'finished'}, '1': {'State': 'finished'}, '35': {'State': 'finished'}, '3': {'State': 'finished'}, '2': {'State': 'finished'}, '5': {'State': 'finished'}, '4': {'State': 'finished'}, '7': {'State': 'finished'}, '6': {'State': 'finished'}, '9': {'State': 'finished'}, '8': {'State': 'finished'}, '32': {'State': 'finished'}, '18': {'State': 'finished'}, '13': {'State': 'finished'}, '77': {'State': 'finished'}, '76': {'State': 'finished'}, '75': {'State': 'finished'}, '12': {'State': 'finished'}, '73': {'State': 'failed', 'Error': [50660, 'Not retrying job due to excessive memory use (job automatically killed on the worker node)', {}]}, '72': {'State': 'finished'}, '71': {'State': 'finished'}, '70': {'State': 'failed', 'Error': [50660, 'Not retrying job due to excessive memory use (job automatically killed on the worker node)', {}]}, '15': {'State': 'finished'}, '79': {'State': 'finished'}, '78': {'State': 'finished'}, '11': {'State': 'finished'}, '10': {'State': 'finished'}, '39': {'State': 'finished'}, '38': {'State': 'finished'}, '59': {'State': 'finished'}, '22': {'State': 'finished'}, '14': {'State': 'running'}, '16': {'State': 'failed', 'Error': [135, 'CmsRunFailure', {}]}, '19': {'State': 'finished'}, '54': {'State': 'finished'}, '31': {'State': 'failed', 'Error': [135, 'CmsRunFailure', {}]}, '56': {'State': 'finished'}, '51': {'State': 'finished'}, '36': {'State': 'finished'}, '53': {'State': 'finished'}, '52': {'State': 'finished'}, '33': {'State': 'finished'}, '55': {'State': 'finished'}, '74': {'State': 'finished'}, '37': {'State': 'finished'}, '47': {'State': 'finished'}, '17': {'State': 'finished'}, '57': {'State': 'finished'}, '50': {'State': 'failed', 'Error': [8001, "CmsRunFailure\nCMSSW error message follows.\nFatal Exception\nAn exception of category 'PluginLibraryLoadError' occurred while\n   [0] Constructing the EventProcessor\nException Message:\nunable to load /cvmfs/cms.cern.ch/slc6_amd64_gcc530/cms/cmssw/CMSSW_8_0_11/lib/slc6_amd64_gcc530/pluginHLTriggerTimerPlugins.so because /cvmfs/cms.cern.ch/slc6_amd64_gcc530/cms/cmssw/CMSSW_8_0_11/lib/slc6_amd64_gcc530/pluginHLTriggerTimerPlugins.so: cannot open shared object file: Input/output error\n", {'type': 'Fatal Exception', 'details': "An exception of category 'PluginLibraryLoadError' occurred while\n   [0] Constructing the EventProcessor\nException Message:\nunable to load /cvmfs/cms.cern.ch/slc6_amd64_gcc530/cms/cmssw/CMSSW_8_0_11/lib/slc6_amd64_gcc530/pluginHLTriggerTimerPlugins.so because /cvmfs/cms.cern.ch/slc6_amd64_gcc530/cms/cmssw/CMSSW_8_0_11/lib/slc6_amd64_gcc530/pluginHLTriggerTimerPlugins.so: cannot open shared object file: Input/output error", 'exitCode': '8001'}]}}, 'publication': {'disabled': []}, 'taskWarningMsg': [], 'schedd': 'crab3-4@vocms066.cern.ch', 'publicationFailures': {}, 'outdatasets': None, 'statusFailureMsg': '', 'taskFailureMsg': '', 'failedJobdefs': 0, 'ASOURL': 'https://cmsweb.cern.ch/couchdb2', 'command': 'SUBMIT', 'totalJobdefs': 0, 'submissionTime': 1470411503, 'jobdefErrors': [], 'collector': 'cmsgwms-collector-global.cern.ch,cmssrv221.fnal.gov', 'jobList': [['finished', 56], ['finished', 77], ['finished', 54], ['finished', 42], ['failed', 48], ['finished', 60], ['finished', 61], ['finished', 62], ['finished', 63], ['finished', 64], ['failed', 49], ['running', 66], ['finished', 67], ['failed', 68], ['finished', 69], ['finished', 80], ['finished', 52], ['finished', 53], ['finished', 24], ['failed', 25], ['finished', 26], ['finished', 27], ['running', 20], ['failed', 21], ['finished', 22], ['finished', 23], ['running', 46], ['finished', 47], ['finished', 44], ['failed', 45], ['finished', 28], ['finished', 29], ['finished', 40], ['finished', 41], ['finished', 1], ['finished', 3], ['finished', 2], ['finished', 5], ['finished', 4], ['finished', 7], ['finished', 6], ['finished', 9], ['finished', 8], ['finished', 78], ['finished', 51], ['finished', 43], ['finished', 39], ['finished', 65], ['finished', 76], ['finished', 75], ['finished', 38], ['failed', 73], ['finished', 72], ['finished', 71], ['failed', 70], ['finished', 59], ['finished', 79], ['finished', 58], ['finished', 11], ['finished', 10], ['finished', 13], ['finished', 12], ['finished', 15], ['running', 14], ['finished', 17], ['failed', 16], ['finished', 19], ['finished', 18], ['failed', 31], ['finished', 30], ['finished', 37], ['finished', 36], ['finished', 35], ['finished', 34], ['finished', 33], ['finished', 55], ['finished', 74], ['finished', 32], ['finished', 57], ['failed', 50]]}
+INFO 2016-08-06 13:53:56,503: 	 CRAB project directory:		/afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11/src/bbtoDijet/CRAB/crab_test_bbtoDijetV11_HLT/crab_bbtoDijetV11_HLT
+INFO 2016-08-06 13:53:56,503: 	 Task name:			160805_153822:aavkhadi_crab_bbtoDijetV11_HLT
+INFO 2016-08-06 13:53:56,503: 	 Grid scheduler:			crab3-4@vocms066.cern.ch
+INFO 2016-08-06 13:53:56,503: 	 Task status:			SUBMITTED
+INFO 2016-08-06 13:53:56,503: 	 Dashboard monitoring URL:	http://dashb-cms-job.cern.ch/dashboard/templates/task-analysis/#user=aavkhadi&table=Mains&pattern=160805_153822%3Aaavkhadi_crab_bbtoDijetV11_HLT
+INFO 2016-08-06 13:53:56,504: 	 
+Jobs status:			failed         13.8% (11/80)
+INFO 2016-08-06 13:53:56,504: 	 				finished       81.2% (65/80)
+INFO 2016-08-06 13:53:56,504: 	 				running         5.0% ( 4/80)
+INFO 2016-08-06 13:53:56,504: 	 
+No publication information (publication has been disabled in the CRAB configuration file)
+INFO 2016-08-06 13:53:56,504: 	 
+Error Summary: (use crab status --verboseErrors for details about the errors)
+
+ 3 jobs failed with exit code 50660
+
+ 3 jobs failed with exit code 135
+
+ 2 jobs failed with exit code 139
+
+ 1 jobs failed in postprocessing step
+
+ 1 jobs failed with exit code 8028
+
+ 1 jobs failed with exit code 8001
+
+Have a look at https://twiki.cern.ch/twiki/bin/viewauth/CMSPublic/JobExitCodes for a description of the exit codes.
+INFO 2016-08-06 13:53:56,506: 	 Log file is /afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11/src/bbtoDijet/CRAB/crab_test_bbtoDijetV11_HLT/crab_bbtoDijetV11_HLT/crab.log
