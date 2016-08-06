@@ -58,8 +58,8 @@ TGraphAsymmErrors* makeEffGraph(TH1F* pass, TH1F* total, bool debug=false) {
 void runCorrHistos(std::vector<TString> infileNames)
 {
 
-  const char * tagName   = "HLT_DoubleJetsC100_DoubleBTagCSV_p026_DoublePFJetsC160_v2";
-  const char * probeName = "HLT_DoubleJetsC100_p026_DoublePFJetsC160_v2"; 
+  const char * tagName   = "HLT_DoubleJetsC100_p014_DoublePFJetsC100MaxDeta1p6_v2" ;// "HLT_DoubleJetsC100_DoubleBTagCSV_p026_DoublePFJetsC160_v2";
+  const char * probeName = "HLT_DoubleJetsC100_DoubleBTagCSV_p014_DoublePFJetsC100MaxDeta1p6_v2" ;//"HLT_DoubleJetsC100_p026_DoublePFJetsC160_v2"; 
   TChain *chain = new TChain("bbtoDijet/efficiencyTree");
 
   // add input file names
@@ -79,8 +79,8 @@ void runCorrHistos(std::vector<TString> infileNames)
 
   // set of variables for 
   // trigger-related information
-  unsigned int passTrigger                             = 0      ;    chain->SetBranchAddress(tagName,                    &passTrigger)                  ;
-  unsigned int passControl                             = 0      ;    chain->SetBranchAddress(probeName,                  &passControl)                  ;
+  unsigned int passTrigger                             = 0      ;    chain->SetBranchAddress(probeName,                    &passTrigger)                ;
+  unsigned int passControl                             = 0      ;    chain->SetBranchAddress(tagName,                      &passControl)                ;
   // jet-related information 
   // CaloJet 
   int          caloJetCounter                          = 0      ;    chain->SetBranchAddress("caloJetCounter",           &caloJetCounter)               ;
@@ -175,9 +175,8 @@ void runCorrHistos(std::vector<TString> infileNames)
             }
 	}
 	if(minDeltaR[0] < 0.1) { 
-        correlationHisto1->Fill(maxCSVOnline[0], matchCSVOffline[0])    ;
-        // only want to consider a tight CSV cut -- adjust as necessary
-        if(maxCSVOnline[1] > 0.73){
+        correlationHisto1->Fill(maxCSVOnline[0], matchCSVOffline[0]) ;
+        if(passTrigger){
         correlationHistoPt->Fill(iMaxCSVOnline[0], iMaxCSVOnline[1]) ;
         }
     }
@@ -218,7 +217,7 @@ void makeCorrHistos()
 
   // "root://cmsxrootd.fnal.gov//store/user/aavkhadi/JetHT/bbtoDijetV11/hlt_bTagDijetV11.root"
   // specify output tree
-  filelist.push_back("/afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11/src/bbtoDijet/bbtoDijetAnalyzer/test/test_bTagDijetV11.root");
+  filelist.push_back("root://cmsxrootd.fnal.gov//store/user/aavkhadi/JetHT/bbtoDijetV11/hlt_bTagDijetV11.root");
 
   runCorrHistos(filelist);
 
