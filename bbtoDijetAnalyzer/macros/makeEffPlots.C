@@ -58,8 +58,8 @@ TGraphAsymmErrors* makeEffGraph(TH1F* pass, TH1F* total, bool debug=false) {
 void runEffPlots(std::vector<TString> infileNames)
 {
 
-  const char * tagName   = "HLT_DoubleJetsC100_p026_DoublePFJetsC160_v2";
-  const char * probeName = "HLT_DoubleJetsC100_DoubleBTagCSV_p026_DoublePFJetsC160_v2"; 
+  const char * tagName   = "HLT_DoubleJetsC100_p014_DoublePFJetsC100MaxDeta1p6_v2";
+  const char * probeName = "HLT_DoubleJetsC100_DoubleBTagCSV_p014_DoublePFJetsC100MaxDeta1p6_v2"; 
   TChain *chain = new TChain("bbtoDijet/efficiencyTree");
 
   // add input file names
@@ -107,11 +107,10 @@ void runEffPlots(std::vector<TString> infileNames)
   float        bTagCSVOffline[kMaxBTagCSVOffline]               ;    chain->SetBranchAddress("bTagCSVOffline",           &bTagCSVOffline)               ;
 
   // declare effPlot
-  TEfficiency * effPlot = new TEfficiency("eff", "Rate(Max, Submax Online CSV);Max Online CSV;Submax Online CSV;Rate", 15, 0.7, 1.0, 15, 0.7, 1.0);
+  TEfficiency * effPlot = new TEfficiency("eff", "Rate(Max, Submax Online CSV);Max Online CSV;Submax Online CSV;Rate", 100, 0, 1.0, 100, 0, 1.0);
   TH2F * passHisto    = new TH2F("passHisto",    "Pass p78;Max Online CSV;Submax Online CSV;Rate", 100, 0, 1.0, 100, 0, 1.0);
   TH2F * controlHisto = new TH2F("controlHisto", "Control p78;Max Online CSV;Submax Online CSV;Rate", 100, 0, 1.0, 100, 0, 1.0); 
   TH2F * missHisto = new TH2F("missHisto", "Miss p78;Max Online CSV;Submax Online CSV;Rate", 100, 0, 1.0, 100, 0, 1.0);
-  TH2F * badHisto = new TH2F("badHisto", "Bad p78;Max Online CSV;Submax Online CSV;Rate", 100, 0, 1.0, 100, 0, 1.0);
 
   // Loop over all jets in the event
   for(int ievent = 0; ievent < nevents; ievent++) {
@@ -136,28 +135,43 @@ void runEffPlots(std::vector<TString> infileNames)
   // ****************************************************************************************
     int iOrderedEt[bTagCSVOnlineJetCounter];
     TMath::Sort(bTagCSVOnlineJetCounter, bTagCSVOnlineJetEt, iOrderedEt); // output array of indices corresponding to the decreasing order of pt 
-    
+    int   njets                                 ;
     float maxCSVOnline[2]     = {-10.0, -10.0}  ;
     int   iMaxCSVOnline[2]    = {0, 0}          ;
-    // find max and submax online discriminants
-    for(int ijet = 0; ijet < bTagCSVOnlineJetCounter; ijet++) { 
-        if(maxCSVOnline[0] < bTagCSVOnline[iOrderedEt[ijet]]) {
-            iMaxCSVOnline[1] = iMaxCSVOnline[0]    ;
-            iMaxCSVOnline[0] = iOrderedEt[ijet]                ;
-            maxCSVOnline[1]  = maxCSVOnline[0]     ;
-            maxCSVOnline[0]  = bTagCSVOnline[iOrderedEt[ijet]] ;
-        }
-        else if(maxCSVOnline[1] < bTagCSVOnline[iOrderedEt[ijet]]){
-            iMaxCSVOnline[1] = iOrderedEt[ijet]                            ;
-            maxCSVOnline[1]  = bTagCSVOnline[iOrderedEt[ijet]]             ;
-        }
+    // want to only consider up to 6 highest Et jets to match online selection
+    if(bTagCSVOnlineJetCounter > 6){
+    	njets = 6;
     }
-	// debugging 
+    else{
+        njets = bTagCSVOnlineJetCounter;
+    }
+    // find max and submax online discriminants
+    // CSV tagger considers jets with Et > 30, CSV matcher considers jets with Et > 80. 
+    // to correct for bad input tag difference between CSV tagger and CSV matcher, enforce offline selection to 
+    // emulate the orrect online behaviour 
+    for(int ijet = 0; ijet < njets; ijet++) { 
+        if(bTagCSVOnlineJetEt[iOrderedEt[ijet]] > 80.0){
+            if(maxCSVOnline[0] < bTagCSVOnline[iOrderedEt[ijet]]) {
+                iMaxCSVOnline[1] = iMaxCSVOnline[0]    ;
+                iMaxCSVOnline[0] = iOrderedEt[ijet]                ;
+                maxCSVOnline[1]  = maxCSVOnline[0]     ;
+                maxCSVOnline[0]  = bTagCSVOnline[iOrderedEt[ijet]] ;
+            }
+            else if(maxCSVOnline[1] < bTagCSVOnline[iOrderedEt[ijet]]){
+                iMaxCSVOnline[1] = iOrderedEt[ijet]                            ;
+                maxCSVOnline[1]  = bTagCSVOnline[iOrderedEt[ijet]]             ;
+            }
+        }
+	else { break; }
+    }
+    // debugging 
     if(ievent % 100 == 0) { 
     printf("Max online = %4.2f, Submax online = %4.2f \n", maxCSVOnline[0], maxCSVOnline[1]);
     printf("index in decreasing Et: iMax = %d, iSubmax = %d \n", iMaxCSVOnline[0], iMaxCSVOnline[1]);  
     printf("corresponding Et: Max = %4.2f, Submax = %4.2f \n", bTagCSVOnlineJetEt[iMaxCSVOnline[0]], bTagCSVOnlineJetEt[iMaxCSVOnline[1]]);
     }
+    // current control (probe with CSV matcher disabled) allows jets with Et in (30.0, 80.0); 
+    // to obtain adequate behavior, the search for max CSV was corrected to match the CSV filter selection
     if(passControl){
         effPlot->Fill(passTrigger, maxCSVOnline[0], maxCSVOnline[1]);
 	controlHisto->Fill(maxCSVOnline[0], maxCSVOnline[1]);	      
@@ -165,12 +179,7 @@ void runEffPlots(std::vector<TString> infileNames)
 	   passHisto->Fill(maxCSVOnline[0], maxCSVOnline[1]);
 	}
 	else {
-	   if(bTagCSVOnlineJetEt[iMaxCSVOnline[1]] > 80.0 && bTagCSVOnlineJetEt[iMaxCSVOnline[0]] > 80.0 && iMaxCSVOnline[1] < 5 && iMaxCSVOnline[0] < 5){
-	     missHisto->Fill(maxCSVOnline[0], maxCSVOnline[1]);
-	   }
-	   else{
-	     badHisto->Fill(maxCSVOnline[0], maxCSVOnline[1]);
-	   }	
+	   missHisto->Fill(maxCSVOnline[0], maxCSVOnline[1]);
 	}
     }
   }
@@ -184,7 +193,6 @@ void runEffPlots(std::vector<TString> infileNames)
   controlHisto->Write();
   passHisto->Write();
   missHisto->Write();	  
-  badHisto->Write();	  
   outputFile.cd();
   outputFile.Close();
 
