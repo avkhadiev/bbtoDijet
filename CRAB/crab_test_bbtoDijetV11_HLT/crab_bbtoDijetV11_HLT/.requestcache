@@ -162,7 +162,7 @@ p63
 I-1
 sS'unitsPerJob'
 p64
-I9
+I2
 sg12
 S''
 sg13
@@ -227,7 +227,7 @@ S'hlt_bTagDijetV11_HLT.root'
 p85
 asS'numCores'
 p86
-I16
+I2
 sg12
 S''
 sg13
@@ -267,7 +267,7 @@ S'prod'
 p99
 sS'RequestName'
 p100
-S'160805_153822:aavkhadi_crab_bbtoDijetV11_HLT'
+S'160808_092618:aavkhadi_crab_bbtoDijetV11_HLT'
 p101
 sS'voRole'
 p102

@@ -23,11 +23,11 @@ config.General.transferLogs = True
 config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = 'hlt_bTagDijetV11_HLT.py'
 config.JobType.outputFiles = ['hlt_bTagDijetV11_HLT.root']
-config.JobType.numCores = 16
+config.JobType.numCores = 2
 # section Data
 config.Data.inputDataset = '/HLTPhysics/Run2016B-PromptReco-v2/AOD'
 config.Data.splitting = 'LumiBased'
-config.Data.unitsPerJob = 9  # use crab submit --dryrun *.py to find optimal splitting
+config.Data.unitsPerJob = 2  # use crab submit --dryrun *.py to find optimal splitting
 config.Data.secondaryInputDataset = '/HLTPhysics/Run2016B-v2/RAW'
 config.Data.lumiMask = 'https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions16/13TeV/Cert_271036-275125_13TeV_PromptReco_Collisions16_JSON.txt' # specifes good lumi sections to be used
 config.Data.totalUnits = -1 # analyze all events after applying the lumi mask

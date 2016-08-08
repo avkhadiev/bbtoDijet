@@ -9678,6 +9678,17 @@ process.hltTriggerType = cms.EDFilter("HLTTriggerTypeFilter",
 )
 
 
+process.bbtoDijet = cms.EDAnalyzer("bbtoDijetAnalyzer",
+    bTagCSVOffline = cms.InputTag("pfCombinedSecondaryVertexV2BJetTags"),
+    bTagCSVOnline = cms.InputTag("hltCombinedSecondaryVertexBJetTagsCalo"),
+    caloJets = cms.InputTag("ak4CaloJets","","RECO"),
+    pfJets = cms.InputTag("ak4PFJets","","RECO"),
+    processName = cms.string('TEST'),
+    triggerEvent = cms.InputTag("hltTriggerSummaryAOD","","TEST"),
+    triggerResults = cms.InputTag("TriggerResults","","TEST")
+)
+
+
 process.hltGetConditions = cms.EDAnalyzer("EventSetupRecordDataGetter",
     toGet = cms.VPSet(),
     verbose = cms.untracked.bool(False)
@@ -9875,6 +9886,9 @@ process.HLTriggerFinalPath = cms.Path(process.SimL1Emulator+process.hltGtStage2D
 process.HLTBitAnalysisEndpath = cms.EndPath(process.SimL1Emulator+process.hltbitanalysis)
 
 
+process.bbtoDijetAnalyzer = cms.EndPath(process.SimL1Emulator+process.bbtoDijet)
+
+
 process.DQMStore = cms.Service("DQMStore",
     LSbasedMode = cms.untracked.bool(False),
     collateHistograms = cms.untracked.bool(False),
@@ -10043,6 +10057,11 @@ process.MessageLogger = cms.Service("MessageLogger",
         suppressWarning = cms.untracked.vstring(),
         threshold = cms.untracked.string('INFO')
     )
+)
+
+
+process.TFileService = cms.Service("TFileService",
+    fileName = cms.string('hlt_bTagDijetV11_HLT.root')
 )
 
 
