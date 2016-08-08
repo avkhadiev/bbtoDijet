@@ -235,6 +235,7 @@ void runEffPlots(std::vector<TString> infileNames)
   outputFile.cd();
   // correlations 
   outputFile.mkdir("correlations");
+  outputFile.cd("correlations");
   corrHisto1->Write();
   corrHisto2->Write();
   corrHistoPt->Write();
@@ -273,11 +274,12 @@ void runEffPlots(std::vector<TString> infileNames)
   corrHisto1->SetMinimum(zMin)                    ;
   corrHisto1->Draw("COLZ")                        ;
   c->SaveAs("corr_1_CSVp84.pdf")                  ;
-  zMin = ceil(0.00001  * corrHisto2->GetEntries()); 
+  zMin = ceil(0.00005  * corrHisto2->GetEntries()); 
   corrHisto2->SetMinimum(zMin)                    ;
   corrHisto2->Draw("COLZ")                        ;
   c->SaveAs("corr_2_CSVp84.pdf")                  ;
   c->SetGrid(5, 5)                                ;
+  gStyle->SetOptStat()                            ;
   corrHistoPt->SetMarkerSize(1.2)                 ;
   corrHistoPt->SetMarkerColor(2)                  ;
   corrHistoPt->Draw("TEXT")                       ;
