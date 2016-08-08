@@ -18,6 +18,10 @@ process.hltbitanalysis.RunParameters.HistogramFile = cms.untracked.string('hlt_b
 process.hltbitanalysis.RunParameters.isData = cms.untracked.bool(True)
 process.HLTBitAnalysisEndpath = cms.EndPath( process.hltbitanalysis )
 
+# load the trigger plugin
+process.load("bbtoDijet.bbtoDijetAnalyzer.bbtoDijetAnalyzer_cfi")
+process.bbtoDijetAnalyzer = cms.EndPath(process.bbtoDijet)
+
 process.HLTConfigVersion = cms.PSet(
   tableName = cms.string('/users/aavkhadi/bTagDijet/V11')
 )
@@ -5519,7 +5523,7 @@ process.HLT_DoubleJetsC100_DoubleBTagCSV_p014_DoublePFJetsC100MaxDeta1p6_v2 = cm
 process.HLTriggerFinalPath = cms.Path( process.hltGtStage2Digis + process.hltScalersRawToDigi + process.hltFEDSelector + process.hltTriggerSummaryAOD + process.hltTriggerSummaryRAW + process.hltBoolFalse )
 
 
-process.HLTSchedule = cms.Schedule( *(process.HLTriggerFirstPath, process.HLT_DoubleJetsC100_p026_DoublePFJetsC160_v2, process.HLT_DoubleJetsC100_p014_DoublePFJetsC100MaxDeta1p6_v2, process.HLT_DoubleJetsC100_DoubleBTagCSV_p026_DoublePFJetsC160_v2, process.HLT_DoubleJetsC100_DoubleBTagCSV_p014_DoublePFJetsC100MaxDeta1p6_v2, process.HLTriggerFinalPath, process.HLTBitAnalysisEndpath ))
+process.HLTSchedule = cms.Schedule( *(process.HLTriggerFirstPath, process.HLT_DoubleJetsC100_p026_DoublePFJetsC160_v2, process.HLT_DoubleJetsC100_p014_DoublePFJetsC100MaxDeta1p6_v2, process.HLT_DoubleJetsC100_DoubleBTagCSV_p026_DoublePFJetsC160_v2, process.HLT_DoubleJetsC100_DoubleBTagCSV_p014_DoublePFJetsC100MaxDeta1p6_v2, process.HLTriggerFinalPath, process.HLTBitAnalysisEndpath, process.bbtoDijetAnalyzer ))
 
 
 process.source = cms.Source( "PoolSource",
@@ -5669,3 +5673,8 @@ process = customizeHLTforAll(process,"GRun",_customInfo)
 
 from HLTrigger.Configuration.customizeHLTforCMSSW import customizeHLTforCMSSW
 process = customizeHLTforCMSSW(process,"GRun")
+
+# loading TFileService for using the plugin
+process.TFileService = cms.Service("TFileService",
+    fileName = cms.string('hlt_bTagDijetV11_HLT.root')
+)
