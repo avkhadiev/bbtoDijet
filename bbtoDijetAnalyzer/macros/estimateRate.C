@@ -17,16 +17,22 @@
 void makeGraph(std::vector<TString> infileNames)
 {
 
-  const char * controlName   = "HLT_DoubleJetsC100_p014_DoublePFJetsC100MaxDeta1p6_v2";
+  const char * controlName   = "HLT_DoubleJetsC100_DoubleBTagCSV_p026_DoublePFJetsC160_v2";
   TChain *chain = new TChain("bbtoDijet/efficiencyTree");
+  TChain *l1info= new TChain("hltbitanalysis/HltTree");
 
   // add input file names
   for(const auto fname : infileNames) {
     chain->Add(fname);
+    l1info->Add(fname);
   }
 
   int nevents = chain->GetEntries();
+  int l1pass  = l1info->GetEntries("L1_DoubleJetC100==1");
+  float l1rate = 2893.2089;
+
   printf("Will process %d events\n",nevents);
+  printf("Of which %d pass L1 seed\n",l1pass);
 
   // array sizes
   const size_t kMaxTriggerPass     = 1000    ;
@@ -40,11 +46,12 @@ void makeGraph(std::vector<TString> infileNames)
   float        bTagCSVOnline[kMaxBTagCSVOnline]                 ;    chain->SetBranchAddress("bTagCSVOnline",            &bTagCSVOnline)                ;
 
   // declare histograms
-  TH2D * distributionCSV = new TH2D("distributionCSV", "Control p84;max online CSV;submax online CSV", 50, 0, 1, 50, 0, 1);
+  TH2D * distributionCSV = new TH2D("distributionCSV", "Control p84;max online CSV;submax online CSV", 20, 0, 1, 20, 0, 1);
       int xBins, yBins;
       xBins = distributionCSV->GetXaxis()->GetNbins();
       yBins = distributionCSV->GetYaxis()->GetNbins();
       printf("xBins = %d, yBins = %d \n", xBins, yBins);
+  int graphSize;
   graphSize = xBins * yBins;
   printf("declaring graph with size %d \n", graphSize); 
   TGraph2D * rateGraph  = new TGraph2D( graphSize);  
@@ -117,16 +124,16 @@ void makeGraph(std::vector<TString> infileNames)
   printf("CSV distribution built! \n Estimating rate now... \n");
 
   float xCoordinate, yCoordinate;
-  int value;
+  float value;
   int i = 0;
   for(int x = 1; x < xBins + 1; x++){
       for(int y = 1; y < yBins + 1; y++){
           xCoordinate = distributionCSV->GetXaxis()->GetBinLowEdge(x);
           yCoordinate = distributionCSV->GetYaxis()->GetBinLowEdge(y);
-          value = distributionCSV->Integral(x, xBins, y, yBins);
+          value = l1rate * (distributionCSV->Integral(x, xBins, y, yBins)) / l1pass ;
           // debugging 
           printf("xCoordinate is %4.2f, yCoordinate is %4.2f \n", xCoordinate, yCoordinate) ;
-          printf("Calculated integral yields %d \n", value) ;
+          printf("Calculated rate yields %f \n", value) ;
           rateGraph->SetPoint(i, xCoordinate, yCoordinate, value) ;
           i = ++i;
       }
@@ -141,21 +148,6 @@ void makeGraph(std::vector<TString> infileNames)
   rateGraph->Write();
   outputFile.cd();
   outputFile.Close();
-
-  // writing out pdfs
-  gStyle->SetOptStat(0)                           ;
-  gROOT->SetBatch()                               ;
-  gStyle->SetPadLeftMargin(0.1)                   ;
-  gStyle->SetPadRightMargin(0.15)                 ;
-  TCanvas *c = MakeCanvas("c","",800,800)         ;
-  // efficiencies
-  distributionCSV->GetXaxis()->SetRangeUser(0.5, 1)  ;
-  distributionCSV->GetYaxis()->SetRangeUser(0.5, 1)  ;
-  distributionCSV->Draw("COLZ")                   ;
-  c->SaveAs("distributionCSVp84.pdf")             ;
-  c->SetLeftMargin(1.5)                           ;
-  rateGraph->Draw("COLZ")                         ;
-  c->SaveAs("rate_CSVp84.pdf")                    ;
 }
 
 void estimateRate()
@@ -165,7 +157,7 @@ void estimateRate()
 
   // "root://cmsxrootd.fnal.gov//store/user/aavkhadi/JetHT/bbtoDijetV11/hlt_bTagDijetV11.root"
   // specify output tree
-  filelist.push_back("root://cmsxrootd.fnal.gov//store/user/aavkhadi/JetHT/bbtoDijetV11/160802_144131/0000/hlt_bTagDijetV11_983.root");
+  filelist.push_back("root://cmseos.fnal.gov//store/user/aavkhadi/HLTPhysics/bbtoDijetV11_HLT/hlt_bTagDijetV11_HLT.root");
 
   makeGraph(filelist);
 
