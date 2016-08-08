@@ -58,8 +58,8 @@ float deltaR(float eta1, float phi1, float eta2, float phi2)
 void runEffPlots(std::vector<TString> infileNames)
 {
 
-  const char * tagName   = "HLT_DoubleJetsC100_p014_DoublePFJetsC100MaxDeta1p6_v2";
-  const char * probeName = "HLT_DoubleJetsC100_DoubleBTagCSV_p014_DoublePFJetsC100MaxDeta1p6_v2"; 
+  const char * tagName   =  "HLT_DoubleJetsC100_p026_DoublePFJetsC160_v2" ;//"HLT_DoubleJetsC100_p014_DoublePFJetsC100MaxDeta1p6_v2";
+  const char * probeName =  "HLT_DoubleJetsC100_DoubleBTagCSV_p026_DoublePFJetsC160_v2" ;//"HLT_DoubleJetsC100_DoubleBTagCSV_p014_DoublePFJetsC100MaxDeta1p6_v2"; 
   TChain *chain = new TChain("bbtoDijet/efficiencyTree");
 
   // add input file names
@@ -108,13 +108,13 @@ void runEffPlots(std::vector<TString> infileNames)
 
   // declare histograms
   // online 
-  TEfficiency * effOn    = new TEfficiency("effOn",   "Efficiency(max, submax online CSV);Max online CSV;submax online CSV", 50, 0, 1.0, 50, 0, 1.0);
-  TH2F * passHistoOn     = new TH2F("passHistoOn",    "Passing p84;max online CSV;submax oline CSV", 50, 0, 1.0, 50, 0, 1.0);
-  TH2F * controlHistoOn  = new TH2F("controlHistoOn", "Control p84;max online CSV;submax online CSV", 50, 0, 1.0, 50, 0, 1.0); 
+  TEfficiency * effOn    = new TEfficiency("effOn",   "Efficiency(max, submax online CSV);Max online CSV;submax online CSV", 50, 0, 1.0, 50, 0, 1.0); 
+  TH2F * passHistoOn     = new TH2F("passHistoOn",    "Passing p78;max online CSV;submax oline CSV", 50, 0, 1.0, 50, 0, 1.0);
+  TH2F * controlHistoOn  = new TH2F("controlHistoOn", "Control p78;max online CSV;submax online CSV", 50, 0, 1.0, 50, 0, 1.0); 
   // offline
   TEfficiency * effOff   = new TEfficiency("effOff",   "Efficiency(offline CSV matching with max, submax Online CSV);offline CSV matching with max online CSV;offline CSV matching with submax online CSV", 50, 0, 1.0, 50, 0, 1.0);
-  TH2F * passHistoOff    = new TH2F("passHistoOff",    "Passing p84;offline CSV matching with max online CSV;offline CSV matching with submax online CSV", 50, 0, 1.0, 50, 0, 1.0);
-  TH2F * controlHistoOff = new TH2F("controlHistoOff", "Control p84;offline CSV matching with max online CSV;offline CSV matching with submax online CSV", 50, 0, 1.0, 50, 0, 1.0);
+  TH2F * passHistoOff    = new TH2F("passHistoOff",    "Passing p78;offline CSV matching with max online CSV;offline CSV matching with submax online CSV", 50, 0, 1.0, 50, 0, 1.0);
+  TH2F * controlHistoOff = new TH2F("controlHistoOff", "Control p78;offline CSV matching with max online CSV;offline CSV matching with submax online CSV", 50, 0, 1.0, 50, 0, 1.0);
   // efficiencies
   TH2D * corrHisto1      = new TH2D("corrHisto1",  "Offline vs. Online CSV [Max Online];max online CSV;matching offline CSV",       50, 0, 1, 50, 0, 1);
   TH2D * corrHisto2      = new TH2D("corrHisto2",  "Offline vs. Online CSV [Submax Online];submax online CSV;matching offline CSV", 50, 0, 1, 50, 0, 1);
@@ -251,39 +251,39 @@ void runEffPlots(std::vector<TString> infileNames)
   controlHistoOn->GetXaxis()->SetRangeUser(0.5, 1)  ;
   controlHistoOn->GetYaxis()->SetRangeUser(0.5, 1)  ;
   controlHistoOn->Draw("COLZ")                    ;
-  c->SaveAs("histo_on_control_p84.pdf")           ;
+  c->SaveAs("histo_on_control_p78.pdf")           ;
   controlHistoOff->GetXaxis()->SetRangeUser(0.5, 1) ;
   controlHistoOff->GetYaxis()->SetRangeUser(0.5, 1) ;
   controlHistoOff->Draw("COLZ")                   ;
-  c->SaveAs("histo_off_control_p84.pdf")          ;
-  passHistoOn->GetXaxis()->SetRangeUser(0.83, 1)  ;
-  passHistoOn->GetYaxis()->SetRangeUser(0.83, 1)  ;
+  c->SaveAs("histo_off_control_p78.pdf")          ;
+  passHistoOn->GetXaxis()->SetRangeUser(0.77, 1)  ;
+  passHistoOn->GetYaxis()->SetRangeUser(0.77, 1)  ;
   passHistoOn->Draw("COLZ")                       ;
-  c->SaveAs("histo_on_tagging_p84.pdf")           ;
-  passHistoOff->GetXaxis()->SetRangeUser(0.83, 1) ;
-  passHistoOff->GetYaxis()->SetRangeUser(0.83, 1) ;
+  c->SaveAs("histo_on_tagging_p78.pdf")           ;
+  passHistoOff->GetXaxis()->SetRangeUser(0.77, 1) ;
+  passHistoOff->GetYaxis()->SetRangeUser(0.77, 1) ;
   passHistoOff->Draw("COLZ")                      ;
-  c->SaveAs("histo_off_tagging_p84.pdf")          ;
+  c->SaveAs("histo_off_tagging_p78.pdf")          ;
   effOn->Draw("COLZ")                             ;
-  c->SaveAs("eff_on_CSVp84.pdf")                  ;
+  c->SaveAs("eff_on_CSVp78.pdf")                  ;
   effOff->Draw("COLZ")                             ;
-  c->SaveAs("eff_off_CSVp84.pdf")                  ;
+  c->SaveAs("eff_off_CSVp78.pdf")                  ;
   // correlations
   int zMin                                        ;
   zMin = ceil(0.0005 * corrHisto1->GetEntries())  ; 
   corrHisto1->SetMinimum(zMin)                    ;
   corrHisto1->Draw("COLZ")                        ;
-  c->SaveAs("corr_1_CSVp84.pdf")                  ;
+  c->SaveAs("corr_1_CSVp78.pdf")                  ;
   zMin = ceil(0.00005  * corrHisto2->GetEntries()); 
   corrHisto2->SetMinimum(zMin)                    ;
   corrHisto2->Draw("COLZ")                        ;
-  c->SaveAs("corr_2_CSVp84.pdf")                  ;
+  c->SaveAs("corr_2_CSVp78.pdf")                  ;
   c->SetGrid(5, 5)                                ;
   gStyle->SetOptStat()                            ;
   corrHistoPt->SetMarkerSize(1.2)                 ;
   corrHistoPt->SetMarkerColor(2)                  ;
   corrHistoPt->Draw("TEXT")                       ;
-  c->SaveAs("corr_ptIndex_CSVp84.pdf")            ;
+  c->SaveAs("corr_ptIndex_CSVp78.pdf")            ;
 }
 
 void makeEffPlots()

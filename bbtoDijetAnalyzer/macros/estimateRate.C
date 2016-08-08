@@ -41,12 +41,16 @@ void makeGraph(std::vector<TString> infileNames)
 
   // declare histograms
   TH2D * distributionCSV = new TH2D("distributionCSV", "Control p84;max online CSV;submax online CSV", 50, 0, 1, 50, 0, 1);
-      xBins = distribitionCSV->GetXaxis->GetNbins();
-      yBins = distributionCSV->GetYaxis->GetNbins();
+      int xBins, yBins;
+      xBins = distributionCSV->GetXaxis()->GetNbins();
+      yBins = distributionCSV->GetYaxis()->GetNbins();
       printf("xBins = %d, yBins = %d \n", xBins, yBins);
   graphSize = xBins * yBins;
   printf("declaring graph with size %d \n", graphSize); 
-  TGraph2D rateGraph  = new TGraph2D( graphSize);  
+  TGraph2D * rateGraph  = new TGraph2D( graphSize);  
+      rateGraph->SetName("rateGraph");
+      rateGraph->SetTitle("RateCSVp84(max, submax online CSV);max online CSV;submax online CSV");	
+
 
   // Loop over all jets in the event
   for(int ievent = 0; ievent < nevents; ievent++) {
@@ -105,7 +109,7 @@ void makeGraph(std::vector<TString> infileNames)
                 if(ievent % 1000 == 0) {
 	           printf("Filling histograms and plots \n");
 		}
-                distributionCSV->Fill(MaxCSVOnline[0], MaxCSVOnline[1]);		
+                distributionCSV->Fill(maxCSVOnline[0], maxCSVOnline[1]);		
 	}
      }
   }
@@ -115,11 +119,11 @@ void makeGraph(std::vector<TString> infileNames)
   float xCoordinate, yCoordinate;
   int value;
   int i = 0;
-  for(x = 0; x < xBins; x++){
-      for(y = 0; y < yBins; y ++{
-          xCoordinate = distribitionCSV->GetXaxis()->GetBinCenter(x);
-          yCoordinate = distributionCSV->GetYaxis()->GetBinCenter(y);
-          value = distibutionCSV->Integral(x, xBins-1, y, yBins - 1);
+  for(int x = 1; x < xBins + 1; x++){
+      for(int y = 1; y < yBins + 1; y++){
+          xCoordinate = distributionCSV->GetXaxis()->GetBinLowEdge(x);
+          yCoordinate = distributionCSV->GetYaxis()->GetBinLowEdge(y);
+          value = distributionCSV->Integral(x, xBins, y, yBins);
           // debugging 
           printf("xCoordinate is %4.2f, yCoordinate is %4.2f \n", xCoordinate, yCoordinate) ;
           printf("Calculated integral yields %d \n", value) ;
@@ -137,6 +141,21 @@ void makeGraph(std::vector<TString> infileNames)
   rateGraph->Write();
   outputFile.cd();
   outputFile.Close();
+
+  // writing out pdfs
+  gStyle->SetOptStat(0)                           ;
+  gROOT->SetBatch()                               ;
+  gStyle->SetPadLeftMargin(0.1)                   ;
+  gStyle->SetPadRightMargin(0.15)                 ;
+  TCanvas *c = MakeCanvas("c","",800,800)         ;
+  // efficiencies
+  distributionCSV->GetXaxis()->SetRangeUser(0.5, 1)  ;
+  distributionCSV->GetYaxis()->SetRangeUser(0.5, 1)  ;
+  distributionCSV->Draw("COLZ")                   ;
+  c->SaveAs("distributionCSVp84.pdf")             ;
+  c->SetLeftMargin(1.5)                           ;
+  rateGraph->Draw("COLZ")                         ;
+  c->SaveAs("rate_CSVp84.pdf")                    ;
 }
 
 void estimateRate()
@@ -146,7 +165,7 @@ void estimateRate()
 
   // "root://cmsxrootd.fnal.gov//store/user/aavkhadi/JetHT/bbtoDijetV11/hlt_bTagDijetV11.root"
   // specify output tree
-  filelist.push_back("root://cmsxrootd.fnal.gov//store/user/aavkhadi/JetHT/bbtoDijetV11/hlt_bTagDijetV11.root");
+  filelist.push_back("root://cmsxrootd.fnal.gov//store/user/aavkhadi/JetHT/bbtoDijetV11/160802_144131/0000/hlt_bTagDijetV11_983.root");
 
   makeGraph(filelist);
 
