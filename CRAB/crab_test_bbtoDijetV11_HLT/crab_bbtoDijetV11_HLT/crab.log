@@ -1,0 +1,154 @@
+L1T INFO:  L1REPACK:Full (intended for 2016 data) will unpack all L1T inputs, re-emulated (Stage-2), and pack uGT, uGMT, and Calo Stage-2 output.
+L1TCalorimeter Sequence configured for Stage-2 (2016) trigger. 
+L1TMuon Sequence configured for Stage-2 (2016) trigger. 
+L1TGlobal Sequence configured for Stage-2 (2016) trigger. 
+L1TCalorimeter Conditions configured for Stage-2 (2016) trigger. 
+L1TMuon Conditions configured for Stage-2 (2016) trigger. 
+L1TGlobal Conditions configured for Stage-2 (2016) trigger. 
+DEBUG 2016-08-08 11:26:01,460: 	 Executing command: 'submit'
+DEBUG 2016-08-08 11:26:01,461: 	 Found CRAB cache file /afs/cern.ch/user/a/aavkhadi/.crab3
+DEBUG 2016-08-08 11:26:01,497: 	 Checking credentials
+DEBUG 2016-08-08 11:26:01,497: 	 Found proxy file /tmp/x509up_u90315
+DEBUG 2016-08-08 11:26:01,497: 	 Getting proxy life time left
+DEBUG 2016-08-08 11:26:02,542: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u90315 -timeleft
+ output : 41531
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-08 11:26:03,358: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u90315 -actimeleft
+ output : 41530
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-08 11:26:03,358: 	 Proxy valid for 11:32:11 hours
+INFO 2016-08-08 11:26:03,358: 	 Will use CRAB configuration file crab_config_bTagDijetV11_HLT.py
+DEBUG 2016-08-08 11:26:03,358: 	 Loading CRAB configuration file.
+DEBUG 2016-08-08 11:26:06,470: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2016-08-08 11:26:06,589: 	 Executing : 
+ command : openssl x509 -in ~/.globus/usercert.pem -subject -noout
+ output : subject= /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=aavkhadi/CN=787760/CN=Artur Avkhadiev
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-08 11:26:06,589: 	 Checking credentials
+DEBUG 2016-08-08 11:26:06,589: 	 Found proxy file /tmp/x509up_u90315
+DEBUG 2016-08-08 11:26:06,589: 	 Getting proxy life time left
+DEBUG 2016-08-08 11:26:07,300: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u90315 -timeleft
+ output : 41526
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-08 11:26:07,910: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u90315 -actimeleft
+ output : 41526
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-08 11:26:07,910: 	 Proxy valid for 11:32:06 hours
+DEBUG 2016-08-08 11:26:08,717: 	 Executing : 
+ command : env X509_USER_PROXY=/tmp/x509up_u90315 voms-proxy-info -fqan
+ output : /cms/Role=NULL/Capability=NULL
+/cms/uscms/Role=NULL/Capability=NULL
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-08 11:26:09,099: 	 Registering user credentials for server /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0118a|0119|0108).cern.ch
+DEBUG 2016-08-08 11:26:09,221: 	 Executing : 
+ command : openssl x509 -in ~/.globus/usercert.pem -subject -noout
+ output : subject= /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=aavkhadi/CN=787760/CN=Artur Avkhadiev
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-08 11:26:09,221: 	 Getting myproxy life time left for myproxy.cern.ch
+DEBUG 2016-08-08 11:26:09,221: 	 Calculating hash of /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=aavkhadi/CN=787760/CN=Artur Avkhadiev_cmsweb.cern.ch for credential name
+DEBUG 2016-08-08 11:26:09,727: 	 Executing : 
+ command : myproxy-info -l af506bb0adced5c04d0edc26b15a795e17202015 -s myproxy.cern.ch
+ output : username: af506bb0adced5c04d0edc26b15a795e17202015
+owner: /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=aavkhadi/CN=787760/CN=Artur Avkhadiev
+  renewal policy: /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0118a|0119|0108).cern.ch
+  trusted retrieval policy: /DC=ch/DC=cern/OU=computers/CN=vocms(045|052|021|031|0118|0118a|0119|0108).cern.ch
+  timeleft: 382:24:01  (15.9 days)
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-08 11:26:09,728: 	 Myproxy is valid: 1376641
+DEBUG 2016-08-08 11:26:09,729: 	 Command use: submit
+DEBUG 2016-08-08 11:26:09,729: 	 Options use: ['-c', 'crab_config_bTagDijetV11_HLT.py']
+DEBUG 2016-08-08 11:26:10,174: 	 CRABClient version: 3.3.1607.patch2
+DEBUG 2016-08-08 11:26:10,174: 	 Instance is prod
+DEBUG 2016-08-08 11:26:10,174: 	 Server base url is cmsweb.cern.ch
+DEBUG 2016-08-08 11:26:10,174: 	 Command url /crabserver/prod/workflow
+DEBUG 2016-08-08 11:26:10,175: 	 Started submission
+DEBUG 2016-08-08 11:26:10,175: 	 Working on /afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11/src/bbtoDijet/CRAB/crab_test_bbtoDijetV11_HLT/crab_bbtoDijetV11_HLT
+DEBUG 2016-08-08 11:26:10,846: 	 Loading required information from the environment
+DEBUG 2016-08-08 11:26:10,846: 	 Found CMSSW_8_0_11 for slc6_amd64_gcc530 with base /afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11
+DEBUG 2016-08-08 11:26:10,876: 	 UNIQUE NAME: tarUUID 49c8ae65-b423-4674-bc48-45209acdf8f3 
+DEBUG 2016-08-08 11:26:10,876: 	 self.config: from WMCore.Configuration import Configuration
+config = Configuration()
+config.section_('General')
+config.General.transferLogs = True
+config.General.transferOutputs = True
+config.General.workArea = 'crab_test_bbtoDijetV11_HLT'
+config.General.requestName = 'bbtoDijetV11_HLT'
+config.section_('JobType')
+config.JobType.psetName = 'hlt_bTagDijetV11_HLT.py'
+config.JobType.pluginName = 'Analysis'
+config.JobType.outputFiles = ['hlt_bTagDijetV11_HLT.root']
+config.JobType.numCores = 2
+config.section_('Data')
+config.Data.inputDataset = '/HLTPhysics/Run2016B-PromptReco-v2/AOD'
+config.Data.outputDatasetTag = 'bbtoDijetV11_HLT'
+config.Data.totalUnits = -1
+config.Data.unitsPerJob = 2
+config.Data.ignoreLocality = True
+config.Data.splitting = 'LumiBased'
+config.Data.lumiMask = 'https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions16/13TeV/Cert_271036-275125_13TeV_PromptReco_Collisions16_JSON.txt'
+config.Data.publication = False
+config.Data.outLFNDirBase = '/store/user/aavkhadi/'
+config.Data.runRange = '274998'
+config.Data.secondaryInputDataset = '/HLTPhysics/Run2016B-v2/RAW'
+config.section_('Site')
+config.Site.storageSite = 'T3_US_FNALLPC'
+config.section_('User')
+config.section_('Debug')
+
+DEBUG 2016-08-08 11:26:10,876: 	 self.config.JobType.psetName: hlt_bTagDijetV11_HLT.py
+INFO 2016-08-08 11:26:10,876: 	 Importing CMSSW configuration hlt_bTagDijetV11_HLT.py
+INFO 2016-08-08 11:26:11,749: 	 Finished importing CMSSW configuration hlt_bTagDijetV11_HLT.py
+DEBUG 2016-08-08 11:26:11,749: 	 Writing CMSSW configuration to /afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11/src/bbtoDijet/CRAB/crab_test_bbtoDijetV11_HLT/crab_bbtoDijetV11_HLT/inputs/PSet.py
+DEBUG 2016-08-08 11:26:12,693: 	 The following EDM output files will be collected: []
+DEBUG 2016-08-08 11:26:12,693: 	 The following TFile output files will be collected: ['hlt_bTagDijetV11_HLT.root']
+DEBUG 2016-08-08 11:26:12,693: 	 The following user output files will be collected: []
+DEBUG 2016-08-08 11:26:12,693: 	 Loading required information from the environment
+DEBUG 2016-08-08 11:26:12,693: 	 Found CMSSW_8_0_11 for slc6_amd64_gcc530 with base /afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11
+DEBUG 2016-08-08 11:26:12,693: 	 Making tarball in /afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11/src/bbtoDijet/CRAB/crab_test_bbtoDijetV11_HLT/crab_bbtoDijetV11_HLT/inputs/49c8ae65-b423-4674-bc48-45209acdf8f3default.tgz
+DEBUG 2016-08-08 11:26:12,754: 	 Checking directory /afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11/lib
+DEBUG 2016-08-08 11:26:12,754: 	 Adding directory /afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11/lib to tarball
+DEBUG 2016-08-08 11:26:13,789: 	 Checking directory /afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11/biglib
+DEBUG 2016-08-08 11:26:13,789: 	 Adding directory /afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11/biglib to tarball
+DEBUG 2016-08-08 11:26:13,792: 	 Checking directory /afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11/module
+DEBUG 2016-08-08 11:26:14,220: 	 Adding data directory /afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11/src/L1Trigger/L1TGlobal/data to tarball
+DEBUG 2016-08-08 11:26:14,562: 	 Adding data directory /afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11/src/L1Trigger/L1TGlobal/interface to tarball
+DEBUG 2016-08-08 11:26:14,671: 	 Adding data directory /afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11/src/HLTrigger/HLTanalyzers/interface to tarball
+DEBUG 2016-08-08 11:26:14,822: 	 Adding data directory /afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11/src/Configuration/Skimming/interface to tarball
+DEBUG 2016-08-08 11:26:14,878: 	 Adding data directory /afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11/src/FastSimulation/Muons/data to tarball
+DEBUG 2016-08-08 11:26:16,503: 	 Uploading archive /afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11/src/bbtoDijet/CRAB/crab_test_bbtoDijetV11_HLT/crab_bbtoDijetV11_HLT/inputs/49c8ae65-b423-4674-bc48-45209acdf8f3default.tgz to the CRAB cache. Using URI https://cmsweb.cern.ch/crabcache
+DEBUG 2016-08-08 11:26:17,852: 	 Loading required information from the environment
+DEBUG 2016-08-08 11:26:17,853: 	 Found CMSSW_8_0_11 for slc6_amd64_gcc530 with base /afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11
+DEBUG 2016-08-08 11:26:17,853: 	 Making tarball in /afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11/src/bbtoDijet/CRAB/crab_test_bbtoDijetV11_HLT/crab_bbtoDijetV11_HLT/inputs/debugFiles.tgz
+DEBUG 2016-08-08 11:26:17,886: 	 Uploading archive /afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11/src/bbtoDijet/CRAB/crab_test_bbtoDijetV11_HLT/crab_bbtoDijetV11_HLT/inputs/debugFiles.tgz to the CRAB cache. Using URI https://cmsweb.cern.ch/crabcache
+DEBUG 2016-08-08 11:26:18,356: 	 Result uploading input files: a383b7a88aabae5aec9702293c97826a33cdc058dd30d35ea2e6e99e814f075f.tar.gz 
+DEBUG 2016-08-08 11:26:18,356: 	 Attaching lumi mask https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions16/13TeV/Cert_271036-275125_13TeV_PromptReco_Collisions16_JSON.txt to the request
+DEBUG 2016-08-08 11:26:18,356: 	 Downloading lumi-mask from https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions16/13TeV/Cert_271036-275125_13TeV_PromptReco_Collisions16_JSON.txt
+INFO 2016-08-08 11:26:18,452: 	 Sending the request to the server
+DEBUG 2016-08-08 11:26:18,452: 	 Submitting {'maxjobruntime': 1250, 'ignorelocality': 1, 'savelogsflag': 1, 'useparent': 0, 'asyncdest': 'T3_US_FNALLPC', 'algoargs': 2, 'cachefilename': 'a383b7a88aabae5aec9702293c97826a33cdc058dd30d35ea2e6e99e814f075f.tar.gz', 'numcores': 2, 'addoutputfiles': [], 'generator': 'pythia', 'maxmemory': 2000, 'publishdbsurl': 'https://cmsweb.cern.ch/dbs/prod/phys03/DBSWriter', 'priority': 10, 'jobsw': 'CMSSW_8_0_11', 'edmoutfiles': [], 'userfiles': [], 'primarydataset': '', 'inputdata': '/HLTPhysics/Run2016B-PromptReco-v2/AOD', 'lfn': '/store/user/aavkhadi/', 'dryrun': 0, 'workflow': 'crab_bbtoDijetV11_HLT', 'adduserfiles': [], 'secondarydata': '/HLTPhysics/Run2016B-v2/RAW', 'jobarch': 'slc6_amd64_gcc530', 'lumis': ['64,782'], 'nonprodsw': 0, 'tfileoutfiles': ['hlt_bTagDijetV11_HLT.root'], 'oneEventMode': 0, 'debugfilename': 'a550e174d8d951b92b47a9c45e46283e3054deb98f73211b7b32046bd1a28462.tar.gz', 'cacheurl': 'https://cmsweb.cern.ch/crabcache', 'saveoutput': 1, 'publication': 0, 'runs': [u'274998'], 'totalunits': -1, 'splitalgo': 'LumiBased', 'nonvaliddata': 0, 'dbsurl': 'https://cmsweb.cern.ch/dbs/prod/global/DBSReader', 'publishgroupname': 0, 'jobtype': 'Analysis', 'publishname2': 'bbtoDijetV11_HLT'} 
+DEBUG 2016-08-08 11:26:18,453: 	 Encoded submit request: maxjobruntime=1250&ignorelocality=1&savelogsflag=1&useparent=0&asyncdest=T3_US_FNALLPC&algoargs=2&cachefilename=a383b7a88aabae5aec9702293c97826a33cdc058dd30d35ea2e6e99e814f075f.tar.gz&numcores=2&generator=pythia&maxmemory=2000&publishdbsurl=https%3A%2F%2Fcmsweb.cern.ch%2Fdbs%2Fprod%2Fphys03%2FDBSWriter&priority=10&jobsw=CMSSW_8_0_11&primarydataset=&inputdata=%2FHLTPhysics%2FRun2016B-PromptReco-v2%2FAOD&lfn=%2Fstore%2Fuser%2Faavkhadi%2F&dryrun=0&workflow=crab_bbtoDijetV11_HLT&secondarydata=%2FHLTPhysics%2FRun2016B-v2%2FRAW&jobarch=slc6_amd64_gcc530&nonprodsw=0&oneEventMode=0&debugfilename=a550e174d8d951b92b47a9c45e46283e3054deb98f73211b7b32046bd1a28462.tar.gz&cacheurl=https%3A%2F%2Fcmsweb.cern.ch%2Fcrabcache&saveoutput=1&publication=0&totalunits=-1&splitalgo=LumiBased&nonvaliddata=0&dbsurl=https%3A%2F%2Fcmsweb.cern.ch%2Fdbs%2Fprod%2Fglobal%2FDBSReader&publishgroupname=0&jobtype=Analysis&publishname2=bbtoDijetV11_HLT&tfileoutfiles=hlt_bTagDijetV11_HLT.root&runs=274998&lumis=64%2C782
+DEBUG 2016-08-08 11:26:19,963: 	 Result: {'result': [{'RequestName': '160808_092618:aavkhadi_crab_bbtoDijetV11_HLT'}]}
+INFO 2016-08-08 11:26:19,966: 	 Success: Your task has been delivered to the CRAB3 server.
+INFO 2016-08-08 11:26:19,966: 	 Task name: 160808_092618:aavkhadi_crab_bbtoDijetV11_HLT
+INFO 2016-08-08 11:26:19,967: 	 Please use 'crab status' to check how the submission process proceeds.
+DEBUG 2016-08-08 11:26:19,967: 	 About to return
+INFO 2016-08-08 11:26:19,970: 	 Log file is /afs/cern.ch/user/a/aavkhadi/CMSSW_8_0_11/src/bbtoDijet/CRAB/crab_test_bbtoDijetV11_HLT/crab_bbtoDijetV11_HLT/crab.log
