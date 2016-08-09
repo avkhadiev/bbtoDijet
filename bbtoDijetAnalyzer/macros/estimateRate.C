@@ -46,7 +46,7 @@ void makeGraph(std::vector<TString> infileNames)
   float        bTagCSVOnline[kMaxBTagCSVOnline]                 ;    chain->SetBranchAddress("bTagCSVOnline",            &bTagCSVOnline)                ;
 
   // declare histograms
-  TH2D * distributionCSV = new TH2D("distributionCSV", "Control p84;max online CSV;submax online CSV", 20, 0, 1, 20, 0, 1);
+  TH2D * distributionCSV = new TH2D("distributionCSV", "Control p78;max online CSV;submax online CSV", 40, 0, 1, 40, 0, 1);
       int xBins, yBins;
       xBins = distributionCSV->GetXaxis()->GetNbins();
       yBins = distributionCSV->GetYaxis()->GetNbins();
@@ -130,6 +130,7 @@ void makeGraph(std::vector<TString> infileNames)
       for(int y = 1; y < yBins + 1; y++){
           xCoordinate = distributionCSV->GetXaxis()->GetBinLowEdge(x);
           yCoordinate = distributionCSV->GetYaxis()->GetBinLowEdge(y);
+	  
           value = l1rate * (distributionCSV->Integral(x, xBins, y, yBins)) / l1pass ;
           // debugging 
           printf("xCoordinate is %4.2f, yCoordinate is %4.2f \n", xCoordinate, yCoordinate) ;
@@ -149,7 +150,6 @@ void makeGraph(std::vector<TString> infileNames)
   outputFile.cd();
   outputFile.Close();
 }
-
 void estimateRate()
 {
 
