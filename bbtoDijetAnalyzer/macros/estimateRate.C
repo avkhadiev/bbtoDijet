@@ -17,7 +17,7 @@
 void makeGraph(std::vector<TString> infileNames)
 {
 
-  const char * controlName   = "HLT_DoubleJetsC100_DoubleBTagCSV_p026_DoublePFJetsC160_v2";
+  const char * controlName = "HLT_DoubleJetsC100_p014_DoublePFJetsC100MaxDeta1p6_v2"; 
   TChain *chain = new TChain("bbtoDijet/efficiencyTree");
   TChain *l1info= new TChain("hltbitanalysis/HltTree");
 
@@ -50,7 +50,7 @@ void makeGraph(std::vector<TString> infileNames)
       int xBins, yBins;
       xBins = distributionCSV->GetXaxis()->GetNbins();
       yBins = distributionCSV->GetYaxis()->GetNbins();
-      printf("xBins = %d, yBins = %d \n", xBins, yBins);
+      
   int graphSize;
   graphSize = xBins * yBins;
   printf("declaring graph with size %d \n", graphSize); 
